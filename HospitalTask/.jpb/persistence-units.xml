@@ -4,8 +4,8 @@
     <persistence-units>
       <persistence-unit name="Default">
         <packages>
-          <package value="com.example.hospitaltask" />
-          <package value="com.example.hospitaltask" />
+          <package value="com.hospitaltask" />
+          <package value="com.hospitaltask" />
         </packages>
       </persistence-unit>
     </persistence-units>

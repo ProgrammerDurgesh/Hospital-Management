@@ -1,4 +1,4 @@
-package com.example.hospitaltask;
+package com.hospitaltask;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

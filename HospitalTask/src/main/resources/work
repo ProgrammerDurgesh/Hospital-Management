@@ -1,0 +1,20 @@
+
+
+Doctor crud
+
+//Doctor Module
+create Doctor
+getAllDoctor
+findDoctorByID
+findDoctorByEmail
+deleteDoctorByID
+DeleteDoctorByEmail
+
+
+Exceptions
+
+if Doctor Not Found
+id not found
+email not found
+
+

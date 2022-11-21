@@ -1,11 +1,9 @@
-package com.example.hospitaltask.entity;
+package com.hospitaltask.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
+@Table(name = "tbl_doctor")
 public class DoctorEntity {
 
     @Id
@@ -13,9 +11,9 @@ public class DoctorEntity {
     private long id;
     private String email;
     private String password;
-    private String docatorName;
+    private String doctorName;
     private String specialization;
-    private String experirence;
+    private String experience;
     private String clinicName;
     private String address;
     public long getId() {
@@ -42,12 +40,12 @@ public class DoctorEntity {
         this.password = password;
     }
 
-    public String getDocatorName() {
-        return docatorName;
+    public String getDoctorName() {
+        return doctorName;
     }
 
-    public void setDocatorName(String docatorName) {
-        this.docatorName = docatorName;
+    public void setDoctorName(String doctorName) {
+        this.doctorName = doctorName;
     }
 
     public String getSpecialization() {
@@ -58,12 +56,12 @@ public class DoctorEntity {
         this.specialization = specialization;
     }
 
-    public String getExperirence() {
-        return experirence;
+    public String getExperience() {
+        return experience;
     }
 
-    public void setExperirence(String experirence) {
-        this.experirence = experirence;
+    public void setExperience(String experience) {
+        this.experience = experience;
     }
 
     public String getClinicName() {
@@ -85,13 +83,13 @@ public class DoctorEntity {
     public DoctorEntity() {
     }
 
-    public DoctorEntity(long id, String email, String password, String docatorName, String specialization, String experirence, String clinicName, String address) {
+    public DoctorEntity(long id, String email, String password, String doctorName, String specialization, String experience, String clinicName, String address) {
         this.id = id;
         this.email = email;
         this.password = password;
-        this.docatorName = docatorName;
+        this.doctorName = doctorName;
         this.specialization = specialization;
-        this.experirence = experirence;
+        this.experience = experience;
         this.clinicName = clinicName;
         this.address = address;
     }
