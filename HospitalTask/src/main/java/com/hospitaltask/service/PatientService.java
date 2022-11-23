@@ -1,26 +1,26 @@
 package com.hospitaltask.service;
 
-import com.hospitaltask.entity.PatientEntity;
+import com.hospitaltask.entity.Patient;
 
 import java.util.List;
 
 public interface PatientService
 {
-    PatientEntity addNewPatient(PatientEntity patientEntity);
+    Patient addNewPatient(Patient patient);
 
-    PatientEntity updatePatientById(PatientEntity patientEntity, int id);
+    Patient updatePatientById(Patient patient,int id);
 
-    PatientEntity updatePatientByEmailId(PatientEntity patientEntity, String emailId);
+    Patient updatePatientByEmailId(Patient patient,String emailId);
 
-    List<PatientEntity> getAllPatient();
+    List< Patient > getAllPatient();
 
-    PatientEntity getPatientById(Long id);
+    Patient getPatientById(Long id);
 
-//    PatientEntity getPatientByDoctorId(Long doctorId);
+//    Patient getPatientByDoctorId(Long doctorId);
 //
-//    PatientEntity getPatientByEmailId(String email);
+//    Patient getPatientByEmailId(String email);
 //
-//    PatientEntity getPatientByClinicId(String clinicID);
+//    Patient getPatientByClinicId(String clinicID);
 
     void deletePatientByID(Long patientId);
 
@@ -29,6 +29,8 @@ public interface PatientService
 //    void deletePatientByClinicCode(String clinicCode);
 
     void deleteAllPatient();
+
+    List< Patient > findByDoctorID(Long id);
 
 
 }

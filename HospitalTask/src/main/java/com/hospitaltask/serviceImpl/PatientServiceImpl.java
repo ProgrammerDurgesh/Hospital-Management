@@ -1,6 +1,6 @@
 package com.hospitaltask.serviceImpl;
 
-import com.hospitaltask.entity.PatientEntity;
+import com.hospitaltask.entity.Patient;
 import com.hospitaltask.repository.PatientEntityRepo;
 import com.hospitaltask.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,35 +17,43 @@ class PatientServiceImpl implements PatientService {
 
     @Override
     public
-    PatientEntity addNewPatient ( PatientEntity patientEntity )
+    Patient addNewPatient (Patient patient)
         {
-            return patientEntityRepo.save ( patientEntity );
+            System.out.println ( patient.getEmail () );
+            System.out.println ( patient.getPassword ());
+            System.out.println ( patient.getName () );
+            System.out.println ( patient.getEmail () );
+            System.out.println ( patient.getAge () );
+            System.out.println ( patient.getBloodGroup () );
+            System.out.println ( patient.getIllness () );
+
+            return patientEntityRepo.save ( patient );
         }
 
     @Override
     public
-    PatientEntity updatePatientById ( PatientEntity patientEntity , int id )
+    Patient updatePatientById (Patient patient,int id )
         {
             return null;
         }
 
     @Override
     public
-    PatientEntity updatePatientByEmailId ( PatientEntity patientEntity , String emailId )
+    Patient updatePatientByEmailId (Patient patient,String emailId )
         {
             return null;
         }
 
     @Override
     public
-    List < PatientEntity > getAllPatient ()
+    List < Patient > getAllPatient ()
         {
             return patientEntityRepo.findAll ( );
         }
 
     @Override
     public
-    PatientEntity getPatientById ( Long id )
+    Patient getPatientById (Long id )
         {
             return patientEntityRepo.findById ( id )
                     .get ( );
@@ -67,18 +75,25 @@ class PatientServiceImpl implements PatientService {
             this.patientEntityRepo.deleteAll ( );
         }
 
+    @Override
+    public
+    List < Patient > findByDoctorID(Long id)
+        {
+            return (List < Patient >) patientEntityRepo.findById ( id ).get ();
+        }
+
                 /*    @Override
-//    public PatientEntity getPatientByDoctorId(Long doctorId) {
+//    public Patient getPatientByDoctorId(Long doctorId) {
 //        return this.patientEntityRepo.findByByDoctorId(doctorId);
 //    }
 
 //    @Override
-//    public PatientEntity getPatientByEmailId(String email) {
+//    public Patient getPatientByEmailId(String email) {
 //        return patientEntityRepo.findByEmailId(email);
 //    }
 
 //    @Override
-//    public PatientEntity getPatientByClinicId(String clinicID) {
+//    public Patient getPatientByClinicId(String clinicID) {
 //        return null;
 //    }
 

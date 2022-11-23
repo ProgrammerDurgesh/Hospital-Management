@@ -15,22 +15,25 @@ public class DoctorServiceImpl implements DoctorService {
 
 
     @Override
-    public DoctorEntity addDoctor(DoctorEntity doctorEntity) {
-        return this.doctorRepo.save(doctorEntity);
+    public
+    Doctor addDoctor(Doctor doctor) {
+        return this.doctorRepo.save( doctor );
     }
 
     @Override
-    public DoctorEntity updateDoctor(DoctorEntity createDoctor, Long id) {
+    public
+    Doctor updateDoctor(Doctor createDoctor,Long id) {
         return null;
     }
 
     @Override
-    public List<DoctorEntity> getAllDoctor() {
-        return (List<DoctorEntity>)doctorRepo.findAll();
+    public List< Doctor > getAllDoctor() {
+        return (List< Doctor >)doctorRepo.findAll();
     }
 
     @Override
-    public DoctorEntity getDoctorById(Long id) {
+    public
+    Doctor getDoctorById(Long id) {
         return this.doctorRepo.findById(id).get();
     }
 
@@ -41,7 +44,8 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
     @Override
-    public DoctorEntity findByEmail(String email) {
+    public
+    Doctor findByEmail(String email) {
         return doctorRepo.findByEmail(email);
     }
 }

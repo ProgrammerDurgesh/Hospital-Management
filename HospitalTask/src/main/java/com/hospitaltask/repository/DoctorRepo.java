@@ -1,10 +1,10 @@
 package com.hospitaltask.repository;
 
-import com.hospitaltask.entity.DoctorEntity;
+import com.hospitaltask.entity.Doctor;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface DoctorRepo extends JpaRepository<DoctorEntity,Long> {
+public interface DoctorRepo extends JpaRepository< Doctor,Long> {
 
-    DoctorEntity findByEmail(String email);
+    Doctor findByEmail(String email);
 }
 
