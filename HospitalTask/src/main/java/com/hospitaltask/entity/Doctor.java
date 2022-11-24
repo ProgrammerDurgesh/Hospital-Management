@@ -13,10 +13,12 @@ class Doctor{
     @Column(name="doctorId")
     @GeneratedValue( strategy=GenerationType.IDENTITY )
     private long doctorId;
+    @Column(nullable = false, unique = true, length = 100)
     private String
             email;
     private String
             password;
+    @Column(nullable = false, unique = true, length = 200)
     private String
             doctorName;
     private String

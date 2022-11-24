@@ -2,6 +2,7 @@ package com.hospitaltask.serviceImpl;
 
 import com.hospitaltask.entity.Patient;
 import com.hospitaltask.repository.PatientEntityRepo;
+import com.hospitaltask.service.DoctorService;
 import com.hospitaltask.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,18 +16,12 @@ class PatientServiceImpl implements PatientService {
     PatientEntityRepo
             patientEntityRepo;
 
+    @Autowired
+    private DoctorService doctorService;
+
     @Override
     public
-    Patient addNewPatient (Patient patient)
-        {
-            System.out.println ( patient.getEmail () );
-            System.out.println ( patient.getPassword ());
-            System.out.println ( patient.getName () );
-            System.out.println ( patient.getEmail () );
-            System.out.println ( patient.getAge () );
-            System.out.println ( patient.getBloodGroup () );
-            System.out.println ( patient.getIllness () );
-
+    Patient addNewPatient (Patient patient){
             return patientEntityRepo.save ( patient );
         }
 
@@ -59,6 +54,35 @@ class PatientServiceImpl implements PatientService {
                     .get ( );
         }
 
+    @Override
+    public
+    Patient findByName(String email)
+        {
+            return patientEntityRepo.findByName ( email );
+        }
+
+    @Override
+    public
+    Patient findByByDoctor(Long id)
+        {
+            return null;
+        }
+
+
+//    @Override
+//    public
+//    Patient findByByDoctor(Long id)
+//        {
+//            return patientEntityRepo.findByByDoctor ( id );
+//        }
+
+    @Override
+    public
+    Patient findByEmail(String email)
+        {
+            return patientEntityRepo.findByEmail ( email );
+        }
+
 
     @Override
     public
@@ -79,8 +103,9 @@ class PatientServiceImpl implements PatientService {
     public
     List < Patient > findByDoctorID(Long id)
         {
-            return (List < Patient >) patientEntityRepo.findById ( id ).get ();
+            return patientEntityRepo.findAllByDoctor (doctorService.getDoctorById (id));
         }
+
 
                 /*    @Override
 //    public Patient getPatientByDoctorId(Long doctorId) {

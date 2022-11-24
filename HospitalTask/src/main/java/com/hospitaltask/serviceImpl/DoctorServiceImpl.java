@@ -11,7 +11,7 @@ import java.util.List;
 public class DoctorServiceImpl implements DoctorService {
 
     @Autowired
-    DoctorRepo doctorRepo;
+   private DoctorRepo doctorRepo;
 
 
     @Override
@@ -48,4 +48,13 @@ public class DoctorServiceImpl implements DoctorService {
     Doctor findByEmail(String email) {
         return doctorRepo.findByEmail(email);
     }
+
+    @Override
+    public
+    Doctor findByDoctorName(String name)
+        {
+            return doctorRepo.findByDoctorName ( name );
+        }
+
+
 }

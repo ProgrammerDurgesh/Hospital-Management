@@ -13,4 +13,6 @@ public interface DoctorService {
      Doctor getDoctorById(Long id);
      void deleteDoctorById(Long id);
      Doctor findByEmail(String email);
+
+     Doctor findByDoctorName(String name);
 }

@@ -16,9 +16,12 @@ public interface PatientService
 
     Patient getPatientById(Long id);
 
+    Patient findByName(String email);
+    Patient findByByDoctor(Long id);
+
 //    Patient getPatientByDoctorId(Long doctorId);
 //
-//    Patient getPatientByEmailId(String email);
+     Patient findByEmail(String email);
 //
 //    Patient getPatientByClinicId(String clinicID);
 
