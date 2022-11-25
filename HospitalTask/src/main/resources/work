@@ -17,21 +17,4 @@ if Doctor Not Found
 id not found
 email not found
 
-Doctor   :
-find Search :Doctor -D,Search -s
-D-s by id :Done
-C-s-by Email: Done
-C-s-By name: Done
 
-Doctor :
-find Search :Clinic -c,Search -s
-c-s by id :Done
-c-s-by clinicName: Done
-
-
-patient :
-find Search : p- patient & s-search
-P-s by id :Done
-P-s-by Email: Done
-P-s by name: Done
-p-s by DoctorId: Done

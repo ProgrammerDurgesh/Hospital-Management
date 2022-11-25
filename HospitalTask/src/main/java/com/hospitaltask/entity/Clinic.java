@@ -13,7 +13,6 @@ public class Clinic
     @Column(nullable = false, unique = true, length = 45)
     private  String  clinicName;
     private String  clinicAddress;
-    @Column(name = "State" ,nullable = false, unique = false, length = 100)
     private String clinicState;
 
 

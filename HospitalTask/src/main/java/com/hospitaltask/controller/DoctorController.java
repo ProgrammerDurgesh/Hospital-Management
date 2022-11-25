@@ -37,17 +37,10 @@ public class DoctorController {
         return new ResponseEntity< Doctor >(this.doctorServiceImp.getDoctorById(id),HttpStatus.OK);
     }
 
-    @GetMapping("doctor/email/{id}")
+    @GetMapping("doctor/{id}")
     public ResponseEntity< Doctor > findByEmailId(@PathVariable String id)
     {
         return new ResponseEntity<>(this.doctorServiceImp.findByEmail(id),HttpStatus.OK);
     }
-
-    //fetch doctor by DoctorName
-    @GetMapping("doctor/name/{name}")
-    public ResponseEntity< Doctor > findByDoctorName(@PathVariable String name)
-        {
-            return new ResponseEntity<>(this.doctorServiceImp.findByEmail(name),HttpStatus.OK);
-        }
 
 }

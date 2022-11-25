@@ -10,79 +10,64 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-public
-class PatientController{
+public class PatientController {
     @Autowired
     PatientService
             patientService;
 
-    /*
-    Add New patient
-     */
-    @PostMapping( "/patient" )
+    @PostMapping ( "/patient" )
     public
-    ResponseEntity < Patient > addNewPatient(@RequestBody Patient patient)
+    ResponseEntity < Patient > addNewPatient (@RequestBody Patient patient)
         {
-            return new ResponseEntity <> ( patientService.addNewPatient ( patient ),HttpStatus.CREATED );
+            return new ResponseEntity <> ( patientService.addNewPatient ( patient ) , HttpStatus.CREATED );
         }
 
     //this code is not Working
-    @PutMapping( "/patient/{id}" )
+    @PutMapping ( "/patient/{id}" )
     public
-    ResponseEntity < Patient > updatePatientById(@RequestBody Patient patient,@PathVariable int id)
+    ResponseEntity < Patient > updatePatientById (@RequestBody Patient patient,@PathVariable int id )
         {
-            return new ResponseEntity <> ( patientService.updatePatientById ( patient,id ),HttpStatus.CREATED );
+            return new ResponseEntity <> ( patientService.updatePatientById ( patient, id ) , HttpStatus.CREATED );
         }
 
     //this code is not Working
-    @PutMapping( "/patient/email/{emailId}" )
+    @PutMapping ( "/patient/email/{emailId}" )
     public
-    ResponseEntity < Patient > updatePatientByEmailId(@RequestBody Patient patient,@PathVariable String emailId)
+    ResponseEntity < Patient > updatePatientByEmailId (@RequestBody Patient patient,@PathVariable String emailId )
         {
-            return new ResponseEntity <> ( patientService.updatePatientByEmailId ( patient,emailId ),HttpStatus.CREATED );
+            return new ResponseEntity <> ( patientService.updatePatientByEmailId ( patient, emailId ) , HttpStatus.CREATED );
         }
 
-    /*
-    fetch All Patient
-     */
-    @GetMapping( "/patient" )
+    @GetMapping ( "/patient" )
     public
-    ResponseEntity < List < Patient > > getAllPatient()
+    ResponseEntity < List < Patient > > getAllPatient ()
         {
-            return new ResponseEntity <> ( patientService.getAllPatient ( ),HttpStatus.OK );
+            return new ResponseEntity <> ( patientService.getAllPatient ( ) , HttpStatus.OK );
         }
 
-    /*
-    Fetch All Patient
-     */
-    @GetMapping( "/patient/{id}" )
+    @GetMapping ( "/patient/{id}" )
     public
-    ResponseEntity < Patient > getPatientById(@PathVariable Long id)
+    ResponseEntity < Patient > getPatientById (@PathVariable Long id )
         {
-            return new ResponseEntity <> ( patientService.getPatientById ( id ),HttpStatus.OK );
+            return new ResponseEntity <> ( patientService.getPatientById ( id ) , HttpStatus.OK );
         }
 
 
-    /*
-    delete patient By ID
-     */
-    @DeleteMapping( "patient/{patientId}" )
+    @DeleteMapping ( "patient/{patientId}" )
     public
-    void deletePatientByID(@PathVariable Long patientId)
+    void deletePatientByID ( @PathVariable Long patientId )
         {
             this.patientService.deletePatientByID ( patientId );
         }
 
-        /*
-        Delete All Patient
-         */
 
-    @DeleteMapping( "patient" )
+    @DeleteMapping ( "patient" )
     public
-    void deleteAllPatient()
+    void deleteAllPatient ()
         {
             this.patientService.deleteAllPatient ( );
         }
+<<<<<<< HEAD
 
     /*
     Fetch patient By Email
@@ -117,6 +102,8 @@ class PatientController{
             List < Patient > patients=patientService.findByDoctorID ( doctor );
             return new ResponseEntity <> ( patients,HttpStatus.OK );
         }
+=======
+>>>>>>> parent of 50ed7f5... 24-11-22 9:30AM-1:00 PM
 }
 /*
     @GetMapping ( "/patient/doctor/{id}" )
@@ -124,7 +111,10 @@ class PatientController{
         return new ResponseEntity <> ( patientService.getPatientByDoctorId ( doctorId ) , HttpStatus.OK );
     }
 
-
+    @GetMapping ( "/patient/email{email}" )
+    public ResponseEntity < Patient > getPatientByEmailId (@PathVariable String email ) {
+        return new ResponseEntity <> ( patientService.getPatientByEmailId ( email ) , HttpStatus.OK );
+    }
 
     @GetMapping ( "/patient/clinicID{clinicID}" )
     public ResponseEntity < Patient > getPatientByClinicId (@PathVariable String clinicID ) {

@@ -10,16 +10,15 @@ class Patient{
 
     @Id
     @GeneratedValue ( strategy = GenerationType.IDENTITY )
+    @Column(name="patient_Id")
     private long
             id;
 
-
-    @Column(name = "patientEmail" ,nullable = false, unique = true, length = 100)
+    @Column ( name = "patientEmail" )
     private String email;
 
-    @Column(nullable = false, unique = true, length = 100)
-    private String name;
-    private String password, age, bloodGroup, illness;
+
+    private String password, name, age, bloodGroup, illness;
 
 
 

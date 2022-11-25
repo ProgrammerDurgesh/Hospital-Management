@@ -34,15 +34,4 @@ public class ClinicServiceImpl implements ClinicService {
         {
             return clinicRepo.findAll ();
         }
-
-    @Override
-    public
-    Clinic findByClinicName(String clinicName)
-        {
-            return clinicRepo.findByClinicName ( clinicName );
-        }
-
-
-
-
 }
