@@ -114,9 +114,7 @@ class PatientController{
     ResponseEntity < ? > findByByDoctorId(@PathVariable Long doctor)
         {
             System.out.println ( "patient search by doctor id " );
-            List < Patient >
-                    patients=
-                    patientService.findByDoctorID ( doctor );
+            List < Patient > patients=patientService.findByDoctorID ( doctor );
             return new ResponseEntity <> ( patients,HttpStatus.OK );
         }
 }
