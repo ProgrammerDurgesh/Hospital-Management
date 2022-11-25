@@ -7,10 +7,11 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PatientEntityRepo extends JpaRepository< Patient,Long>
 {
-/*
-    Patient findByEmailId(String emil);
+    Patient findByEmail(String emil);
     Patient findByClinicId(String id);
     Patient findByByDoctorId(Long id);
     void deleteByEmailId(String email);
- */
+
+    Patient findByName(String name);
+
 }

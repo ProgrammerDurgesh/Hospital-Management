@@ -16,21 +16,22 @@ public interface PatientService
 
     Patient getPatientById(Long id);
 
-//    Patient getPatientByDoctorId(Long doctorId);
-//
-//    Patient getPatientByEmailId(String email);
-//
-//    Patient getPatientByClinicId(String clinicID);
+    Patient getPatientByDoctorId(Long doctorId);
+
+    Patient findByEmail(String email);
+
+    Patient getPatientByClinicId(String clinicID);
 
     void deletePatientByID(Long patientId);
 
-//    void deletePatientIdByEmailID(String emailId);
-//
-//    void deletePatientByClinicCode(String clinicCode);
+    void deletePatientIdByEmailID(String emailId);
+
+    void deletePatientByClinicCode(String clinicCode);
 
     void deleteAllPatient();
 
     List< Patient > findByDoctorID(Long id);
 
 
+    Patient findByName(String name);
 }

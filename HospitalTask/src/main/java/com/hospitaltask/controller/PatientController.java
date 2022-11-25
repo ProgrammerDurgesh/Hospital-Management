@@ -67,7 +67,7 @@ public class PatientController {
         {
             this.patientService.deleteAllPatient ( );
         }
-<<<<<<< HEAD
+
 
     /*
     Fetch patient By Email
@@ -102,8 +102,6 @@ public class PatientController {
             List < Patient > patients=patientService.findByDoctorID ( doctor );
             return new ResponseEntity <> ( patients,HttpStatus.OK );
         }
-=======
->>>>>>> parent of 50ed7f5... 24-11-22 9:30AM-1:00 PM
 }
 /*
     @GetMapping ( "/patient/doctor/{id}" )

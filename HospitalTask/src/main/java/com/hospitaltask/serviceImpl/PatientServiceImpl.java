@@ -82,32 +82,37 @@ class PatientServiceImpl implements PatientService {
             return (List < Patient >) patientEntityRepo.findById ( id ).get ();
         }
 
-                /*    @Override
-//    public Patient getPatientByDoctorId(Long doctorId) {
-//        return this.patientEntityRepo.findByByDoctorId(doctorId);
-//    }
+    @Override
+    public
+    Patient findByName(String name)
+        {
+            return patientEntityRepo.findByName(name);
+        }
 
-//    @Override
-//    public Patient getPatientByEmailId(String email) {
-//        return patientEntityRepo.findByEmailId(email);
-//    }
+    @Override
+    public Patient getPatientByDoctorId(Long doctorId) {
+        return this.patientEntityRepo.findByByDoctorId(doctorId);
+    }
 
-//    @Override
-//    public Patient getPatientByClinicId(String clinicID) {
-//        return null;
-//    }
+    @Override
+    public Patient findByEmail(String email) {
+        return patientEntityRepo.findByEmail(email);
+    }
+
+    @Override
+    public Patient getPatientByClinicId(String clinicID) {
+        return null;
+    }
 
 
+    @Override
+    public void deletePatientIdByEmailID(String emailId) {
 
-//    @Override
-//    public void deletePatientIdByEmailID(String emailId) {
-//
-//        this.patientEntityRepo.deleteByEmailId(emailId);
-//    }
+        this.patientEntityRepo.deleteByEmailId(emailId);
+    }
 
-//    @Override
-//    public void deletePatientByClinicCode(String clinicCode) {
-//
-//    }
-*/
+    @Override
+    public void deletePatientByClinicCode(String clinicCode) {
+
+    }
 }
