@@ -14,25 +14,80 @@ public
 class ClinicController {
 
     @Autowired
-    ClinicService clinicService;
+    ClinicService
+            clinicService;
 
-    @PostMapping("/clinic")
+    // Add & Update Clinic
+    /*
+    Add Clinic
+     */
+    @PostMapping ( "/AddClinic")
     public
-    ResponseEntity< Clinic > saveClinic( @RequestBody Clinic clinic )
+    ResponseEntity < Clinic > saveClinic ( @RequestBody Clinic clinic )
         {
-            return new ResponseEntity <> ( clinicService.saveClinic ( clinic ), HttpStatus.CREATED );
+            return new ResponseEntity <> ( clinicService.saveClinic ( clinic ) , HttpStatus.CREATED );
         }
 
-        @GetMapping("/clinic")
-    public ResponseEntity< List<Clinic> >  getAllClinic()
+    @PutMapping("clinic/{id}")
+    public ResponseEntity<Clinic> updateClinicById(@RequestBody Clinic  clinic,@PathVariable Long id)
+        {
+            return new ResponseEntity <> ( clinicService.updateClinicById ( clinic,id ) ,HttpStatus.OK);
+        }
+        @PutMapping("clinic/name/{name}")
+        public ResponseEntity<Clinic> updateClinicByName(@RequestBody Clinic  clinic,@PathVariable String name)
             {
-                return new ResponseEntity <> ( clinicService.getAllClinic (),HttpStatus.OK);
+                 return new ResponseEntity <> ( clinicService.updateClinicByName ( clinic,name ) ,HttpStatus.OK);
             }
-    @GetMapping("/clinic/{id}")
-    public ResponseEntity<Clinic> getClinicById( @PathVariable Long id )
+    /*
+    fetch All Clinic
+    */
+    @GetMapping ( "/clinic")
+    public
+    ResponseEntity < List < Clinic > > getAllClinic ( )
         {
-            return  new ResponseEntity <> ( clinicService.getClinicById ( id ),HttpStatus.OK );
+            return new ResponseEntity <> ( clinicService.getAllClinic ( ) , HttpStatus.OK );
+        }
+        /*
+         fetch clinic By ClinicID
+         */
+
+    @GetMapping ( "/clinic/{id}")
+    public
+    ResponseEntity < Clinic > getClinicById ( @PathVariable Long id )
+        {
+            return new ResponseEntity <> ( clinicService.getClinicById ( id ) , HttpStatus.OK );
         }
 
+    /*
+    fetch clinic By ClinicName
+    */
+    @GetMapping ( "/clinic/clinicName/{clinicName}")
+    public
+    ResponseEntity < Clinic > findByClinicName ( @PathVariable String clinicName )
+        {
+            return new ResponseEntity <> ( clinicService.findByClinicName ( clinicName ) , HttpStatus.OK );
+        }
+
+    /*
+    Delete All Clinic
+     */
+    @DeleteMapping ( "clinic")
+    public
+    String deleteAllClinic ( )
+        {
+            clinicService.deleteAllClinic ();
+            return "Clinic Deleted ";
+        }
+        /*
+       Delete clinic By ClinicId
+     */
+
+    @DeleteMapping ( "clinic/{id}")
+    public
+    String deleteByClinicById (@PathVariable Long id )
+        {
+            clinicService.deleteClinicById ( id );
+            return "Clinic Deleted ";
+        }
 
 }

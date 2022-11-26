@@ -10,7 +10,6 @@ class Patient{
 
     @Id
     @GeneratedValue ( strategy = GenerationType.IDENTITY )
-    @Column(name="patient_Id")
     private long
             id;
 
@@ -22,7 +21,7 @@ class Patient{
 
 
 
-    @ManyToOne
+    @ManyToOne(cascade={CascadeType.ALL})
     @JoinColumn( name="doctor_id" )
     private  Doctor doctor;
 

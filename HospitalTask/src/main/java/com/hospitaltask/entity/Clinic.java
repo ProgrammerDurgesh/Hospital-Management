@@ -1,6 +1,7 @@
 package com.hospitaltask.entity;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "tbl_clinic")
@@ -13,7 +14,10 @@ public class Clinic
     @Column(nullable = false, unique = true, length = 45)
     private  String  clinicName;
     private String  clinicAddress;
+    @Column(name="state",nullable = true, unique = false, length = 45)
     private String clinicState;
+
+
 
 
     public

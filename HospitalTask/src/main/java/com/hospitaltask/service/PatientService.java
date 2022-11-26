@@ -6,32 +6,28 @@ import java.util.List;
 
 public interface PatientService
 {
+    //Add & Update Operation
+
     Patient addNewPatient(Patient patient);
+    Patient updatePatientById(Patient patient,int clinicId);
+    Patient updatePatientByName(Patient patient,String clinicName);
 
-    Patient updatePatientById(Patient patient,int id);
 
-    Patient updatePatientByEmailId(Patient patient,String emailId);
+
+
+
+    //Fetch & filter Operation
 
     List< Patient > getAllPatient();
-
     Patient getPatientById(Long id);
-
-    Patient getPatientByDoctorId(Long doctorId);
-
     Patient findByEmail(String email);
+    List< Patient > findByDoctorID(Long id);
+    Patient findByName(String name);
 
-    Patient getPatientByClinicId(String clinicID);
-
-    void deletePatientByID(Long patientId);
-
-    void deletePatientIdByEmailID(String emailId);
-
-    void deletePatientByClinicCode(String clinicCode);
+    //Delete Operation
 
     void deleteAllPatient();
+    void deletePatientByID(Long patientId);
 
-    List< Patient > findByDoctorID(Long id);
 
-
-    Patient findByName(String name);
 }

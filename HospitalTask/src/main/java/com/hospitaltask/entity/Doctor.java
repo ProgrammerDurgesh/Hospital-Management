@@ -27,8 +27,8 @@ class Doctor{
     private String
             address;
 
-    @ManyToOne
-    @JoinColumn( name="clinic_id" )
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn( name="clinic_id" ,nullable=false)
     private Clinic clinic;
 
 

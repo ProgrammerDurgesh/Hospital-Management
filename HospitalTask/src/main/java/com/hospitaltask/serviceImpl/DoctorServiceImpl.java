@@ -13,7 +13,7 @@ public class DoctorServiceImpl implements DoctorService {
     @Autowired
     DoctorRepo doctorRepo;
 
-
+    //Add & Update Operation
     @Override
     public
     Doctor addDoctor(Doctor doctor) {
@@ -22,10 +22,26 @@ public class DoctorServiceImpl implements DoctorService {
 
     @Override
     public
-    Doctor updateDoctor(Doctor createDoctor,Long id) {
-        return null;
-    }
+    Doctor updateDoctorById ( Doctor createDoctor , Long id )
+        {
+            return null;
+        }
 
+    @Override
+    public
+    Doctor updateDoctorByEmail ( Doctor createDoctor , String email )
+        {
+            return null;
+        }
+
+    @Override
+    public
+    Doctor updateDoctorByName ( Doctor createDoctor , String name )
+        {
+            return null;
+        }
+
+    //fetch & filter Operation
     @Override
     public List< Doctor > getAllDoctor() {
         return (List< Doctor >)doctorRepo.findAll();
@@ -38,14 +54,28 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
     @Override
-    public void deleteDoctorById(Long id)
-    {
-        this.doctorRepo.deleteById(id);
-    }
-
-    @Override
     public
     Doctor findByEmail(String email) {
         return doctorRepo.findByEmail(email);
     }
+
+    @Override
+    public
+    Doctor findByDoctorName(String doctorName)
+        {
+            return doctorRepo.findByDoctorName ( doctorName );
+        }
+
+        //Delete Operation
+    @Override
+    public
+    void deleteAllDoctor ( )
+        {
+            doctorRepo.deleteAll ();
+        }
+    @Override
+    public void deleteDoctorById(Long id)
+        {
+            this.doctorRepo.deleteById(id);
+        }
 }

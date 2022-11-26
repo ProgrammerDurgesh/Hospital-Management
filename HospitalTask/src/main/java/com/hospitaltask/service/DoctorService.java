@@ -7,10 +7,29 @@ import java.util.List;
 public interface DoctorService {
 
 
+
+    //Add & Update Operation
+
     Doctor addDoctor(Doctor doctor);
-     Doctor updateDoctor(Doctor createDoctor,Long id);
-      List< Doctor > getAllDoctor() ;
+     Doctor updateDoctorById(Doctor createDoctor,Long id);
+    Doctor updateDoctorByEmail(Doctor createDoctor,String email);
+    Doctor updateDoctorByName(Doctor createDoctor,String name);
+
+
+
+
+
+    //fetch & filter Operation
+
+     List< Doctor > getAllDoctor() ;
      Doctor getDoctorById(Long id);
-     void deleteDoctorById(Long id);
      Doctor findByEmail(String email);
+     Doctor findByDoctorName(String doctorName);
+
+
+
+     //Delete Operation
+
+     void deleteAllDoctor();
+     void deleteDoctorById(Long id);
 }

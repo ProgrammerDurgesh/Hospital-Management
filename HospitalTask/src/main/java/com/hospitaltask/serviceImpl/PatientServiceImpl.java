@@ -15,17 +15,10 @@ class PatientServiceImpl implements PatientService {
     PatientEntityRepo
             patientEntityRepo;
 
+    //Add & Update Operation
     @Override
     public
-    Patient addNewPatient (Patient patient)
-        {
-            System.out.println ( patient.getEmail () );
-            System.out.println ( patient.getPassword ());
-            System.out.println ( patient.getName () );
-            System.out.println ( patient.getEmail () );
-            System.out.println ( patient.getAge () );
-            System.out.println ( patient.getBloodGroup () );
-            System.out.println ( patient.getIllness () );
+    Patient addNewPatient (Patient patient){
 
             return patientEntityRepo.save ( patient );
         }
@@ -39,10 +32,13 @@ class PatientServiceImpl implements PatientService {
 
     @Override
     public
-    Patient updatePatientByEmailId (Patient patient,String emailId )
+    Patient updatePatientByName ( Patient patient , String clinicName )
         {
             return null;
         }
+
+
+    //fetch & Filter Operation
 
     @Override
     public
@@ -59,22 +55,6 @@ class PatientServiceImpl implements PatientService {
                     .get ( );
         }
 
-
-    @Override
-    public
-    void deletePatientByID ( Long patientId )
-        {
-
-            this.patientEntityRepo.deleteById ( patientId );
-        }
-
-    @Override
-    public
-    void deleteAllPatient ()
-        {
-            this.patientEntityRepo.deleteAll ( );
-        }
-
     @Override
     public
     List < Patient > findByDoctorID(Long id)
@@ -89,30 +69,30 @@ class PatientServiceImpl implements PatientService {
             return patientEntityRepo.findByName(name);
         }
 
-    @Override
-    public Patient getPatientByDoctorId(Long doctorId) {
-        return this.patientEntityRepo.findByByDoctorId(doctorId);
-    }
+
 
     @Override
     public Patient findByEmail(String email) {
         return patientEntityRepo.findByEmail(email);
     }
 
-    @Override
-    public Patient getPatientByClinicId(String clinicID) {
-        return null;
-    }
 
+    //Delete Operation
 
     @Override
-    public void deletePatientIdByEmailID(String emailId) {
-
-        this.patientEntityRepo.deleteByEmailId(emailId);
-    }
+    public
+    void deleteAllPatient ()
+        {
+            this.patientEntityRepo.deleteAll ( );
+        }
 
     @Override
-    public void deletePatientByClinicCode(String clinicCode) {
+    public
+    void deletePatientByID ( Long patientId )
+        {
 
-    }
+            this.patientEntityRepo.deleteById ( patientId );
+        }
+
+
 }
