@@ -19,8 +19,17 @@ class PatientServiceImpl implements PatientService {
     @Override
     public
     Patient addNewPatient (Patient patient){
-
-            return patientEntityRepo.save ( patient );
+        Patient patient1=null;
+        try
+        {
+             patient1=patientEntityRepo.save ( patient );
+        }
+        catch (Exception e)
+        {
+            System.out.println ("" );
+            e.printStackTrace ();
+        }
+            return patient1;
         }
 
     @Override

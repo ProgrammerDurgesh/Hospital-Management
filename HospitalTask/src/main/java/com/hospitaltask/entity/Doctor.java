@@ -1,166 +1,49 @@
 package com.hospitaltask.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
-import javax.print.attribute.standard.MediaSize;
-import java.util.List;
+import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 @Entity
 @Table( name="tbl_doctor" )
-public
-class Doctor{
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class Doctor implements Serializable {
+
+    private static final long SerialVersionUID=10l;
+
 
     @Id
     @Column(name="doctorId")
-    @GeneratedValue( strategy=GenerationType.IDENTITY )
+    @GeneratedValue( strategy=GenerationType.AUTO )
     private long doctorId;
-    private String
-            email;
-    private String
-            password;
-    private String
-            doctorName;
-    private String
-            specialization;
-    private String
-            experience;
+    private String doctorName;
+    @Column(unique=true,nullable=false,length=35 )
+    private String email;
+    private String password;
+    private String specialization;
+    private String experience;
+    private String address;
 
-    private String
-            address;
+    @Column(name="doctor_joining_date")
+    private final  Date createdDate = Calendar.getInstance().getTime();
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade=CascadeType.MERGE)
     @JoinColumn( name="clinic_id" ,nullable=false)
     private Clinic clinic;
 
 
+    @ManyToOne( cascade=CascadeType.MERGE)
+        @JoinColumn( name="role_id" ,nullable=false)
+    private Roles roles;
 
-    public
-    Clinic getClinic()
-        {
-            return clinic;
-        }
-
-    public
-    void setClinic(Clinic clinic)
-        {
-            this.clinic=
-                    clinic;
-        }
-
-
-    public
-    Doctor()
-        {
-        }
-
-    public
-    Doctor(long doctorId,String email,String password,String doctorName,String specialization,String experience,String address)
-        {
-            this.doctorId=
-                    doctorId;
-            this.email=
-                    email;
-            this.password=
-                    password;
-            this.doctorName=
-                    doctorName;
-            this.specialization=
-                    specialization;
-            this.experience=
-                    experience;
-            this.address=
-                    address;
-        }
-
-    public
-    long getDoctorId()
-        {
-            return doctorId;
-        }
-
-    public
-    void setDoctorId(long doctorId)
-        {
-            this.doctorId=
-                    doctorId;
-        }
-
-    public
-    String getEmail()
-        {
-            return email;
-        }
-
-    public
-    void setEmail(String email)
-        {
-            this.email=
-                    email;
-        }
-
-    public
-    String getPassword()
-        {
-            return password;
-        }
-
-    public
-    void setPassword(String password)
-        {
-            this.password=
-                    password;
-        }
-
-    public
-    String getDoctorName()
-        {
-            return doctorName;
-        }
-
-    public
-    void setDoctorName(String doctorName)
-        {
-            this.doctorName=
-                    doctorName;
-        }
-
-    public
-    String getSpecialization()
-        {
-            return specialization;
-        }
-
-    public
-    void setSpecialization(String specialization)
-        {
-            this.specialization=
-                    specialization;
-        }
-
-    public
-    String getExperience()
-        {
-            return experience;
-        }
-
-    public
-    void setExperience(String experience)
-        {
-            this.experience=
-                    experience;
-        }
-
-    public
-    String getAddress()
-        {
-            return address;
-        }
-
-    public
-    void setAddress(String address)
-        {
-            this.address=
-                    address;
-        }
 
 
 }

@@ -13,7 +13,6 @@ public interface PatientEntityRepo extends JpaRepository< Patient,Long>
     Patient findByEmail(String emil);
     Patient findByDoctor(Long id);
 
-
     Patient findByName(String name);
 
 }

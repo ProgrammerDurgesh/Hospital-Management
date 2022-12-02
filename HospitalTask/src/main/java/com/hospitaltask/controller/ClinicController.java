@@ -21,7 +21,7 @@ class ClinicController {
     /*
     Add Clinic
      */
-    @PostMapping ( "/AddClinic")
+    @PostMapping ( "/clinic")
     public
     ResponseEntity < Clinic > saveClinic ( @RequestBody Clinic clinic )
         {
@@ -71,7 +71,7 @@ class ClinicController {
     /*
     Delete All Clinic
      */
-    @DeleteMapping ( "clinic")
+    @DeleteMapping ( "/clinic")
     public
     String deleteAllClinic ( )
         {

@@ -19,7 +19,7 @@ class PatientController {
     /*
     Add  & Update Patient operation
      */
-    @PostMapping ( "/AddPatient")
+    @PostMapping ( "/patient")
     public
     ResponseEntity < Patient > addNewPatient ( @RequestBody Patient patient )
         {

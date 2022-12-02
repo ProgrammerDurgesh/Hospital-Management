@@ -1,7 +1,6 @@
 package com.hospitaltask.controller;
 
 import com.hospitaltask.service.DoctorService;
-import com.hospitaltask.serviceImpl.DoctorServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +26,7 @@ public class DoctorController {
     /*
     Add Doctor
      */
-    @PostMapping ( "/AddDoctor" )
+    @PostMapping ( "/doctor" )
     public
     ResponseEntity < Doctor > addDoctor ( @RequestBody Doctor doctor )
         {

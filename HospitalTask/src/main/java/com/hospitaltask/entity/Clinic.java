@@ -1,92 +1,33 @@
 package com.hospitaltask.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 @Entity
 @Table(name = "tbl_clinic")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Clinic
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="clinic_Id")
     private  Long id;
-    @Column(nullable = false, unique = true, length = 45)
+    @Column(nullable = false, length = 45)
     private  String  clinicName;
     private String  clinicAddress;
     @Column(name="state",nullable = true, unique = false, length = 45)
     private String clinicState;
 
+    @Column(name="clinic_created")
+    private final  Date createdDate = Calendar.getInstance().getTime();
 
 
-
-    public
-    Clinic ( )
-        {
-        }
-
-    public
-    Clinic ( Long id , String clinicName , String clinicAddress , String clinicState )
-        {
-            this.id =
-                    id;
-            this.clinicName =
-                    clinicName;
-            this.clinicAddress =
-                    clinicAddress;
-            this.clinicState =
-                    clinicState;
-        }
-
-    public
-    Long getId ( )
-        {
-            return id;
-        }
-
-    public
-    void setId ( Long id )
-        {
-            this.id =
-                    id;
-        }
-
-    public
-    String getClinicName ( )
-        {
-            return clinicName;
-        }
-
-    public
-    void setClinicName ( String clinicName )
-        {
-            this.clinicName =
-                    clinicName;
-        }
-
-    public
-    String getClinicAddress ( )
-        {
-            return clinicAddress;
-        }
-
-    public
-    void setClinicAddress ( String clinicAddress )
-        {
-            this.clinicAddress =
-                    clinicAddress;
-        }
-
-    public
-    String getClinicState ( )
-        {
-            return clinicState;
-        }
-
-    public
-    void setClinicState ( String clinicState )
-        {
-            this.clinicState =
-                    clinicState;
-        }
 }

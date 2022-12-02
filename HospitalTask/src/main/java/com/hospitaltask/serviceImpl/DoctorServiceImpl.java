@@ -1,7 +1,9 @@
 package com.hospitaltask.serviceImpl;
+import com.hospitaltask.repository.ClinicRepo;
 import com.hospitaltask.repository.DoctorRepo;
 import com.hospitaltask.service.DoctorService;
 import com.hospitaltask.entity.*;
+import com.hospitaltask.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +13,15 @@ import java.util.List;
 public class DoctorServiceImpl implements DoctorService {
 
     @Autowired
-    DoctorRepo doctorRepo;
+    private DoctorRepo doctorRepo;
+
+    @Autowired
+    private ClinicRepo
+             clinicRepo;
+
+    @Autowired
+    private
+    RoleService roleService;
 
     //Add & Update Operation
     @Override
@@ -19,6 +29,8 @@ public class DoctorServiceImpl implements DoctorService {
     Doctor addDoctor(Doctor doctor) {
         return this.doctorRepo.save( doctor );
     }
+
+
 
     @Override
     public
@@ -43,8 +55,10 @@ public class DoctorServiceImpl implements DoctorService {
 
     //fetch & filter Operation
     @Override
-    public List< Doctor > getAllDoctor() {
-        return (List< Doctor >)doctorRepo.findAll();
+    public List< Doctor > getAllDoctor()
+        {
+            List<Doctor> doctors= doctorRepo.findAll();
+        return doctors;
     }
 
     @Override
