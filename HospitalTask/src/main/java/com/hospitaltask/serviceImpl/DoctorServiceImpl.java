@@ -5,6 +5,7 @@ import com.hospitaltask.service.DoctorService;
 import com.hospitaltask.entity.*;
 import com.hospitaltask.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,7 +19,9 @@ public class DoctorServiceImpl implements DoctorService {
     @Autowired
     private ClinicRepo
              clinicRepo;
-
+    @Autowired
+    private PasswordEncoder
+            passwordEncoder;
     @Autowired
     private
     RoleService roleService;
@@ -27,6 +30,7 @@ public class DoctorServiceImpl implements DoctorService {
     @Override
     public
     Doctor addDoctor(Doctor doctor) {
+        doctor.setPassword ( passwordEncoder.encode ( doctor.getPassword () ) );
         return this.doctorRepo.save( doctor );
     }
 

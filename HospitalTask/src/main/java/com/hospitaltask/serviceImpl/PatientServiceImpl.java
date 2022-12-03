@@ -26,7 +26,6 @@ class PatientServiceImpl implements PatientService {
         }
         catch (Exception e)
         {
-            System.out.println ("" );
             e.printStackTrace ();
         }
             return patient1;
