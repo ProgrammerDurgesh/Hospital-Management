@@ -17,9 +17,7 @@ public class ClinicServiceImpl implements ClinicService {
     private
     ClinicRepo clinicRepo;
 
-    @Autowired
-    private
-    DoctorService doctorService;
+   
 
     //save & Update operation
     @Override

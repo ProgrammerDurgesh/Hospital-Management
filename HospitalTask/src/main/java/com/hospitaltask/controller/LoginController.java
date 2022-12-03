@@ -13,11 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 public class LoginController {
 
-    @Autowired
-    private Doctor doctor;
-    @Autowired
-    private
-    DoctorRepo doctorRepo;
+
     @Autowired
     private
     PasswordEncoder passwordEncoder;
