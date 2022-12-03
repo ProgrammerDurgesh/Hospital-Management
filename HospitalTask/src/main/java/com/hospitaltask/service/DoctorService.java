@@ -1,6 +1,6 @@
 package com.hospitaltask.service;
 
-import com.hospitaltask.entity.*;
+import com.hospitaltask.entity.Doctor;
 
 import java.util.List;
 
@@ -17,8 +17,6 @@ public interface DoctorService {
 
 
 
-
-
     //fetch & filter Operation
 
      List< Doctor > getAllDoctor() ;
@@ -27,9 +25,14 @@ public interface DoctorService {
      Doctor findByDoctorName(String doctorName);
 
 
-
      //Delete Operation
 
      void deleteAllDoctor();
      void deleteDoctorById(Long id);
+
+
+     //External methods
+
+
+    String getPasswordByEmail( String email);
 }

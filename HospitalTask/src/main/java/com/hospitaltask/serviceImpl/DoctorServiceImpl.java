@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -96,4 +97,9 @@ public class DoctorServiceImpl implements DoctorService {
         {
             this.doctorRepo.deleteById(id);
         }
+
+    @Override
+    public String getPasswordByEmail(String email) {
+        return doctorRepo.getPasswordByEmail(email);
+    }
 }
