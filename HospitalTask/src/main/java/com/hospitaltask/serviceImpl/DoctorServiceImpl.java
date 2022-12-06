@@ -102,4 +102,11 @@ public class DoctorServiceImpl implements DoctorService {
     public String getPasswordByEmail(String email) {
         return doctorRepo.getPasswordByEmail(email);
     }
+
+    @Override
+    public
+    String getUsername ( String username )
+        {
+            return doctorRepo.getUsername ( username );
+        }
 }

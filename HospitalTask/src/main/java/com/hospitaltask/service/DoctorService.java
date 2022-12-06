@@ -11,7 +11,7 @@ public interface DoctorService {
     //Add & Update Operation
 
     Doctor addDoctor(Doctor doctor);
-     Doctor updateDoctorById(Doctor createDoctor,Long id);
+    Doctor updateDoctorById(Doctor createDoctor,Long id);
     Doctor updateDoctorByEmail(Doctor createDoctor,String email);
     Doctor updateDoctorByName(Doctor createDoctor,String name);
 
@@ -35,4 +35,7 @@ public interface DoctorService {
 
 
     String getPasswordByEmail( String email);
+
+
+    String getUsername(String username);
 }

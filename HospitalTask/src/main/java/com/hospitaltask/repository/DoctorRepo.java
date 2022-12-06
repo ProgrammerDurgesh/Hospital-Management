@@ -12,5 +12,8 @@ public interface DoctorRepo extends JpaRepository< Doctor,Long> {
 
     @Query(value="select password   from tbl_doctor d where d.email =:email", nativeQuery=true)
     String getPasswordByEmail(@Param("email") String email);
+
+    @Query(value="select email   from tbl_doctor d where d.email =:email", nativeQuery=true)
+    String getUsername(@Param("email") String email);
 }
 
