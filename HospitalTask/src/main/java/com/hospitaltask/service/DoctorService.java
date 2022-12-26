@@ -1,6 +1,6 @@
 package com.hospitaltask.service;
 
-import com.hospitaltask.entity.Doctor;
+import com.hospitaltask.entity.*;
 
 import java.util.List;
 
@@ -15,6 +15,7 @@ public interface DoctorService {
     Doctor updateDoctorByEmail(Doctor createDoctor,String email);
     Doctor updateDoctorByName(Doctor createDoctor,String name);
 
+    String loadUserByUsername(String s);
 
 
     //fetch & filter Operation

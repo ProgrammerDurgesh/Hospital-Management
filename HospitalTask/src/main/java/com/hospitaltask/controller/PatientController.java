@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-public
-class PatientController {
+@RequestMapping("/HM/role")
+public class PatientController {
     @Autowired
     PatientService
             patientService;
@@ -45,7 +45,7 @@ class PatientController {
     /*
     fetch & filter  Patient
      */
-    @GetMapping ( "/patient")
+    @GetMapping ("/patient")
     public
     ResponseEntity < List < Patient > > getAllPatient ( )
         {
@@ -55,7 +55,7 @@ class PatientController {
     /*
     fetch Patient By PatientEmailId
      */
-    @GetMapping ( "/patient/{id}")
+    @GetMapping ("/patient/{id}")
     public
     ResponseEntity < Patient > getPatientById ( @PathVariable Long id )
         {
@@ -65,7 +65,7 @@ class PatientController {
     /*
     Fetch patient By Email
      */
-    @GetMapping ( "/patient/email/{email}")
+    @GetMapping ("/patient/email/{email}")
     public
     ResponseEntity < Patient > findByEmail ( @PathVariable String email )
         {
@@ -74,7 +74,7 @@ class PatientController {
     /*
       Fetch patient By Name
        */
-    @GetMapping ( "/patient/name/{name}")
+    @GetMapping ("/patient/name/{name}")
     public
     ResponseEntity < Patient > findByName ( @PathVariable String name )
         {
@@ -85,7 +85,7 @@ class PatientController {
     /*
       Fetch patient By DoctorID
        */
-    @GetMapping ( "/patient/doctor/{doctor}")
+    @GetMapping ("/patient/doctor/{doctor}")
     public
     ResponseEntity < ? > findByByDoctorId ( @PathVariable Long doctor )
         {
@@ -100,7 +100,7 @@ class PatientController {
     /*
     Delete All Patient
      */
-    @DeleteMapping ( "patient")
+    @DeleteMapping ("patient")
     public
     void deleteAllPatient ( )
         {
@@ -110,7 +110,7 @@ class PatientController {
     /*
        Delete Patient By PatientId
      */
-    @DeleteMapping ( "patient/patient/{Id}")
+    @DeleteMapping ("patient/patient/{Id}")
     public
     void deletePatientByID ( @PathVariable Long Id )
         {

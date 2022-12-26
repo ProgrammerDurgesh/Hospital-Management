@@ -10,6 +10,7 @@ import com.hospitaltask.entity.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/HM/doctor")
 public class DoctorController {
     @Autowired
     DoctorService
@@ -27,8 +28,7 @@ public class DoctorController {
     Add Doctor
      */
     @PostMapping ( "/doctor" )
-    public
-    ResponseEntity < Doctor > addDoctor ( @RequestBody Doctor doctor )
+    public ResponseEntity < ? > addDoctor ( @RequestBody Doctor doctor )
         {
             return new ResponseEntity ( this.doctorService.addDoctor ( doctor ) , HttpStatus.CREATED );
         }

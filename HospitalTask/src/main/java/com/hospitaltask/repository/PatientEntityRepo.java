@@ -1,6 +1,6 @@
 package com.hospitaltask.repository;
 
-import com.hospitaltask.entity.Doctor;
+import com.hospitaltask.entity.*;
 import com.hospitaltask.entity.Patient;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

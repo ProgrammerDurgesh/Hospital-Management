@@ -14,22 +14,16 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Patient{
-
-
     @Id
     @GeneratedValue ( strategy = GenerationType.IDENTITY )
-    private long
-            id;
+    private long id;
 
     @Column ( name = "patientEmail" )
     private String email;
-
-
     private String password, name, age, bloodGroup, illness;
 
     @Column(name="patient_admitted_Date")
     private final Date createdDate = Calendar.getInstance().getTime();
-
 
     @ManyToOne(cascade=CascadeType.MERGE)
     @JoinColumn( name="doctor_id" )

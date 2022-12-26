@@ -1,7 +1,7 @@
 package com.hospitaltask.controller;
 
-import com.hospitaltask.entity.Clinic;
-import com.hospitaltask.service.ClinicService;
+import com.hospitaltask.entity.*;
+import com.hospitaltask.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,8 +10,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-public
-class ClinicController {
+@RequestMapping("/HM")
+public class ClinicController {
+
 
     @Autowired
     ClinicService
@@ -21,6 +22,7 @@ class ClinicController {
     /*
     Add Clinic
      */
+
     @PostMapping ( "/clinic")
     public
     ResponseEntity < Clinic > saveClinic ( @RequestBody Clinic clinic )
@@ -28,24 +30,28 @@ class ClinicController {
             return new ResponseEntity <> ( clinicService.saveClinic ( clinic ) , HttpStatus.CREATED );
         }
 
-    @PutMapping("clinic/{id}")
-    public ResponseEntity<Clinic> updateClinicById(@RequestBody Clinic  clinic,@PathVariable Long id)
+    @PutMapping ( "clinic/{id}")
+    public
+    ResponseEntity < Clinic > updateClinicById ( @RequestBody Clinic clinic , @PathVariable Long id )
         {
-            return new ResponseEntity <> ( clinicService.updateClinicById ( clinic,id ) ,HttpStatus.OK);
+            return new ResponseEntity <> ( clinicService.updateClinicById ( clinic , id ) , HttpStatus.OK );
         }
-        @PutMapping("clinic/name/{name}")
-        public ResponseEntity<Clinic> updateClinicByName(@RequestBody Clinic  clinic,@PathVariable String name)
-            {
-                 return new ResponseEntity <> ( clinicService.updateClinicByName ( clinic,name ) ,HttpStatus.OK);
-            }
+
+    @PutMapping ( "clinic/name/{name}")
+    public
+    ResponseEntity < Clinic > updateClinicByName ( @RequestBody Clinic clinic , @PathVariable String name )
+        {
+            return new ResponseEntity <> ( clinicService.updateClinicByName ( clinic , name ) , HttpStatus.OK );
+        }
+
     /*
     fetch All Clinic
     */
-    @GetMapping ( "/clinic")
-    public
-    ResponseEntity < List < Clinic > > getAllClinic ( )
+    @GetMapping ("/clinic")
+    public ResponseEntity < List < Clinic > > getAllClinic ( )
         {
-            return new ResponseEntity <> ( clinicService.getAllClinic ( ) , HttpStatus.OK );
+            System.out.println ("Hello google" );
+            return new ResponseEntity <> ( clinicService.getAllClinic (), HttpStatus.OK );
         }
         /*
          fetch clinic By ClinicID
@@ -75,7 +81,7 @@ class ClinicController {
     public
     String deleteAllClinic ( )
         {
-            clinicService.deleteAllClinic ();
+            clinicService.deleteAllClinic ( );
             return "Clinic Deleted ";
         }
         /*
@@ -84,7 +90,7 @@ class ClinicController {
 
     @DeleteMapping ( "clinic/{id}")
     public
-    String deleteByClinicById (@PathVariable Long id )
+    String deleteByClinicById ( @PathVariable Long id )
         {
             clinicService.deleteClinicById ( id );
             return "Clinic Deleted ";

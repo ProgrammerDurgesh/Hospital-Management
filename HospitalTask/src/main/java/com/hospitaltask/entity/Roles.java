@@ -3,7 +3,6 @@ package com.hospitaltask.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
 import java.util.Calendar;
 import java.util.Date;
@@ -15,7 +14,6 @@ import java.util.Date;
 @AllArgsConstructor
 public class Roles
 {
-
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name="role_Id")
@@ -28,6 +26,4 @@ public class Roles
     @Column(name="role_created")
     private final Date
             createdDate = Calendar.getInstance().getTime();
-
-
 }

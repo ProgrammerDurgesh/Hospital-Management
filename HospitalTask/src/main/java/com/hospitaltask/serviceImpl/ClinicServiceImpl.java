@@ -1,9 +1,9 @@
 package com.hospitaltask.serviceImpl;
 
-import com.hospitaltask.entity.Clinic;
-import com.hospitaltask.repository.ClinicRepo;
-import com.hospitaltask.service.ClinicService;
-import com.hospitaltask.service.DoctorService;
+import com.hospitaltask.entity.*;
+import com.hospitaltask.repository.*;
+import com.hospitaltask.service.*;
+import com.hospitaltask.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -54,7 +54,8 @@ public class ClinicServiceImpl implements ClinicService {
     @Override
     public
     Clinic updateClinicByName ( Clinic clinic , String name )
-        {Clinic clinic1=clinicRepo.findByClinicName (name);
+        {
+            Clinic clinic1=clinicRepo.findByClinicName (name);
 
             if(Objects.nonNull(clinic.getClinicName ()) && !"".equalsIgnoreCase(clinic.getClinicName ()) )
             {

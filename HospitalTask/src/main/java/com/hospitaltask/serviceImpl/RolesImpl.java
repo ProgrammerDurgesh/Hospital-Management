@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 @Service
 public class RolesImpl implements RoleService {
 
@@ -31,7 +32,7 @@ public class RolesImpl implements RoleService {
     public
     List < Roles > getAllRoles ( )
         {
-            return roleRepo.findAll ();
+            return this.roleRepo.findAll ();
         }
 
     @Override
@@ -56,8 +57,7 @@ public class RolesImpl implements RoleService {
         }
 
     @Override
-    public
-    void removeById ( Long id )
+    public void removeById ( Long id )
         {
             roleRepo.deleteById ( id );
         }

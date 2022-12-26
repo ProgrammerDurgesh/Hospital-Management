@@ -1,9 +1,11 @@
 package com.hospitaltask.serviceImpl;
-import com.hospitaltask.repository.ClinicRepo;
-import com.hospitaltask.repository.DoctorRepo;
+import com.hospitaltask.dto.DoctorDto;
+import com.hospitaltask.repository.*;
+import com.hospitaltask.repository.*;
 import com.hospitaltask.service.DoctorService;
 import com.hospitaltask.entity.*;
-import com.hospitaltask.service.RoleService;
+import com.hospitaltask.service.*;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -27,12 +29,35 @@ public class DoctorServiceImpl implements DoctorService {
     private
     RoleService roleService;
 
+
+
+    private ModelMapper modelMapper;
+
+
+
+    Doctor dtoToDoctor(DoctorDto doctorDto)
+    {
+        Doctor doctor=this.modelMapper.map(doctorDto,Doctor.class);
+        return doctor;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
     //Add & Update Operation
     @Override
     public
     Doctor addDoctor(Doctor doctor) {
         doctor.setPassword ( passwordEncoder.encode ( doctor.getPassword () ) );
-        return this.doctorRepo.save( doctor );
+        return this.doctorRepo.save(doctor);
     }
 
 
@@ -54,6 +79,13 @@ public class DoctorServiceImpl implements DoctorService {
     @Override
     public
     Doctor updateDoctorByName ( Doctor createDoctor , String name )
+        {
+            return null;
+        }
+
+    @Override
+    public
+    String loadUserByUsername ( String s )
         {
             return null;
         }

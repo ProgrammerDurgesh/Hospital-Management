@@ -1,7 +1,7 @@
 package com.hospitaltask.serviceImpl;
 
-import com.hospitaltask.entity.Patient;
-import com.hospitaltask.repository.PatientEntityRepo;
+import com.hospitaltask.entity.*;
+import com.hospitaltask.repository.*;
 import com.hospitaltask.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

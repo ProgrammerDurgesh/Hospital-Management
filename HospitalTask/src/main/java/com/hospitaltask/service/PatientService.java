@@ -1,6 +1,6 @@
 package com.hospitaltask.service;
 
-import com.hospitaltask.entity.Patient;
+import com.hospitaltask.entity.*;
 
 import java.util.List;
 
