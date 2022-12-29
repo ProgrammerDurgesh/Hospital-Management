@@ -4,11 +4,27 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="80d6a388-c220-441d-8c36-e19db61b0508" name="Changes" comment="" />
+    <list default="true" id="80d6a388-c220-441d-8c36-e19db61b0508" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/HospitalTask.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/HospitalTask/src/main/java/com/hospitaltask/securityconfig/JwtUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HospitalTask/src/main/java/com/hospitaltask/HospitalTaskApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/HospitalTask/src/main/java/com/hospitaltask/HospitalTaskApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HospitalTask/src/main/java/com/hospitaltask/controller/ClinicController.java" beforeDir="false" afterPath="$PROJECT_DIR$/HospitalTask/src/main/java/com/hospitaltask/controller/ClinicController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HospitalTask/src/main/java/com/hospitaltask/controller/PatientController.java" beforeDir="false" afterPath="$PROJECT_DIR$/HospitalTask/src/main/java/com/hospitaltask/controller/PatientController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HospitalTask/src/main/java/com/hospitaltask/securityconfig/JwtAuthenticationFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/HospitalTask/src/main/java/com/hospitaltask/securityconfig/JwtAuthenticationFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HospitalTask/src/main/java/com/hospitaltask/securityconfig/JwtTokenHelper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/HospitalTask/src/main/java/com/hospitaltask/service/DoctorService.java" beforeDir="false" afterPath="$PROJECT_DIR$/HospitalTask/src/main/java/com/hospitaltask/service/DoctorService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HospitalTask/src/main/java/com/hospitaltask/serviceImpl/DoctorServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/HospitalTask/src/main/java/com/hospitaltask/serviceImpl/DoctorServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HospitalTask/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/HospitalTask/src/main/resources/application.properties" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CodeStyleSettingsInfer">
+    <option name="done" value="true" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -24,6 +40,9 @@
       </MavenGeneralSettings>
     </option>
   </component>
+  <component name="ProjectCodeStyleSettingsMigration">
+    <option name="version" value="2" />
+  </component>
   <component name="ProjectId" id="2IO1DJqW9JM3vamzF03yQhs2aOR" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
@@ -34,7 +53,8 @@
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "last_opened_file_path": "D:/Task Work/HospitalTask/HospitalTask/HospitalTask"
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "last_opened_file_path": "/home/durgesh/Documents/Durgesh Repo/HospitalTask"
   }
 }]]></component>
   <component name="RunManager">

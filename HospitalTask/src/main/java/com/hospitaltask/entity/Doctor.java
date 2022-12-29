@@ -16,7 +16,8 @@ import java.util.Date;
 @AllArgsConstructor
 public class Doctor implements Serializable {
 
-    private static final long SerialVersionUID=10l;
+    private static final long serialVersionUID = 1L;
+
 
 
     @Id
@@ -34,12 +35,12 @@ public class Doctor implements Serializable {
     @Column(name="doctor_joining_date")
     private final  Date createdDate = Calendar.getInstance().getTime();
 
-    @ManyToOne(cascade=CascadeType.MERGE)
+    @ManyToOne
     @JoinColumn( name="clinic_id" ,nullable=false)
     private Clinic clinic;
 
 
-    @ManyToOne( cascade=CascadeType.MERGE)
+    @ManyToOne
         @JoinColumn( name="role_id" ,nullable=false)
     private Roles roles;
 

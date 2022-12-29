@@ -1,0 +1,115 @@
+
+
+
+
+
+
+
+CRUD Methods :-
+======================================================================================
+Controller Classes :
+1- RoleController
+2- Clinic Controller
+3- DoctorController
+4- PatientController
+======================================================================================
+Clinic class
+======================================================================================
+======================================================================================
+Roles
+======================================================================================
+
+Add & Update
+-------------------------------------Save---------------------------------------------
+addRoles(Patient patient)
+-------------------------------------Update-------------------------------------------
+
+updateRoleById(Long id);
+updateRoleByName(String name);
+-------------------------------------fetch & filter ---------------------------------
+
+getAllRole();
+getRoleById(Long id);
+
+-------------------------------------Delete-------------------------------------------
+
+deleteAllRole();
+deleteRoleById(Long id);
+-------------------------------------------------------------------------------------
+Add & Update
+-------------------------------------Save---------------------------------------------
+saveClinic(Clinic clinic);
+
+-------------------------------------Update------------------------------------------
+
+updateClinicById(Long id);
+updateClinicByName(String name);
+
+-------------------------------------fetch & filter ---------------------------------
+
+getAllClinic();
+getClinicById(Long id);
+getClinicByName(Long name);
+
+
+-------------------------------------Delete-------------------------------------------
+
+deleteAllClinic();
+deleteClinicById(Long id);
+======================================================================================
+Doctor
+======================================================================================
+
+Add & Update
+-------------------------------------Save---------------------------------------------
+- saveDoctor(Doctor doctor);
+-------------------------------------Update-------------------------------------------
+
+updateDoctorById(Long id);
+updateDoctorByName(String name);
+updateDoctorByEmail(String email);
+
+
+
+-------------------------------------fetch & filter ----------------------------------
+
+getAllDoctor();
+getDoctorById(Long id);
+getDoctorByEmail(String email);
+getDoctorByName(String Name);
+
+
+-------------------------------------Delete-------------------------------------------
+
+deleteAllDoctor();
+deleteDoctorById(Long id);
+deleteDoctorByEmail(String email);
+deleteDoctorByName(String name);
+
+======================================================================================
+Patient
+======================================================================================
+
+Add & Update
+-------------------------------------Save---------------------------------------------
+savePatient(Patient patient)
+-------------------------------------Update-------------------------------------------
+
+updatePatientById(Long id);
+updatePatientByName(String name);
+updatePatientByEmail(String email);
+
+-------------------------------------fetch & filter ---------------------------------
+
+getAllPatient();
+getPatientById(Long id);
+getPatientByEmail(String email);
+getPatientByName(String Name);
+
+
+-------------------------------------Delete-------------------------------------------
+
+deleteAllPatient();
+deletePatientById(Long id);
+deletePatientByEmail(String email);
+deletePatientByName(String name);
