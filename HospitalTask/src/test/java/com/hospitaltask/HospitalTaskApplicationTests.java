@@ -1,4 +1,4 @@
-package com.example.hospitaltask;
+package com.hospitaltask;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

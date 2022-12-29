@@ -1,6 +1,7 @@
 package com.hospitaltask.service;
 
 import com.hospitaltask.entity.*;
+import com.hospitaltask.exception.UserNotFoundException;
 
 import java.util.List;
 
@@ -13,7 +14,7 @@ public interface ClinicService {
     Clinic updateClinicByName(Clinic clinic,String name);
 
     //fetch & filter operation
-    Clinic getClinicById(Long id);
+    Clinic getClinicById(Long id) throws UserNotFoundException;
     List<Clinic> getAllClinic();
     Clinic findByClinicName(String clinicName);
 

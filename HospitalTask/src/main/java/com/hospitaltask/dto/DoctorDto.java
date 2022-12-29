@@ -1,8 +1,9 @@
 package com.hospitaltask.dto;
 
-import com.hospitaltask.entity.Clinic;
-import com.hospitaltask.entity.Roles;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter
@@ -17,7 +18,7 @@ public class DoctorDto
     private String specialization;
     private String experience;
     private String address;
-    private Clinic clinic;
-    private Roles roles;
+    private IdentityDTO clinic;
+    private IdentityDTO roles;
 
 }
