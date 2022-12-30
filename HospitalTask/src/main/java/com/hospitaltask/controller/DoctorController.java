@@ -51,7 +51,7 @@ public class DoctorController {
 			return new ResponseEntity<>("Doctor Not Availeble This id :" + id, HttpStatus.NOT_FOUND);
 	}
 
-	@PutMapping("/save-email/{email}")
+	/*@PutMapping("/save-email/{email}")
 	public ResponseEntity<?> updateByEmail(@RequestBody Doctor doctor, @PathVariable String email) {
 		Doctor doctorCheck = doctorRepo.findByEmail(email);
 		if (!doctorCheck.equals(null)) {
@@ -70,7 +70,7 @@ public class DoctorController {
 		} else
 			return new ResponseEntity<>("Doctor Not Availeble This Email :" + name, HttpStatus.NOT_FOUND);
 	}
-
+*/
 	/*
 	 * fetch All Doctor
 	 */

@@ -3,14 +3,15 @@ package com.hospitaltask.service;
 import com.hospitaltask.entity.*;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface PatientService
 {
     //Add & Update Operation
 
-    Patient addNewPatient(Patient patient);
-    Patient updatePatientById(Patient patient,int clinicId);
-    Patient updatePatientByName(Patient patient,String clinicName);
+    Patient save(Patient patient);
+    Patient updatePatientById(Patient patient,Long id);
+    Patient updatePatientByName(Patient patient,String name);
 
 
 
@@ -21,7 +22,7 @@ public interface PatientService
     List< Patient > getAllPatient();
     Patient getPatientById(Long id);
     Patient findByEmail(String email);
-    List< Patient > findByDoctorID(Long id);
+    Optional<Patient> findByDoctorID(Long id);
     Patient findByName(String name);
 
     //Delete Operation

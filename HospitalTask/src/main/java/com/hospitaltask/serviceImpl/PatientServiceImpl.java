@@ -7,100 +7,86 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
-public
-class PatientServiceImpl implements PatientService {
-    @Autowired
-    PatientEntityRepo
-            patientEntityRepo;
+public class PatientServiceImpl implements PatientService {
+	@Autowired
+	PatientEntityRepo patientRepo;
 
-    //Add & Update Operation
-    @Override
-    public
-    Patient addNewPatient (Patient patient){
-        Patient patient1=null;
-        try
-        {
-             patient1=patientEntityRepo.save ( patient );
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace ();
-        }
-            return patient1;
-        }
+	// Add & Update Operation
+	@Override
+	public Patient save(Patient patient) {
+		Patient save = null;
+		Patient email = patientRepo.findByEmail(patient.getEmail());
+		if (email == null)
+			save = patientRepo.save(patient);
+		return save;
+	}
 
-    @Override
-    public
-    Patient updatePatientById (Patient patient,int id )
-        {
-            return null;
-        }
+	@Override
+	public Patient updatePatientById(Patient patient, Long id) {
+		Patient save = null;
+		Patient patient2 = patientRepo.findById(id).orElse(null);
+		if (patient2 == null) {
+			return patient2;
+		} else {
+			patient2.setName(patient.getName());
+			patient2.setEmail(patient.getEmail());
+			patient2.setDoctor(patient.getDoctor());
+			patient2.setAge(patient.getAge());
+			patient2.setBloodGroup(patient.getBloodGroup());
+			patient2.setIllness(patient.getIllness());
+			patient2.setPassword(patient.getPassword());
+			save = patientRepo.save(patient2);
+		}
 
-    @Override
-    public
-    Patient updatePatientByName ( Patient patient , String clinicName )
-        {
-            return null;
-        }
+		return save;
+	}
 
+	@Override
+	public Patient updatePatientByName(Patient patient, String clinicName) {
+		return null;
+	}
 
-    //fetch & Filter Operation
+	// fetch & Filter Operation
 
-    @Override
-    public
-    List < Patient > getAllPatient ()
-        {
-            return patientEntityRepo.findAll ( );
-        }
+	@Override
+	public List<Patient> getAllPatient() {
+		return patientRepo.findAll();
+	}
 
-    @Override
-    public
-    Patient getPatientById (Long id )
-        {
-            return patientEntityRepo.findById ( id )
-                    .get ( );
-        }
+	@Override
+	public Patient getPatientById(Long id) {
+		return patientRepo.findById(id).get();
+	}
 
-    @Override
-    public
-    List < Patient > findByDoctorID(Long id)
-        {
-            return (List < Patient >) patientEntityRepo.findById ( id ).get ();
-        }
+	@Override
+	public Optional<Patient> findByDoctorID(Long id) {
+		return  patientRepo.findById(id);
+	}
 
-    @Override
-    public
-    Patient findByName(String name)
-        {
-            return patientEntityRepo.findByName(name);
-        }
+	@Override
+	public Patient findByName(String name) {
+		return patientRepo.findByName(name);
+	}
 
+	@Override
+	public Patient findByEmail(String email) {
+		return patientRepo.findByEmail(email);
+	}
 
+	// Delete Operation
 
-    @Override
-    public Patient findByEmail(String email) {
-        return patientEntityRepo.findByEmail(email);
-    }
+	@Override
+	public void deleteAllPatient() {
+		this.patientRepo.deleteAll();
+	}
 
+	@Override
+	public void deletePatientByID(Long patientId) {
 
-    //Delete Operation
-
-    @Override
-    public
-    void deleteAllPatient ()
-        {
-            this.patientEntityRepo.deleteAll ( );
-        }
-
-    @Override
-    public
-    void deletePatientByID ( Long patientId )
-        {
-
-            this.patientEntityRepo.deleteById ( patientId );
-        }
-
+		this.patientRepo.deleteById(patientId);
+	}
 
 }

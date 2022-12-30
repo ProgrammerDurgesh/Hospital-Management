@@ -25,9 +25,8 @@ public class Patient{
     @Column(name="patient_admitted_Date")
     private final Date createdDate = Calendar.getInstance().getTime();
 
-    @ManyToOne(cascade=CascadeType.MERGE)
+    @ManyToOne
     @JoinColumn( name="doctor_id" )
     private  Doctor doctor;
-
 
 }
