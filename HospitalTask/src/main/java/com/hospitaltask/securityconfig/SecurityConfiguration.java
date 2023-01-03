@@ -61,31 +61,14 @@ public class SecurityConfiguration  {
                 //.addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
-    @Bean
-    public UserDetailsService userDetailsService() {
-        InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
-        manager.createUser(User.withUsername("user")
-                .password("userPass")
-                .roles("USER")
-                .build());
-        manager.createUser(User.withUsername("admin")
-                .password("adminPass")
-                .roles("USER", "ADMIN")
-                .build());
-        return manager;
-    }
-    @Bean
-    public AuthenticationManager authenticationManager(HttpSecurity http, BCryptPasswordEncoder bCryptPasswordEncoder, UserDetailsService userDetailService)
-            throws Exception {
-        return http.getSharedObject(AuthenticationManagerBuilder.class)
-                .userDetailsService(userDetailsService())
-                .passwordEncoder(bCryptPasswordEncoder)
-                .and()
-                .build();
-    }
-    @Bean
-    public void authenticationManager(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(myUserDetails);
 
+    @Bean
+    AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws  Exception {
+        return authenticationConfiguration.getAuthenticationManager();
     }
+//    @Bean
+//    public void authenticationManager(AuthenticationManagerBuilder auth) throws Exception {
+//        auth.userDetailsService(myUserDetails);
+//
+//    }
 }

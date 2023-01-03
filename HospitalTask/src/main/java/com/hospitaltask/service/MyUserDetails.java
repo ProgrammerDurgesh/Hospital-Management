@@ -14,8 +14,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 @Service
 public class MyUserDetails implements UserDetailsService {
-
-    @Autowired
     private Doctor doctor;
 
     @Autowired
