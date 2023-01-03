@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +19,7 @@ public  class DoctorServiceImpl implements DoctorService {
 	@Autowired
 	private DoctorRepo doctorRepo;	
 	@Autowired
-	private PasswordEncoder passwordEncoder;
+	private BCryptPasswordEncoder passwordEncoder;
 	private ModelMapper modelMapper;
 
 	Doctor dtoToDoctor(DoctorDto doctorDto) {
@@ -29,6 +30,7 @@ public  class DoctorServiceImpl implements DoctorService {
 	// Add & Update Operation
 	@Override
 	public Doctor addDoctor(Doctor dto) {
+
 		dto.setPassword ( passwordEncoder.encode ( dto.getPassword () ) );
 	        return this.doctorRepo.save(dto);
 	}
