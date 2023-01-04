@@ -40,7 +40,7 @@ public class SecurityConfiguration  {
     private MyUserDetails myUserDetails ;
 
 
-    private static final String[] authorizedURL = {"/login","/swagger-**"};
+    private static final String[] authorizedURL = {"/**","/swagger-**"};
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

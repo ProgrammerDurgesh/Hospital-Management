@@ -1,8 +1,10 @@
 package com.hospitaltask.service;
 
 import com.hospitaltask.entity.Doctor;
+import com.hospitaltask.entity.Patient;
 import com.hospitaltask.exception.UserNotFoundException;
 import com.hospitaltask.repository.DoctorRepo;
+import com.hospitaltask.repository.PatientEntityRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,14 +19,26 @@ public class MyUserDetails implements UserDetailsService {
     private Doctor doctor;
 
     @Autowired
+    private PatientEntityRepo entityRepo;
+    @Autowired
     private DoctorRepo doctorRepo;
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Doctor doctor=doctorRepo.findByEmail(username);
-        System.out.println(doctor);
-        if(username.equals(doctor.getEmail()))
+        Patient patient=this.entityRepo.findByEmail(username);
+        String email=null,password=null;
+        if(doctor !=null)
         {
-            return  new User(doctor.getEmail(), doctor.getPassword(),new ArrayList<>());
+            email=doctor.getEmail();
+            password=doctor.getPassword();
+        }
+        else {
+            email = patient.getEmail();
+            password=patient.getPassword();
+        }
+        if(username.equals(email))
+        {
+            return  new User(email, password,new ArrayList<>());
         }
         else
         {
