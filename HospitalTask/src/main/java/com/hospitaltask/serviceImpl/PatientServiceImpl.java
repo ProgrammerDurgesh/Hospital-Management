@@ -4,6 +4,7 @@ import com.hospitaltask.entity.*;
 import com.hospitaltask.repository.*;
 import com.hospitaltask.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,13 +15,20 @@ public class PatientServiceImpl implements PatientService {
 	@Autowired
 	PatientEntityRepo patientRepo;
 
+	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	// Add & Update Operation
 	@Override
 	public Patient save(Patient patient) {
 		Patient save = null;
 		Patient email = patientRepo.findByEmail(patient.getEmail());
-		if (email == null)
+		if (email == null) {
+			patient.setPassword(bCryptPasswordEncoder.encode(patient.getPassword()));
 			save = patientRepo.save(patient);
+			return save;
+		}
+
+
 		return save;
 	}
 

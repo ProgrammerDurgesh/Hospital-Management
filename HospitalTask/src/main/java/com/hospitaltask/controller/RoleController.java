@@ -28,14 +28,10 @@ public class RoleController {
     public ResponseEntity < ? > addRoles ( @RequestBody Roles roles )
         {
             String roleName=roleRepo.getRoleName(roles.getRoleName());
-            if(roleName !=null) return new ResponseEntity <> ( "Role Already exist" , HttpStatus.OK );
-            return new ResponseEntity <> ( roleService.addRoles(roles) , HttpStatus.CREATED );
+            if(roleName!=null) return new ResponseEntity <> ( "Role Already exist",HttpStatus.OK );
+            return new ResponseEntity <> (roleService.save(roles),HttpStatus.CREATED );
         }
-        @GetMapping("/home")
-        String home()
-        {
-            return "this is Home Page";
-        }
+
 
     /*
     fetch & filter Controller

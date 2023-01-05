@@ -15,7 +15,7 @@ import java.util.Date;
 @AllArgsConstructor
 public class Patient{
     @Id
-    @GeneratedValue ( strategy = GenerationType.IDENTITY )
+    @GeneratedValue ( strategy = GenerationType.SEQUENCE )
     private long id;
 
     @Column ( name = "patientEmail" )

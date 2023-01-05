@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface RoleService {
     //Add & Update Operations
-    Roles addRoles(Roles roles);
+    Roles save(Roles roles);
     Roles updateRoles(Roles roles,Long id);
     //fetch & filter Roles
     List<Roles> getAllRoles();

@@ -45,7 +45,7 @@ public class Doctor {
 
 
     @ManyToOne
-        @JoinColumn( name="role_id" ,nullable=false)
+        @JoinColumn( name="role_id" ,nullable=false,updatable =true)
     private Roles roles;
 
 

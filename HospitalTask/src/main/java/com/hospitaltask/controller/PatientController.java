@@ -1,6 +1,8 @@
 package com.hospitaltask.controller;
 
+import com.hospitaltask.entity.Doctor;
 import com.hospitaltask.entity.Patient;
+import com.hospitaltask.repository.DoctorRepo;
 import com.hospitaltask.repository.PatientEntityRepo;
 import com.hospitaltask.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,15 +21,30 @@ public class PatientController {
 	private PatientEntityRepo entityRepo;
 	@Autowired
 	PatientService patientService;
+	@Autowired
+	private DoctorRepo doctorRepo;
 
 	/*
 	 * Add & Update Patient operation
 	 */
 	@PostMapping("/patient")
 	public ResponseEntity<?> save(@RequestBody Patient patient) {
-		Patient patient1 = patientService.save(patient);
-		if (patient1 == null)
-			return new ResponseEntity<>("Email Already Exists  :  " + patient.getEmail(), HttpStatus.CREATED);
+
+		String exceptionShow=null;
+		Doctor doctor1 = patient.getDoctor();
+		Optional<Doctor> doctor=doctorRepo.findById(doctor1.getDoctorId());
+		if(doctor.isEmpty()) {
+			exceptionShow = "Doctor Not found";
+		return  new ResponseEntity<>(exceptionShow,HttpStatus.NOT_FOUND);
+		}
+
+
+		Patient patient1 = patientService.findByEmail(patient.getEmail());
+		if(patient1 !=null)
+		{
+			exceptionShow="Email Already Exists";
+			return new ResponseEntity<>(exceptionShow, HttpStatus.CREATED);
+		}
 		return new ResponseEntity<>(patientService.save(patient), HttpStatus.CREATED);
 	}
 

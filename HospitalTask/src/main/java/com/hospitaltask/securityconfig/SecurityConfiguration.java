@@ -56,8 +56,10 @@ public class SecurityConfiguration  {
                 .authorizeRequests()
                 .antMatchers(authorizedURL).permitAll()
                 .anyRequest()
-                .authenticated()
-                .and()
+                ./*authenticated().antMatchers("HM/doctor").hasRole("ADMIN")
+                .anyRequest().authenticated().antMatchers("/get").hasRole("DOCTOR")*/
+        authenticated()
+        .and()
 
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);

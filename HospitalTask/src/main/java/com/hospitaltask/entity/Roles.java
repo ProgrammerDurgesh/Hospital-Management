@@ -24,6 +24,5 @@ public class Roles
     private String roleDescription;
 
     @Column(name="role_created")
-    private final Date
-            createdDate = Calendar.getInstance().getTime();
+    private final Date createdDate = Calendar.getInstance().getTime();
 }
