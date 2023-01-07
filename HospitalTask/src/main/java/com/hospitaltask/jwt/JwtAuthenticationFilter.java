@@ -18,16 +18,12 @@ import java.io.IOException;
 
 @Component
 public class JwtAuthenticationFilter  extends OncePerRequestFilter {
-
-
     @Autowired
     private  JwtUtil jwtUtil;
     @Autowired
     private MyUserDetails myUserDetails;
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-
-
         //get Token
         //Bearer
         //Validate
@@ -42,7 +38,6 @@ public class JwtAuthenticationFilter  extends OncePerRequestFilter {
             {
                 userName = this.jwtUtil.getUsernameFromToken(token);
                 System.out.println(userName);
-
             }
             catch (Exception e)
             {
@@ -54,7 +49,6 @@ public class JwtAuthenticationFilter  extends OncePerRequestFilter {
             //security Validate
             if(userName !=null && SecurityContextHolder.getContext().getAuthentication()==null)
             {
-
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);

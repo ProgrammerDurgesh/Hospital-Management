@@ -24,19 +24,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration  {
-
-
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
-
     @Autowired
     private RoleRepo roleRepo;
-
     @Autowired
     private MyUserDetails myUserDetails ;
-
-
-
     private static final String[] authorizedURL = {"/hm/home"};
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
@@ -65,9 +58,9 @@ public class SecurityConfiguration  {
                 .csrf()
                 .disable()
                 .authorizeRequests()
-                .antMatchers("/doctor/*").hasRole("DOCTOR")
-                .antMatchers("/patient/**").hasRole("PATIENT")
-                .antMatchers("/login/**").permitAll()
+//                .antMatchers("/doctor/*").hasRole("DOCTOR")
+//                .antMatchers("/patient/**").hasRole("PATIENT")
+                .antMatchers("/**").permitAll()
                 .and()
                // .formLogin()
                /* .antMatchers()

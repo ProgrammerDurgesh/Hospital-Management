@@ -13,7 +13,8 @@ public class HomeController {
 	@GetMapping(value = "/home")
 	String homePage()
 	{
-		return "index";
+		System.out.println("this is login Page ");
+		return "login";
 	}
 
 }

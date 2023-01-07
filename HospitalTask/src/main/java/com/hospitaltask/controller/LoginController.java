@@ -16,30 +16,29 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 
-@RestController
+@Controller
+@RequestMapping("/hm")
 public class LoginController {
 
 	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
+	@Autowired
 	private AuthenticationManager authenticationManager;
-
 	@Autowired
 	private MyUserDetails myUserDetailsService;
-
 	@Autowired
 	private DoctorRepo doctorRepo;
 	@Autowired
 	private JwtUtil jwtUtil;
-
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
 	@PostMapping("/login")
 	public ResponseEntity<?> login( @ModelAttribute AuthRequest authRequest) throws Exception {
 		try {
+			System.out.println("okay");
 			String getPasswordByEmail=this.doctorRepo.getPasswordByEmail(authRequest.getUserName());
 			System.out.println(authRequest.getUserName());
 			System.out.println(authRequest.getPassword());
@@ -65,7 +64,7 @@ public class LoginController {
 		return  ResponseEntity.ok(new AuthResponse(token));
 	}
 
-	@PostMapping("Authenticate")
+	/*@PostMapping("Authenticate")
 	ResponseEntity<?> createAuthenticationToken(@RequestBody AuthRequest login) throws Exception {
 		try {
 			authenticationManager
@@ -77,5 +76,5 @@ public class LoginController {
 		final UserDetails userDetails = myUserDetailsService.loadUserByUsername(login.getUserName());
 		final String JWT = jwtUtil.generateToken(userDetails);
 		return ResponseEntity.ok(new LoginResponse(JWT));
-	}
+	}*/
 }

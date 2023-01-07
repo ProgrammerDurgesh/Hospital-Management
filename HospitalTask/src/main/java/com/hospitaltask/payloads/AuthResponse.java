@@ -1,7 +1,6 @@
 package com.hospitaltask.payloads;
 
 public class AuthResponse {
-
     private String email;
     private String number;
     private String accessToken;
