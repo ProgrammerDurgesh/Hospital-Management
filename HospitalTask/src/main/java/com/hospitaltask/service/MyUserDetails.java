@@ -5,45 +5,44 @@ import com.hospitaltask.entity.Patient;
 import com.hospitaltask.exception.UserNotFoundException;
 import com.hospitaltask.repository.DoctorRepo;
 import com.hospitaltask.repository.PatientEntityRepo;
+import com.hospitaltask.securityconfig.CustomUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
 @Service
 public class MyUserDetails implements UserDetailsService {
-    private Doctor doctor;
-
     @Autowired
     private PatientEntityRepo entityRepo;
     @Autowired
     private DoctorRepo doctorRepo;
+    private Doctor doctor;
+    private Patient patient;
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Doctor doctor=doctorRepo.findByEmail(username);
-        Patient patient=this.entityRepo.findByEmail(username);
-        String email=null,password=null;
-        if(doctor !=null)
-        {
-            email=doctor.getEmail();
-            password=doctor.getPassword();
-        }
-        else {
+        String email = null, password = null;
+        try {
+        doctor = doctorRepo.findByEmail(username);
+        CustomUserDetails userDetails = new CustomUserDetails(doctor, patient);
+        if (doctor != null) {
+            email = doctor.getEmail();
+            password = doctor.getPassword();
+        } else {
+            patient = this.entityRepo.findByEmail(username);
             email = patient.getEmail();
-            password=patient.getPassword();
+            password = patient.getPassword();
         }
-        if(username.equals(email))
-        {
-            return  new User(email, password,new ArrayList<>());
-        }
-        else
-        {
-            throw new  UserNotFoundException("User not Found Exception");
+        if (username.equals(null)) {
+            throw new UserNotFoundException("User not Found Exception");
         }
 
+            return userDetails;
+        }
+    catch (Exception e)
+    {
+        e.printStackTrace();
+        return null;
+    }
     }
 }

@@ -8,13 +8,14 @@ import com.hospitaltask.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/HM/role")
+@RequestMapping("/patient")
 public class PatientController {
 
 	@Autowired
@@ -24,10 +25,11 @@ public class PatientController {
 	@Autowired
 	private DoctorRepo doctorRepo;
 
+
 	/*
 	 * Add & Update Patient operation
 	 */
-	@PostMapping("/patient")
+	@PostMapping("/save")
 	public ResponseEntity<?> save(@RequestBody Patient patient) {
 
 		String exceptionShow=null;
@@ -61,7 +63,7 @@ public class PatientController {
 	/*
 	 * fetch & filter Patient
 	 */
-	@GetMapping("/patient")
+	@GetMapping("/p-all")
 	public ResponseEntity<List<Patient>> getAllPatient() {
 		return new ResponseEntity<>(patientService.getAllPatient(), HttpStatus.OK);
 	}
@@ -69,15 +71,20 @@ public class PatientController {
 	/*
 	 * fetch Patient By PatientEmailId
 	 */
-	@GetMapping("/patient/{id}")
-	public ResponseEntity<Patient> getPatientById(@PathVariable Long id) {
+	@GetMapping({"/patient/{id}","p-Id/{id}"})
+	public ResponseEntity<?> getPatientById(@PathVariable Long id) {
+		Patient patient=this.entityRepo.findById(id).orElse(null);
+		if(patient==null)
+		{
+			return new ResponseEntity<>("Patient Not Found :    "+id,HttpStatus.NOT_FOUND);
+		}
 		return new ResponseEntity<>(patientService.getPatientById(id), HttpStatus.OK);
 	}
 
 	/*
 	 * Fetch patient By Email
 	 */
-	@GetMapping("/patient/email/{email}")
+	@GetMapping({"/patient/email/{email}","p-email/{email}"})
 	public ResponseEntity<Patient> findByEmail(@PathVariable String email) {
 		return new ResponseEntity<>(patientService.findByEmail(email), HttpStatus.OK);
 	}

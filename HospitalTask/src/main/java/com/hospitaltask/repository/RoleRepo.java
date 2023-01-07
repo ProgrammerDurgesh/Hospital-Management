@@ -11,4 +11,7 @@ public interface RoleRepo extends JpaRepository <Roles,Long> {
     String getRoleName(String name);
     @Query(value = "select * from tbl_roles s where s.role_id=:role",nativeQuery = true)
     Roles getRoleById(Long role);
+
+    @Query(value = "select role_name from tbl_roles where role_id=:id",nativeQuery = true)
+    String getRoleNameByRoleId(Long id);
 }

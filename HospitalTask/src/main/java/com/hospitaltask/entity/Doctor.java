@@ -21,9 +21,6 @@ import java.util.Date;
 public class Doctor {
 
     private static final long serialVersionUID = 1L;
-
-
-
     @Id
     @Column(name="doctorId")
     @GeneratedValue( strategy=GenerationType.AUTO )

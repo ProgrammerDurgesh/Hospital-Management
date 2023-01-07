@@ -20,7 +20,7 @@ import com.hospitaltask.repository.DoctorRepo;
 import com.hospitaltask.service.DoctorService;
 
 @RestController
-@RequestMapping("HM/doctor")
+@RequestMapping("/doctor")
 public class DoctorController { 	
 	@Autowired
 	private DoctorRepo doctorRepo;

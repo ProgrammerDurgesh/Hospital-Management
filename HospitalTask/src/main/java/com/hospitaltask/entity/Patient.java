@@ -25,8 +25,12 @@ public class Patient{
     @Column(name="patient_admitted_Date")
     private final Date createdDate = Calendar.getInstance().getTime();
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn( name="doctor_id" )
     private  Doctor doctor;
+
+    @ManyToOne
+    @JoinColumn(name ="role_id")
+    private Roles roles;
 
 }

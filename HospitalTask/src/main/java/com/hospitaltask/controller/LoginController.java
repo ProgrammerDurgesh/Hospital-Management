@@ -16,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -37,7 +38,7 @@ public class LoginController {
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
 	@PostMapping("/login")
-	public ResponseEntity<?> login( @RequestBody AuthRequest authRequest) throws Exception {
+	public ResponseEntity<?> login( @ModelAttribute AuthRequest authRequest) throws Exception {
 		try {
 			String getPasswordByEmail=this.doctorRepo.getPasswordByEmail(authRequest.getUserName());
 			System.out.println(authRequest.getUserName());
