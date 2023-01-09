@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" xmls>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <title>Crud Operation</title>
-
+<link rel="stylesheet" href="./createnew.css">
   <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
         integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
@@ -11,30 +11,56 @@
 </head>
 <body>
 
-<div class="container my-2">
+<!-- <div class="container my-2">
   <h1>this is Home Page</h1>
-  <form action="/hm/login" method="post">
+  <form action="/hm/login" th:method="post">
     <label>Enter Email :</label><br> <input name="userName" required="required" type="text"/><br>
     <label>Enter password :</label><br>
-    <input name="password" required="required" type="text"/><br>
+    <input name="password" required="required" type="password"/><br>
     <button type="submit">Submit</button>
-  </form>
+  </form> -->
+<section class="vh-100 gradient-custom">
+		<div class="container py-5 h-100">
+			<div class="row justify-content-center align-items-center h-100">
+				<div class="col-12 col-lg-9 col-xl-7">
+					<div class="card shadow-2-strong card-registration"
+						style="border-radius: 15px;">
+						<div class="card-body p-4 p-md-5">
+							<h3 class="mb-4 pb-2 pb-md-0 mb-md-5">Login Form</h3>
+							<form action="/hm/login"  th:method="post">
 
-</div>
-<!--
+								<div class="row">
+									<div class="col-md-6 mb-4">
 
-<div align="center" class="container my-2">
-<h1>Employee Page</h1>
-<table border="1" class="table table-striped table-responsive-md">
-    <thead>
-    <tr>
-        <th>Employee Name </th>
-        <th>Employee Email </th>
-        <th>Employee Mobile </th>
-        <th>Employee Gender </th>
-    </tr>
-    </thead>
-</table>
-</div>-->
+							<div class="form-outline"><label
+							class="form-label" for="firstName" >Email</label>
+							<input type="text" id="userName" name="userName"
+							class="form-control form-control-lg" /> 
+							</div>
+							</div>
+			
+			<div class="col-md-6 mb-4">
+			<div class="form-outline"><label
+			class="form-label" for="lastName">Password</label>
+			<input type="text" id="password" name="password"
+			class="form-control form-control-lg" /> 
+			</div>	
+			</div>
+			</div>
+			<br>
+			<br>
+			<div class="mt-4 pt-2">
+			<input class="btn btn-primary btn-lg" type="submit"
+			value="Submit" />
+		    </div>
+			</form>
+			</div>
+			</div>
+			</div>
+			</div>
+			</div>
+			
+	</section>
+
 </body>
 </html>

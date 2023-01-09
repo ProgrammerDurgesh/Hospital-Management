@@ -1,16 +1,17 @@
 package com.hospitaltask.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+
 import com.hospitaltask.entity.Doctor;
 import com.hospitaltask.entity.Patient;
 import com.hospitaltask.exception.UserNotFoundException;
 import com.hospitaltask.repository.DoctorRepo;
 import com.hospitaltask.repository.PatientEntityRepo;
 import com.hospitaltask.securityconfig.CustomUserDetails;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
 @Service
 public class MyUserDetails implements UserDetailsService {
     @Autowired
@@ -21,7 +22,10 @@ public class MyUserDetails implements UserDetailsService {
     private Patient patient;
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        String email = null, password = null;
+    	System.out.println("this Is User name    "+username);
+    	
+        @SuppressWarnings("unused")
+		String email = null, password = null;
         try {
         doctor = doctorRepo.findByEmail(username);
         CustomUserDetails userDetails = new CustomUserDetails(doctor, patient);
