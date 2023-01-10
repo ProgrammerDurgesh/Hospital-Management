@@ -62,7 +62,7 @@ public class SecurityConfiguration  {
 //                .antMatchers("/patient/**").hasRole("PATIENT")
                 .antMatchers("/**").permitAll()
                 .and()
-               // .formLogin()
+
                /* .antMatchers()
                 .authenticated().antMatchers(HttpMethod.GET,"HM/doctor").hasRole("ADMIN")
                 .antMatchers().authenticated().antMatchers(HttpMethod.GET,"/pm/patient").hasRole("PATIENT")*/

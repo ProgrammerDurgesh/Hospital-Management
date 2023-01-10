@@ -23,8 +23,6 @@ public class MyUserDetails implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
     	System.out.println("this Is User name    "+username);
-    	
-        @SuppressWarnings("unused")
 		String email = null, password = null;
         try {
         doctor = doctorRepo.findByEmail(username);
