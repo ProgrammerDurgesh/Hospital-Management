@@ -12,6 +12,7 @@ import com.hospitaltask.entity.Patient;
 public interface PatientEntityRepo extends JpaRepository< Patient,Long>
 {
 
+    @Query(value = "select * from tbl_patient p where p.patient_email=:email",nativeQuery = true )
     Patient findByEmail(String email);
     @Query(value = "select name from tbl_patient p where p.doctor_id=:Id",nativeQuery = true )
     List<Patient> findAllPatientByDoctorId(Long Id);

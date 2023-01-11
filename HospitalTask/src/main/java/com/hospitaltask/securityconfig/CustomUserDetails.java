@@ -1,33 +1,22 @@
 package com.hospitaltask.securityconfig;
 
-import com.hospitaltask.entity.Doctor;
-import com.hospitaltask.entity.Patient;
-import com.hospitaltask.repository.DoctorRepo;
-import com.hospitaltask.repository.PatientEntityRepo;
-import com.hospitaltask.repository.RoleRepo;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
 import java.util.Collection;
 import java.util.List;
 
-public class CustomUserDetails implements UserDetails {
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-    @Autowired
-    private DoctorRepo doctorRepo;
-    @Autowired
-    private RoleRepo roleRepo;
-    @Autowired
-    private PatientEntityRepo entityRepo;
-    private Doctor doctor;
-    private Patient patient;
-    String userPassword=null,userName=null,roleNameByRoleId;
+import com.hospitaltask.entity.Doctor;
+import com.hospitaltask.entity.Patient;
+
+public class CustomUserDetails implements UserDetails ,UserDetailsService{
+
+    private static final long serialVersionUID = 1L;
+	String userPassword=null,userName=null,roleNameByRoleId;
     public CustomUserDetails(Doctor doctor, Patient patient) {
-        this.doctor = doctor;
-        this.patient = patient;
-
         if(doctor !=null)
         {
             userName=doctor.getEmail();
@@ -71,4 +60,9 @@ public class CustomUserDetails implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

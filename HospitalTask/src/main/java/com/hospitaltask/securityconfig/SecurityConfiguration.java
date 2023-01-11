@@ -23,60 +23,73 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class SecurityConfiguration  {
-    @Autowired
-    private JwtAuthenticationFilter jwtAuthenticationFilter;
-    @Autowired
-    private RoleRepo roleRepo;
-    @Autowired
-    private MyUserDetails myUserDetails ;
-    private static final String[] authorizedURL = {"/hm/home"};
-    @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+public class SecurityConfiguration {
+	@Autowired
+	private JwtAuthenticationFilter jwtAuthenticationFilter;
+	@Autowired
+	private RoleRepo roleRepo;
+	@Autowired
+	private MyUserDetails myUserDetails;
+	private static final String[] authorizedURL = { "/hm/home" ,"/swagger-ui**"};
 
-    @Bean
-    UserDetailsService userDetailsService()
-    {
-        return new MyUserDetails();
-    }
+	@Bean
+	public BCryptPasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
 
-    @Bean
-    DaoAuthenticationProvider  daoAuthenticationProvider()
-    {
-        DaoAuthenticationProvider daoAuthenticationProvider=new DaoAuthenticationProvider();
-        daoAuthenticationProvider.setUserDetailsService(this.userDetailsService());
-        daoAuthenticationProvider.setPasswordEncoder(this.passwordEncoder());
-        return daoAuthenticationProvider;
-    }
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-                .cors()
-                .disable()
-                .csrf()
-                .disable()
-                .authorizeRequests()
-//                .antMatchers("/doctor/*").hasRole("DOCTOR")
-//                .antMatchers("/patient/**").hasRole("PATIENT")
-                .antMatchers("/**").permitAll()
-                .and()
+	@Bean
+	UserDetailsService userDetailsService() {
+		return new MyUserDetails();
+	}
 
-               /* .antMatchers()
-                .authenticated().antMatchers(HttpMethod.GET,"HM/doctor").hasRole("ADMIN")
-                .antMatchers().authenticated().antMatchers(HttpMethod.GET,"/pm/patient").hasRole("PATIENT")*/
-                //.and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-        return http.build();
-    }
+	@Bean
+	DaoAuthenticationProvider daoAuthenticationProvider() {
+		DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+		daoAuthenticationProvider.setUserDetailsService(this.userDetailsService());
+		daoAuthenticationProvider.setPasswordEncoder(this.passwordEncoder());
+		return daoAuthenticationProvider;
+	}
 
-    @Bean
-    AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws  Exception {
-        return authenticationConfiguration.getAuthenticationManager();
-    }
+	@Bean
+	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+		http
+		.cors()
+		.and()
+		.csrf()
+		.disable()
+		.authorizeRequests()
+		.antMatchers(authorizedURL)
+		.permitAll()
+		.antMatchers("/doctor/**").hasAnyAuthority("ROLE_DOCTOR")
+		.antMatchers("/patient/**").hasAnyAuthority("ROLE_PATIENT")
+		.and()
+		.formLogin()
+		.and()
+		.logout();
+		/*
+		 * .cors() .disable() .csrf() .disable()
+		 * .authorizeRequests().antMatchers("/**").permitAll()
+		 * .antMatchers("/doctor/*").hasRole("DOCTOR")
+		 * .antMatchers("/patient/**").hasRole("PATIENT")
+		 * 
+		 * .and()
+		 * 
+		 * .antMatchers()
+		 * .authenticated().antMatchers(HttpMethod.GET,"HM/doctor").hasRole("ADMIN")
+		 * .antMatchers().authenticated().antMatchers(HttpMethod.GET,"/pm/patient").
+		 * hasRole("PATIENT") //.and() .sessionManagement()
+		 * .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+		 * http.addFilterBefore(jwtAuthenticationFilter,
+		 * UsernamePasswordAuthenticationFilter.class);
+		 */
+		return http.build();
+	}
+
+	@Bean
+	AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
+			throws Exception {
+		return authenticationConfiguration.getAuthenticationManager();
+	}
 //    @Bean
 //    public void authenticationManager(AuthenticationManagerBuilder auth) throws Exception {
 //        auth.authenticationProvider(daoAuthenticationProvider());

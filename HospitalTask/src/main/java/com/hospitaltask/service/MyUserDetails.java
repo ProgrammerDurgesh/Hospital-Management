@@ -1,6 +1,12 @@
 package com.hospitaltask.service;
 
+
+import java.util.HashSet;
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -11,7 +17,7 @@ import com.hospitaltask.entity.Patient;
 import com.hospitaltask.exception.UserNotFoundException;
 import com.hospitaltask.repository.DoctorRepo;
 import com.hospitaltask.repository.PatientEntityRepo;
-import com.hospitaltask.securityconfig.CustomUserDetails;
+import com.hospitaltask.repository.RoleRepo;
 @Service
 public class MyUserDetails implements UserDetailsService {
     @Autowired
@@ -20,31 +26,37 @@ public class MyUserDetails implements UserDetailsService {
     private DoctorRepo doctorRepo;
     private Doctor doctor;
     private Patient patient;
+    @Autowired
+    private RoleRepo repo;
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    	System.out.println("this Is User name    "+username);
-		String email = null, password = null;
-        try {
-        doctor = doctorRepo.findByEmail(username);
-        CustomUserDetails userDetails = new CustomUserDetails(doctor, patient);
-        if (doctor != null) {
-            email = doctor.getEmail();
-            password = doctor.getPassword();
-        } else {
-            patient = this.entityRepo.findByEmail(username);
-            email = patient.getEmail();
-            password = patient.getPassword();
+    	Doctor doctor=doctorRepo.findByEmail(username);
+    	Patient patient =entityRepo.findByEmail(username);
+      
+        if(doctor !=null)
+        {
+        	return new User(doctor.getEmail(), doctor.getPassword(), getAuthority(doctor,patient));
         }
-        if (username.equals(null)) {
-            throw new UserNotFoundException("User not Found Exception");
+        else if(patient != null)
+        {
+        	return new User(patient.getEmail(), patient.getPassword(), getAuthority(doctor,patient));
         }
-
-            return userDetails;
+        else
+        {
+            throw new  UserNotFoundException("User not Found Exception");
         }
-    catch (Exception e)
-    {
-        e.printStackTrace();
-        return null;
     }
+    private Set<SimpleGrantedAuthority> getAuthority(Doctor doctor,Patient patient) {
+    	Set<SimpleGrantedAuthority> authorities = new HashSet<SimpleGrantedAuthority>();
+    	if(doctor !=null) {
+        SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(doctor.getRoles().getRoleName());
+        authorities.add(simpleGrantedAuthority);
+    	}
+    	else
+    	{
+    		 SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(patient.getRoles().getRoleName());
+    	        authorities.add(simpleGrantedAuthority);
+    	}
+        return authorities;
     }
 }
