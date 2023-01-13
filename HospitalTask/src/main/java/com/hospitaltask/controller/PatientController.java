@@ -3,10 +3,12 @@ package com.hospitaltask.controller;
 import java.util.List;
 import java.util.Optional;
 
+import com.hospitaltask.response.CustomResponseHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -61,9 +63,8 @@ public class PatientController {
 	public ResponseEntity<?> updatePatientById(@RequestBody Patient patient, @PathVariable Long id) {
 		Patient patientUpdate = patientService.updatePatientById(patient, id);
 		if (patientUpdate == null)
-			return new ResponseEntity<>("Patient Not Found :  " + "id :" + id + "	Email : " + patient.getEmail(),
-					HttpStatus.CREATED);
-		return new ResponseEntity<>(patientService.updatePatientById(patient, id), HttpStatus.CREATED);
+			return CustomResponseHandler.response("Record Not  Found ",HttpStatus.NOT_FOUND,id);
+		return CustomResponseHandler.response("created successfully",HttpStatus.CREATED,patientService.updatePatientById(patient, id));
 	}
 
 	/*
@@ -77,9 +78,9 @@ public class PatientController {
 		List<Patient> list=patientService.getAllPatient();
 		if(list.size() !=0)
 		{
-		return new ResponseEntity<>(patientService.getAllPatient(), HttpStatus.OK);
+		return CustomResponseHandler.response(" Patient List  : "+"Total Patient "+list.size(),HttpStatus.OK,list);
 		}
-		return new ResponseEntity<> ("Not found",HttpStatus.NOT_FOUND);
+		return CustomResponseHandler.response("Record Not Found ",HttpStatus.OK,list);
 	}
 
 	/*
@@ -91,9 +92,9 @@ public class PatientController {
 		Patient patient=this.entityRepo.findById(id).orElse(null);
 		if(patient==null)
 		{
-			return new ResponseEntity<>("Patient Not Found :    "+id,HttpStatus.NOT_FOUND);
+			return CustomResponseHandler.response("Record Not Found ",HttpStatus.NOT_FOUND,id);
 		}
-		return new ResponseEntity<>(patientService.getPatientById(id), HttpStatus.OK);
+		return  CustomResponseHandler.response("Record Found Success",HttpStatus.OK,patientService.getPatientById(id));
 	}
 
 	/*
@@ -113,7 +114,10 @@ public class PatientController {
 	@PreAuthorize("hasAuthority('ROLE_DOCTOR') or hasAuthority('ROLE_ADMIN,ROLE_PATIENT')") 
 	@GetMapping("/patient/name/{name}")
 	public ResponseEntity<?> findByName(@PathVariable String name) {
-		return new ResponseEntity<>(patientService.findByName(name), HttpStatus.OK);
+		List<Patient> patient = patientService.findByName(name);
+		if(patient==null)
+			return CustomResponseHandler.response("Record Not Found ",HttpStatus.NOT_FOUND,name);
+		return CustomResponseHandler.response("Record Found Success",HttpStatus.OK,patientService.findByName(name));
 	}
 
 	/*
@@ -122,10 +126,10 @@ public class PatientController {
 	@PreAuthorize("hasAuthority('ROLE_DOCTOR') or hasAuthority('ROLE_ADMIN,ROLE_PATIENT')") 
 	@GetMapping("/patient/doctor/{doctorId}")
 	public ResponseEntity<?> findByByDoctorId(@PathVariable Long doctorId) {
-		List<Patient> patients = entityRepo.findAllPatientByDoctorId(doctorId);
-		if (patients.size() == 0)
-			return new ResponseEntity<>("Patient Not Found" + doctorId, HttpStatus.NOT_FOUND);
-		return new ResponseEntity<>(patients, HttpStatus.OK);
+			List<Patient> patients = entityRepo.findAllPatientByDoctorId(doctorId);
+				if (patients.size() == 0)
+					return CustomResponseHandler.response("Record Not Found",HttpStatus.NOT_FOUND,doctorId);
+					return CustomResponseHandler.response("Record Found Success",HttpStatus.OK,patients);
 	}
 
 	// Delete Operations
@@ -134,8 +138,12 @@ public class PatientController {
 	 */
 	@PreAuthorize("hasAuthority('ROLE_DOCTOR') or hasAuthority('ROLE_ADMIN')")
 	@DeleteMapping("patient")
-	public void deleteAllPatient() {
+	public ResponseEntity<?> deleteAllPatient() {
 		this.patientService.deleteAllPatient();
+		List<Patient> patient=patientService.getAllPatient();
+		if(patient.size()==0)
+		return CustomResponseHandler.response("Delete All Record",HttpStatus.OK,patient);
+		return CustomResponseHandler.response("Record Not Deleted ",HttpStatus.EXPECTATION_FAILED,patient);
 	}
 
 	/*
@@ -146,10 +154,10 @@ public class PatientController {
 	public ResponseEntity<?> deletePatientByID(@PathVariable Long Id) {
 		Patient patient = entityRepo.findById(Id).orElse(null);
 		if (patient == null)
-			return new ResponseEntity<>("Patient Not Found : " + Id, HttpStatus.NOT_FOUND);
+			return CustomResponseHandler.response("Record Not Found",HttpStatus.NOT_FOUND,Id);
 		else {
 			this.patientService.deletePatientByID(Id);
-			return new ResponseEntity<>("Patient Deleted : " + Id, HttpStatus.OK);
+			return CustomResponseHandler.response("Record Deleted ",HttpStatus.OK,patient.getId());
 		}
 
 	}

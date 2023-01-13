@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.security.RolesAllowed;
 
+import com.hospitaltask.response.CustomResponseHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +26,8 @@ import com.hospitaltask.service.DoctorService;
 @RestController
 @RequestMapping("/doctor")
 
-public class DoctorController { 	
+public class DoctorController {
+	private final String RECORD_NOT_FOUND="record Not Found";
 	@Autowired
 	private DoctorRepo doctorRepo;
 	@Autowired
@@ -39,8 +41,8 @@ public class DoctorController {
 	public ResponseEntity<?> addDoctor(@RequestBody Doctor doctor) {
 		String email = doctorRepo.getEmailByEmai(doctor.getEmail());
 		if (email != null)
-			return new ResponseEntity<>("Email already exist :  " + doctor.getEmail(), HttpStatus.OK);
-		return new ResponseEntity<>(this.doctorService.addDoctor(doctor), HttpStatus.CREATED);
+			return CustomResponseHandler.response("Email already exist",HttpStatus.OK,doctor.getEmail());
+		return CustomResponseHandler.response("Create successfully",HttpStatus.CREATED,this.doctorService.addDoctor(doctor));
 	}
 
 	/*
@@ -52,9 +54,9 @@ public class DoctorController {
 	public ResponseEntity<?> updateById(@RequestBody Doctor doctor, @PathVariable Long id) {
 		Doctor doctorCheck = doctorService.updateDoctorById(doctor, id);
 		if (doctorCheck != null) {
-			return new ResponseEntity<>("Doctor Update By :  " + id + doctor.getEmail(), HttpStatus.OK);
+			return CustomResponseHandler.response("Record Updated",HttpStatus.OK,id);
 		} else
-			return new ResponseEntity<>("Doctor Not Availeble This id :" + id, HttpStatus.NOT_FOUND);
+			return CustomResponseHandler.response(RECORD_NOT_FOUND,HttpStatus.NOT_FOUND,id);
 	}
 
 	/*@PutMapping("/save-email/{email}")
@@ -82,8 +84,11 @@ public class DoctorController {
 	 */
 	@PreAuthorize("hasAuthority('ROLE_DOCTOR') or hasAuthority('ROLE_ADMIN')or hasAuthority('ROLE_PATIENT')")
 	@GetMapping("/All")
-	public ResponseEntity<List<Doctor>> getAllDoctor() {
-		return new ResponseEntity<>(this.doctorService.getAllDoctor(), HttpStatus.OK);
+	public ResponseEntity<?> getAllDoctor() {
+		List<Doctor> allDoctor = this.doctorService.getAllDoctor();
+		if (allDoctor!=null)
+		return CustomResponseHandler.response("Record Found Success",HttpStatus.OK,allDoctor);
+		return 	CustomResponseHandler.response(RECORD_NOT_FOUND,HttpStatus.NOT_FOUND,null);
 	}
 
 	/*
@@ -94,11 +99,11 @@ public class DoctorController {
 	public ResponseEntity<?> getDoctorByID(@PathVariable Long id) {
 		Doctor doctor = this.doctorRepo.findById(id).orElse(null);
 		if (doctor == null)
-			return new ResponseEntity<>("Doctor Not found with this Id " + id, HttpStatus.NOT_FOUND);
-		return new ResponseEntity<Doctor>(this.doctorService.getDoctorById(id), HttpStatus.OK);
+			return CustomResponseHandler.response(RECORD_NOT_FOUND,HttpStatus.NOT_FOUND,id);
+		return CustomResponseHandler.response("Record Found Success",HttpStatus.OK,this.doctorService.getDoctorById(id));
 	}
 
-	/*
+	/*Record Found Success
 	 * fetch Doctor By DoctorEmailID
 	 */
 	@PreAuthorize("hasAuthority('ROLE_DOCTOR') or hasAuthority('ROLE_ADMIN')")
@@ -107,8 +112,8 @@ public class DoctorController {
 		System.out.println(id);
 		Doctor doctor = this.doctorRepo.getDoctorByEmail(id);
 		if (doctor == null)
-			return new ResponseEntity<>("Doctor Not found ", HttpStatus.NOT_FOUND);
-		return new ResponseEntity<>(this.doctorService.findByEmail(id), HttpStatus.OK);
+			return CustomResponseHandler.response(RECORD_NOT_FOUND,HttpStatus.NOT_FOUND,id);
+		return CustomResponseHandler.response("Record Found Success",HttpStatus.OK,this.doctorService.findByEmail(id));
 	}
 	/*
 	 * fetch Doctor By DoctorByName
@@ -118,8 +123,8 @@ public class DoctorController {
 	public ResponseEntity<?> findByDoctorName(@PathVariable String doctorName) {
 		List<Doctor> doctor = this.doctorRepo.findByDoctorName(doctorName);
 		if (doctor.size() == 0)
-			return new ResponseEntity<>("Not Found", HttpStatus.OK);
-		return new ResponseEntity<>(doctor, HttpStatus.OK);
+			return CustomResponseHandler.response(RECORD_NOT_FOUND,HttpStatus.NOT_FOUND,doctorName);
+		return CustomResponseHandler.response("Record Found Success",HttpStatus.OK,doctor);
 	}
 
 	/*
@@ -127,9 +132,12 @@ public class DoctorController {
 	 */
 	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	@DeleteMapping("Delete-All")
-	public String deleteAllDoctor() {
+	public ResponseEntity<?> deleteAllDoctor() {
 		doctorService.deleteAllDoctor();
-		return "Doctor Deleted";
+		List<Doctor> doctors=doctorRepo.findAll();
+		if(doctors!=null)
+			return CustomResponseHandler.response(RECORD_NOT_FOUND,HttpStatus.EXPECTATION_FAILED,doctors);
+		return CustomResponseHandler.response("Record Deleted ",HttpStatus.OK,doctors);
 	}
 
 	/*
@@ -140,10 +148,10 @@ public class DoctorController {
 	public ResponseEntity<?> deleteDoctorById(@PathVariable Long id) throws UserNotFoundException {
 		Doctor doctor = doctorRepo.findById(id).orElse(null);
 		if (doctor == null)
-			return new ResponseEntity<>("Doctor Not Found This Id : " + id, HttpStatus.NOT_FOUND);
+			return CustomResponseHandler.response(RECORD_NOT_FOUND,HttpStatus.NOT_FOUND,id);
 		else {
 			doctorService.deleteDoctorById(id);
-			return new ResponseEntity<>("Doctor Deleted : " + id, HttpStatus.OK);
+			return CustomResponseHandler.response("Record Deleted",HttpStatus.OK,id);
 		}
 	}
 	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
@@ -151,10 +159,10 @@ public class DoctorController {
 	public ResponseEntity<?> deleteDoctorByName(@PathVariable String name) throws UserNotFoundException {
 		Doctor doctor = doctorRepo.findByName(name);
 		if (doctor == null)
-			return new ResponseEntity<>("Doctor Not Found This Id : " + name, HttpStatus.NOT_FOUND);
+			return CustomResponseHandler.response(RECORD_NOT_FOUND,HttpStatus.NOT_FOUND,name);
 		else {
 			doctorService.deleteDoctorById(doctor.getDoctorId());
-			return new ResponseEntity<>("Doctor Deleted : " + name, HttpStatus.OK);
+			return CustomResponseHandler.response("Record Deleted ",HttpStatus.OK,name);
 		}
 	}
 	
@@ -163,10 +171,10 @@ public class DoctorController {
 	public ResponseEntity<?> deleteDoctorByEmail(@PathVariable String id) throws UserNotFoundException {
 		Doctor doctor = doctorRepo.getDoctorByEmail(id);
 		if (doctor == null)
-			return new ResponseEntity<>("Doctor Not Found This Id : " + id, HttpStatus.NOT_FOUND);
+			return CustomResponseHandler.response(RECORD_NOT_FOUND,HttpStatus.OK,id);
 		else {
 			doctorService.deleteDoctorById(doctor.getDoctorId());
-			return new ResponseEntity<>("Doctor Deleted : " + id, HttpStatus.OK);
+			return CustomResponseHandler.response("Record Deleted",HttpStatus.OK,id);
 		}
 	}
 }

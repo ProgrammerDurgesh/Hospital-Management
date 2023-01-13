@@ -1,5 +1,6 @@
 package com.hospitaltask.controller;
 
+import com.hospitaltask.response.CustomResponseHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -76,10 +77,11 @@ public class LoginController {
 		if (authenticate.isAuthenticated()) {
 			UserDetails userDetails = this.myUserDetailsService.loadUserByUsername(authRequest.getUserName());
 			String token = this.jwtUtil.generateToken(userDetails);
-			return ResponseEntity.ok(new AuthResponse(token));
+			return CustomResponseHandler.response("Token Create successfully ",HttpStatus.CREATED,token);
 		} else {
 			response = "User Not Found  ";
-			return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+			return CustomResponseHandler.response("Credential Not Found",HttpStatus.NOT_FOUND,authRequest.getUserName()+authRequest.getPassword());
+
 		}
 	}
 }

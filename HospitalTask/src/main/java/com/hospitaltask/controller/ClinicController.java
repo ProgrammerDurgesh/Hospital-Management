@@ -2,6 +2,7 @@ package com.hospitaltask.controller;
 
 import java.util.List;
 
+import com.hospitaltask.response.CustomResponseHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,8 @@ import com.hospitaltask.exception.UserNotFoundException;
 import com.hospitaltask.repository.ClinicRepo;
 import com.hospitaltask.service.ClinicService;
 
+import javax.persistence.Id;
+
 @RestController
 @RequestMapping("/HM/clinic")
 public class ClinicController {
@@ -36,8 +39,21 @@ public class ClinicController {
 
 	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	@PostMapping("/save")
-	public ResponseEntity<Clinic> saveClinic(@RequestBody Clinic clinic) {
-		return new ResponseEntity<>(clinicService.saveClinic(clinic), HttpStatus.CREATED);
+	public ResponseEntity<?> saveClinic(@RequestBody Clinic clinic) {
+		Clinic clinic1 = null;
+		try
+		{
+			 clinic1 = clinicService.saveClinic(clinic);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		if(clinic1!=null)
+		return CustomResponseHandler.response("Create successfully ", HttpStatus.CREATED, clinic1);
+		else {
+			return CustomResponseHandler.response("Resolve Error ", HttpStatus.CREATED, null);
+		}
 	}
 	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	@PutMapping("clinic/{id}")
@@ -47,8 +63,8 @@ public class ClinicController {
 	
 	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	@PutMapping("clinic/name/{name}")
-	public ResponseEntity<Clinic> updateClinicByName(@RequestBody Clinic clinic, @PathVariable String name) {
-		return new ResponseEntity<>(clinicService.updateClinicByName(clinic, name), HttpStatus.OK);
+	public ResponseEntity<?> updateClinicByName(@RequestBody Clinic clinic, @PathVariable String name) {
+		return CustomResponseHandler.response("Record updated ",HttpStatus.OK,clinicService.updateClinicByName(clinic, name));
 	}
 
 	/*
@@ -56,8 +72,8 @@ public class ClinicController {
 	 */
 	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	@GetMapping("/get-All")
-	public ResponseEntity<List<Clinic>> getAllClinic() {
-		return new ResponseEntity<>(clinicService.getAllClinic(), HttpStatus.OK);
+	public ResponseEntity<?> getAllClinic() {
+		return CustomResponseHandler.response("Record Found ",HttpStatus.OK,clinicService.getAllClinic());
 	}
 	/*
 	 * fetch clinic By ClinicID
@@ -68,8 +84,8 @@ public class ClinicController {
 	public ResponseEntity<?> getClinicById(@PathVariable Long id) throws UserNotFoundException {
 		Clinic roles = this.clinicRepo.getClinicById(id);
 		if (roles == null)
-			return new ResponseEntity<>("Clinic Not Found   " + id, HttpStatus.NOT_FOUND);
-		return new ResponseEntity<>(clinicService.getClinicById(id), HttpStatus.OK);
+			return CustomResponseHandler.response("Record Not found",HttpStatus.NOT_FOUND,id);
+		return CustomResponseHandler.response("Record Found ",HttpStatus.OK,clinicService.getClinicById(id));
 	}
 
 	/*
@@ -80,8 +96,8 @@ public class ClinicController {
 	public ResponseEntity<?> findByClinicName(@PathVariable String clinicName) {
 		Clinic clinic = this.clinicRepo.findByClinicName(clinicName);
 		if (clinic == null)
-			return new ResponseEntity<>("Clinic Not Found " + clinicName, HttpStatus.OK);
-		return new ResponseEntity<>(clinicService.findByClinicName(clinicName), HttpStatus.OK);
+			return CustomResponseHandler.response("Record Not Found ",HttpStatus.NOT_FOUND,clinicName);
+		return CustomResponseHandler.response("Record found ",HttpStatus.OK,clinicService.findByClinicName(clinicName));
 	}
 
 	/*
@@ -101,11 +117,11 @@ public class ClinicController {
 	@DeleteMapping("delete/{id}")
 	public ResponseEntity<?> deleteByClinicById(@PathVariable Long id) throws UserNotFoundException {
 		Clinic clinic = this.clinicService.getClinicById(id);
-		if (clinic==null) {
-			return new ResponseEntity<>("Clinic Not Found" + id, HttpStatus.OK);}
+		if (clinic==null)
+			return CustomResponseHandler.response("Record Not found ",HttpStatus.NOT_FOUND,id);
 		else {
 			clinicService.deleteClinicById(id);
-			return new ResponseEntity<>("Deleted " + id, HttpStatus.OK);
+			return CustomResponseHandler.response("Record Deleted ",HttpStatus.OK, id);
 		}
 	}
 }
