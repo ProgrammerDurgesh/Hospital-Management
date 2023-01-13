@@ -23,7 +23,7 @@ public interface PatientService
     Patient getPatientById(Long id);
     Patient findByEmail(String email);
     Optional<Patient> findByDoctorID(Long id);
-    Patient findByName(String name);
+    List<Patient> findByName(String name);
 
     //Delete Operation
 

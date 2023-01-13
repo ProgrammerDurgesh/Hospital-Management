@@ -55,7 +55,7 @@ public class PatientController {
 		return new ResponseEntity<>(patientService.save(patient), HttpStatus.CREATED);
 	}
 
-	// this code is not Working
+	// TODO Under process.....
 	@PreAuthorize("hasAuthority('ROLE_DOCTOR')")
 	@PutMapping("/patient/{id}")
 	public ResponseEntity<?> updatePatientById(@RequestBody Patient patient, @PathVariable Long id) {
@@ -99,18 +99,20 @@ public class PatientController {
 	/*
 	 * Fetch patient By Email
 	 */
-	@PreAuthorize("hasAuthority('ROLE_DOCTOR') or hasAuthority('ROLE_ADMIN,ROLE_PATIENT')") 
+/*
+	@PreAuthorize("hasAuthority('ROLE_DOCTOR') or hasAuthority('ROLE_ADMIN,ROLE_PATIENT')")
 	@GetMapping({"/patient/email/{email}","p-email/{email}"})
 	public ResponseEntity<Patient> findByEmail(@PathVariable String email) {
 		return new ResponseEntity<>(patientService.findByEmail(email), HttpStatus.OK);
 	}
+*/
 
 	/*
 	 * Fetch patient By Name
 	 */
 	@PreAuthorize("hasAuthority('ROLE_DOCTOR') or hasAuthority('ROLE_ADMIN,ROLE_PATIENT')") 
 	@GetMapping("/patient/name/{name}")
-	public ResponseEntity<Patient> findByName(@PathVariable String name) {
+	public ResponseEntity<?> findByName(@PathVariable String name) {
 		return new ResponseEntity<>(patientService.findByName(name), HttpStatus.OK);
 	}
 

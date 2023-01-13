@@ -75,7 +75,7 @@ public class PatientServiceImpl implements PatientService {
 	}
 
 	@Override
-	public Patient findByName(String name) {
+	public List<Patient> findByName(String name) {
 		return patientRepo.findByName(name);
 	}
 
