@@ -2,6 +2,8 @@ package com.hospitaltask.controller;
 
 import java.util.List;
 
+import javax.annotation.security.RolesAllowed;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +23,6 @@ import com.hospitaltask.repository.DoctorRepo;
 import com.hospitaltask.service.DoctorService;
 
 @RestController
-@PreAuthorize("hasAuthority('ROLE_DOCTOR')")
 @RequestMapping("/doctor")
 
 public class DoctorController { 	
@@ -33,6 +34,7 @@ public class DoctorController {
 	/*
 	 * Add Doctor
 	 */
+	@RolesAllowed("ROLE_ADMIN")
 	@PostMapping("/save")
 	public ResponseEntity<?> addDoctor(@RequestBody Doctor doctor) {
 		String email = doctorRepo.getEmailByEmai(doctor.getEmail());
@@ -45,6 +47,7 @@ public class DoctorController {
 	 * Update Doctor By DoctorName/DoctorEmail/DoctorID
 	 * 
 	 */
+	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	@PutMapping("/save/Id/{id}")
 	public ResponseEntity<?> updateById(@RequestBody Doctor doctor, @PathVariable Long id) {
 		Doctor doctorCheck = doctorService.updateDoctorById(doctor, id);
@@ -77,6 +80,7 @@ public class DoctorController {
 	/*
 	 * fetch All Doctor
 	 */
+	@PreAuthorize("hasAuthority('ROLE_DOCTOR') or hasAuthority('ROLE_ADMIN')or hasAuthority('ROLE_PATIENT')")
 	@GetMapping("/All")
 	public ResponseEntity<List<Doctor>> getAllDoctor() {
 		return new ResponseEntity<>(this.doctorService.getAllDoctor(), HttpStatus.OK);
@@ -85,6 +89,7 @@ public class DoctorController {
 	/*
 	 * fetch Doctor By DoctorById
 	 */
+	@PreAuthorize("hasAuthority('ROLE_DOCTOR') or hasAuthority('ROLE_ADMIN')")
 	@GetMapping("/get-id/{id}")
 	public ResponseEntity<?> getDoctorByID(@PathVariable Long id) {
 		Doctor doctor = this.doctorRepo.findById(id).orElse(null);
@@ -96,6 +101,7 @@ public class DoctorController {
 	/*
 	 * fetch Doctor By DoctorEmailID
 	 */
+	@PreAuthorize("hasAuthority('ROLE_DOCTOR') or hasAuthority('ROLE_ADMIN')")
 	@GetMapping("get-email/{id}")
 	public ResponseEntity<?> findByEmailId(@PathVariable String id) {
 		System.out.println(id);
@@ -107,7 +113,7 @@ public class DoctorController {
 	/*
 	 * fetch Doctor By DoctorByName
 	 */
-
+	@PreAuthorize("hasAuthority('ROLE_DOCTOR') or hasAuthority('ROLE_ADMIN')")
 	@GetMapping("get/{doctorName}")
 	public ResponseEntity<?> findByDoctorName(@PathVariable String doctorName) {
 		List<Doctor> doctor = this.doctorRepo.findByDoctorName(doctorName);
@@ -119,6 +125,7 @@ public class DoctorController {
 	/*
 	 * Delete Operation Delete All Doctor
 	 */
+	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	@DeleteMapping("Delete-All")
 	public String deleteAllDoctor() {
 		doctorService.deleteAllDoctor();
@@ -128,6 +135,7 @@ public class DoctorController {
 	/*
 	 * Delete Doctor By DoctorId
 	 */
+	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	@DeleteMapping("Delete/{id}")
 	public ResponseEntity<?> deleteDoctorById(@PathVariable Long id) throws UserNotFoundException {
 		Doctor doctor = doctorRepo.findById(id).orElse(null);
@@ -138,7 +146,7 @@ public class DoctorController {
 			return new ResponseEntity<>("Doctor Deleted : " + id, HttpStatus.OK);
 		}
 	}
-
+	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	@DeleteMapping("Delete/name/{name}")
 	public ResponseEntity<?> deleteDoctorByName(@PathVariable String name) throws UserNotFoundException {
 		Doctor doctor = doctorRepo.findByName(name);
@@ -149,7 +157,8 @@ public class DoctorController {
 			return new ResponseEntity<>("Doctor Deleted : " + name, HttpStatus.OK);
 		}
 	}
-
+	
+	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	@DeleteMapping("Delete/email/{id}")
 	public ResponseEntity<?> deleteDoctorByEmail(@PathVariable String id) throws UserNotFoundException {
 		Doctor doctor = doctorRepo.getDoctorByEmail(id);

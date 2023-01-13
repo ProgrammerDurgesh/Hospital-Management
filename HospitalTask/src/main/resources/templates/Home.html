@@ -4,6 +4,10 @@
 <style>
 body {
   background-image: url('/img/bg.jpg');
+  height: auto;
+  width:auto;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 </style>
 
@@ -38,9 +42,12 @@ body {
 				<li class="nav-item active"><a class="nav-link" th:href="create-new">Create
 						New <span class="sr-only">(current)</span>
 				</a></li>
+				<li class="nav-item active"><a class="nav-link" href="/dur/create-new">Create
+					New Patient<span class="sr-only">(current)</span>
+				</a></li>
 				
 				
-				<li class="nav-item"><a class="nav-link Login" th:href="login-pa">Login</a>
+				<li class="nav-item"><a class="nav-link Login" href="/dur/login">Login</a>
 				</li>
 			</ul>
 			<form class="form-inline my-2 my-lg-0">

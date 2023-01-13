@@ -5,7 +5,6 @@ import java.util.List;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.hospitaltask.dto.DoctorDto;
@@ -141,7 +140,6 @@ public  class DoctorServiceImpl implements DoctorService {
 	
 	
 	//Update repeated value in one method 
-	@SuppressWarnings("null")
 	public Doctor updateMethod(Doctor doctor)
 	{
 		

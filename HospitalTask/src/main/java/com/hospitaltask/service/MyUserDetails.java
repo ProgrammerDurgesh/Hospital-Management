@@ -17,20 +17,19 @@ import com.hospitaltask.entity.Patient;
 import com.hospitaltask.exception.UserNotFoundException;
 import com.hospitaltask.repository.DoctorRepo;
 import com.hospitaltask.repository.PatientEntityRepo;
-import com.hospitaltask.repository.RoleRepo;
 @Service
 public class MyUserDetails implements UserDetailsService {
     @Autowired
     private PatientEntityRepo entityRepo;
     @Autowired
     private DoctorRepo doctorRepo;
+    @SuppressWarnings("unused")
     private Doctor doctor;
-    private Patient patient;
-    @Autowired
-    private RoleRepo repo;
-    @Override
+
+	@Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    	Doctor doctor=doctorRepo.findByEmail(username);
+        System.out.println(username);
+        Doctor doctor=doctorRepo.findByEmail(username);
     	Patient patient =entityRepo.findByEmail(username);
       
         if(doctor !=null)
@@ -39,7 +38,7 @@ public class MyUserDetails implements UserDetailsService {
         }
         else if(patient != null)
         {
-        	return new User(patient.getEmail(), patient.getPassword(), getAuthority(doctor,patient));
+            return new User(patient.getEmail(), patient.getPassword(), getAuthority(doctor,patient));
         }
         else
         {

@@ -12,7 +12,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import com.hospitaltask.entity.Doctor;
 import com.hospitaltask.entity.Patient;
 
-public class CustomUserDetails implements UserDetails ,UserDetailsService{
+public class CustomUserDetails implements UserDetails {
 
     private static final long serialVersionUID = 1L;
 	String userPassword=null,userName=null,roleNameByRoleId;
@@ -60,9 +60,5 @@ public class CustomUserDetails implements UserDetails ,UserDetailsService{
     public boolean isEnabled() {
         return true;
     }
-	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 }

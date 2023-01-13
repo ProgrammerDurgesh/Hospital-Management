@@ -1,23 +1,26 @@
 package com.hospitaltask.securityconfig;
 
+import com.hospitaltask.exception.InvalidLoginException;
 import com.hospitaltask.jwt.JwtAuthenticationFilter;
 import com.hospitaltask.repository.RoleRepo;
-import com.hospitaltask.service.MyUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.authentication.configurers.userdetails.DaoAuthenticationConfigurer;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+
+import com.hospitaltask.service.MyUserDetails;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
@@ -29,17 +32,20 @@ public class SecurityConfiguration {
 	@Autowired
 	private RoleRepo roleRepo;
 	@Autowired
+	private InvalidLoginException invalidLoginException;
+	@Autowired
 	private MyUserDetails myUserDetails;
-	private static final String[] authorizedURL = { "/hm/home" ,"/swagger-ui**"};
+	private static final String[] authorizedURL = { "/dur/Home","/dur/login" ,"/swagger-ui**"};
+
+	@Bean
+	UserDetailsService userDetailsService()
+	{
+		return new MyUserDetails();
+	}
 
 	@Bean
 	public BCryptPasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
-	}
-
-	@Bean
-	UserDetailsService userDetailsService() {
-		return new MyUserDetails();
 	}
 
 	@Bean
@@ -49,6 +55,9 @@ public class SecurityConfiguration {
 		daoAuthenticationProvider.setPasswordEncoder(this.passwordEncoder());
 		return daoAuthenticationProvider;
 	}
+
+
+
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -60,39 +69,27 @@ public class SecurityConfiguration {
 		.authorizeRequests()
 		.antMatchers(authorizedURL)
 		.permitAll()
-		.antMatchers("/doctor/**").hasAnyAuthority("ROLE_DOCTOR")
-		.antMatchers("/patient/**").hasAnyAuthority("ROLE_PATIENT")
+		.antMatchers("/admin/**").hasAnyAuthority("ROLE_ADMIN")
+		.antMatchers("/doctor/**").hasAnyAuthority("ROLE_DOCTOR","ROLE_PATIENT")
+		.antMatchers("/patient/**").hasAnyAuthority("ROLE_DOCTOR")
 		.and()
 		.formLogin()
 		.and()
-		.logout();
-		/*
-		 * .cors() .disable() .csrf() .disable()
-		 * .authorizeRequests().antMatchers("/**").permitAll()
-		 * .antMatchers("/doctor/*").hasRole("DOCTOR")
-		 * .antMatchers("/patient/**").hasRole("PATIENT")
-		 * 
-		 * .and()
-		 * 
-		 * .antMatchers()
-		 * .authenticated().antMatchers(HttpMethod.GET,"HM/doctor").hasRole("ADMIN")
-		 * .antMatchers().authenticated().antMatchers(HttpMethod.GET,"/pm/patient").
-		 * hasRole("PATIENT") //.and() .sessionManagement()
-		 * .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-		 * http.addFilterBefore(jwtAuthenticationFilter,
-		 * UsernamePasswordAuthenticationFilter.class);
-		 */
+				.exceptionHandling()
+				.authenticationEntryPoint(invalidLoginException)
+				.and()
+				.sessionManagement()
+				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+				.and()
+				//register filter for 2nd request ....
+				.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+				/*.and()
+				.logout();*/
 		return http.build();
 	}
-
 	@Bean
 	AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
 			throws Exception {
 		return authenticationConfiguration.getAuthenticationManager();
 	}
-//    @Bean
-//    public void authenticationManager(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.authenticationProvider(daoAuthenticationProvider());
-//
-//    }
 }
