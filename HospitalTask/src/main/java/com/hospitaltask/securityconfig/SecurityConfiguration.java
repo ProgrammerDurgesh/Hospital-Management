@@ -27,69 +27,68 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration {
-	@Autowired
-	private JwtAuthenticationFilter jwtAuthenticationFilter;
-	@Autowired
-	private RoleRepo roleRepo;
-	@Autowired
-	private InvalidLoginException invalidLoginException;
-	@Autowired
-	private MyUserDetails myUserDetails;
-	private static final String[] authorizedURL = { "/dur/Home","/dur/login" ,"/swagger-ui**"};
+    private static final String[] authorizedURL = {"/dur/Home", "/dur/login", "/swagger-ui**"};
+    @Autowired
+    private JwtAuthenticationFilter jwtAuthenticationFilter;
+    @Autowired
+    private RoleRepo roleRepo;
+    @Autowired
+    private InvalidLoginException invalidLoginException;
+    @Autowired
+    private MyUserDetails myUserDetails;
 
-	@Bean
-	UserDetailsService userDetailsService()
-	{
-		return new MyUserDetails();
-	}
+    @Bean
+    UserDetailsService userDetailsService() {
+        return new MyUserDetails();
+    }
 
-	@Bean
-	public BCryptPasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
-	@Bean
-	DaoAuthenticationProvider daoAuthenticationProvider() {
-		DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
-		daoAuthenticationProvider.setUserDetailsService(this.userDetailsService());
-		daoAuthenticationProvider.setPasswordEncoder(this.passwordEncoder());
-		return daoAuthenticationProvider;
-	}
-
+    @Bean
+    DaoAuthenticationProvider daoAuthenticationProvider() {
+        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+        daoAuthenticationProvider.setUserDetailsService(this.userDetailsService());
+        daoAuthenticationProvider.setPasswordEncoder(this.passwordEncoder());
+        return daoAuthenticationProvider;
+    }
 
 
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+                .cors()
+                .and()
+                .csrf()
+                .disable()
+                .authorizeRequests()
+                .antMatchers(authorizedURL)
+                .permitAll()
+                .antMatchers("/admin/**").hasAnyAuthority("ROLE_ADMIN")
+                .antMatchers("/doctor/**").hasAnyAuthority("ROLE_DOCTOR", "ROLE_PATIENT")
+                .antMatchers("/patient/**").hasAnyAuthority("ROLE_DOCTOR")
+                .and()
+                .formLogin()
+                .and()
+                .exceptionHandling()
+                .authenticationEntryPoint(invalidLoginException)
+                .and()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                //register filter for 2nd request ....
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+		/*.and()
+		.logout();*/
+        return http.build();
 
-	@Bean
-	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		http
-		.cors()
-		.and()
-		.csrf()
-		.disable()
-		.authorizeRequests()
-		.antMatchers(authorizedURL)
-		.permitAll()
-		.antMatchers("/admin/**").hasAnyAuthority("ROLE_ADMIN")
-		.antMatchers("/doctor/**").hasAnyAuthority("ROLE_DOCTOR","ROLE_PATIENT")
-		.antMatchers("/patient/**").hasAnyAuthority("ROLE_DOCTOR")
-		.and()
-		.formLogin()
-		.and()
-				.exceptionHandling()
-				.authenticationEntryPoint(invalidLoginException)
-				.and()
-				.sessionManagement()
-				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-				.and()
-				//register filter for 2nd request ....
-				.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-				/*.and()
-				.logout();*/
-		return http.build();
-	}
-	@Bean
-	AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
-			throws Exception {
-		return authenticationConfiguration.getAuthenticationManager();
-	}
+    }
+
+    @Bean
+    AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
+            throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
+    }
 }

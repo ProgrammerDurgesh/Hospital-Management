@@ -17,6 +17,7 @@ import com.hospitaltask.entity.Patient;
 import com.hospitaltask.exception.UserNotFoundException;
 import com.hospitaltask.repository.DoctorRepo;
 import com.hospitaltask.repository.PatientEntityRepo;
+
 @Service
 public class MyUserDetails implements UserDetailsService {
     @Autowired
@@ -26,36 +27,28 @@ public class MyUserDetails implements UserDetailsService {
     @SuppressWarnings("unused")
     private Doctor doctor;
 
-	@Override
+    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         System.out.println(username);
-        Doctor doctor=doctorRepo.findByEmail(username);
-    	Patient patient =entityRepo.findByEmail(username);
-      
-        if(doctor !=null)
-        {
-        	return new User(doctor.getEmail(), doctor.getPassword(), getAuthority(doctor,patient));
-        }
-        else if(patient != null)
-        {
-            return new User(patient.getEmail(), patient.getPassword(), getAuthority(doctor,patient));
-        }
-        else
-        {
-            throw new  UserNotFoundException("User not Found Exception");
-        }
+        Doctor doctor = doctorRepo.findByEmail(username);
+        Patient patient = entityRepo.findByEmail(username);
+
+        if (doctor != null) return new User(doctor.getEmail(), doctor.getPassword(), getAuthority(doctor, patient));
+        else if (patient != null)
+            return new User(patient.getEmail(), patient.getPassword(), getAuthority(doctor, patient));
+        else throw new UserNotFoundException("User not Found Exception");
+
     }
-    private Set<SimpleGrantedAuthority> getAuthority(Doctor doctor,Patient patient) {
-    	Set<SimpleGrantedAuthority> authorities = new HashSet<SimpleGrantedAuthority>();
-    	if(doctor !=null) {
-        SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(doctor.getRoles().getRoleName());
-        authorities.add(simpleGrantedAuthority);
-    	}
-    	else
-    	{
-    		 SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(patient.getRoles().getRoleName());
-    	        authorities.add(simpleGrantedAuthority);
-    	}
+
+    private Set<SimpleGrantedAuthority> getAuthority(Doctor doctor, Patient patient) {
+        Set<SimpleGrantedAuthority> authorities = new HashSet<SimpleGrantedAuthority>();
+        if (doctor != null) {
+            SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(doctor.getRoles().getRoleName());
+            authorities.add(simpleGrantedAuthority);
+        } else {
+            SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(patient.getRoles().getRoleName());
+            authorities.add(simpleGrantedAuthority);
+        }
         return authorities;
     }
 }

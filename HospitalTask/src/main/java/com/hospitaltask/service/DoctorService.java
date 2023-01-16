@@ -7,35 +7,44 @@ import com.hospitaltask.entity.Doctor;
 public interface DoctorService {
 
 
-
     //Add & Update Operation
 
-	Doctor addDoctor(Doctor doctor);
-    Doctor updateDoctorById(Doctor createDoctor,Long id);
-    Doctor updateDoctorByEmail(Doctor createDoctor,String email);
-    Doctor updateDoctorByName(Doctor createDoctor,String name);
+    Doctor addDoctor(Doctor doctor);
+
+    Doctor updateDoctorById(Doctor createDoctor, Long id);
+
+    Doctor updateDoctorByEmail(Doctor createDoctor, String email);
+
+    Doctor updateDoctorByName(Doctor createDoctor, String name);
 
     String loadUserByUsername(String s);
 
 
     //fetch & filter Operation
 
-     List< Doctor > getAllDoctor() ;
-     Doctor getDoctorById(Long id);
-     Doctor findByEmail(String email);
+    List<Doctor> getAllDoctor();
+
+    Doctor getDoctorById(Long id);
+
+    Doctor findByEmail(String email);
+
     List<Doctor> findByDoctorName(String doctorName);
 
 
-     //Delete Operation
+    //Delete Operation
 
-     void deleteAllDoctor();
-     void deleteDoctorById(Long id);
-     void deleteByDoctorName(String name);
-     void deleteByDoctorEmail(String email);
+    void deleteAllDoctor();
 
-     //External methods
+    void deleteDoctorById(Long id);
+
+    void deleteByDoctorName(String name);
+
+    void deleteByDoctorEmail(String email);
+
+    //External methods
 
 
-    String getPasswordByEmail( String email);
+    String getPasswordByEmail(String email);
+
     String getUsername(String username);
 }

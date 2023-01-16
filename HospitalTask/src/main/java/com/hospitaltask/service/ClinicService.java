@@ -10,12 +10,15 @@ public interface ClinicService {
     //add & Update operation
     Clinic saveClinic(Clinic clinic);
 
-    Clinic updateClinicById(Clinic clinic,Long id);
-    Clinic updateClinicByName(Clinic clinic,String name);
+    Clinic updateClinicById(Clinic clinic, Long id);
+
+    Clinic updateClinicByName(Clinic clinic, String name);
 
     //fetch & filter operation
     Clinic getClinicById(Long id) throws UserNotFoundException;
+
     List<Clinic> getAllClinic();
+
     Clinic findByClinicName(String clinicName);
 
 

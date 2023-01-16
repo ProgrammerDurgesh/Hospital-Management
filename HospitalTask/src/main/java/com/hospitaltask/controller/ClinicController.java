@@ -27,101 +27,89 @@ import javax.persistence.Id;
 @RequestMapping("/HM/clinic")
 public class ClinicController {
 
-	@Autowired
-	private ClinicService clinicService;
-	@Autowired
-	private ClinicRepo clinicRepo;
+    @Autowired
+    private ClinicService clinicService;
+    @Autowired
+    private ClinicRepo clinicRepo;
 
-	// Add & Update Clinic
-	/*
-	 * Add Clinic
-	 */
+    // Add & Update Clinic
+    //Add Clinic
 
-	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
-	@PostMapping("/save")
-	public ResponseEntity<?> saveClinic(@RequestBody Clinic clinic) {
-		Clinic clinic1 = null;
-		try
-		{
-			 clinic1 = clinicService.saveClinic(clinic);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-		if(clinic1!=null)
-		return CustomResponseHandler.response("Create successfully ", HttpStatus.CREATED, clinic1);
-		else {
-			return CustomResponseHandler.response("Resolve Error ", HttpStatus.CREATED, null);
-		}
-	}
-	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
-	@PutMapping("clinic/{id}")
-	public ResponseEntity<Clinic> updateClinicById(@RequestBody Clinic clinic, @PathVariable Long id) {
-		return new ResponseEntity<>(clinicService.updateClinicById(clinic, id), HttpStatus.OK);
-	}
-	
-	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
-	@PutMapping("clinic/name/{name}")
-	public ResponseEntity<?> updateClinicByName(@RequestBody Clinic clinic, @PathVariable String name) {
-		return CustomResponseHandler.response("Record updated ",HttpStatus.OK,clinicService.updateClinicByName(clinic, name));
-	}
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PostMapping("/save")
+    public ResponseEntity<?> saveClinic(@RequestBody Clinic clinic) {
+        Clinic clinic1 = null;
+        try {
+            clinic1 = clinicService.saveClinic(clinic);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (clinic1 != null) return CustomResponseHandler.response("Create successfully ", HttpStatus.CREATED, clinic1);
+        else {
+            return CustomResponseHandler.response("Resolve Error ", HttpStatus.CREATED, null);
+        }
+    }
 
-	/*
-	 * fetch All Clinic
-	 */
-	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
-	@GetMapping("/get-All")
-	public ResponseEntity<?> getAllClinic() {
-		return CustomResponseHandler.response("Record Found ",HttpStatus.OK,clinicService.getAllClinic());
-	}
-	/*
-	 * fetch clinic By ClinicID
-	 */
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PutMapping("clinic/{id}")
+    public ResponseEntity<Clinic> updateClinicById(@RequestBody Clinic clinic, @PathVariable Long id) {
+        return new ResponseEntity<>(clinicService.updateClinicById(clinic, id), HttpStatus.OK);
+    }
 
-	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
-	@GetMapping("/get/{id}")
-	public ResponseEntity<?> getClinicById(@PathVariable Long id) throws UserNotFoundException {
-		Clinic roles = this.clinicRepo.getClinicById(id);
-		if (roles == null)
-			return CustomResponseHandler.response("Record Not found",HttpStatus.NOT_FOUND,id);
-		return CustomResponseHandler.response("Record Found ",HttpStatus.OK,clinicService.getClinicById(id));
-	}
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PutMapping("clinic/name/{name}")
+    public ResponseEntity<?> updateClinicByName(@RequestBody Clinic clinic, @PathVariable String name) {
+        return CustomResponseHandler.response("Record updated ", HttpStatus.OK, clinicService.updateClinicByName(clinic, name));
+    }
 
-	/*
-	 * fetch clinic By ClinicName
-	 */
-	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
-	@GetMapping("get-clinicName/{clinicName}")
-	public ResponseEntity<?> findByClinicName(@PathVariable String clinicName) {
-		Clinic clinic = this.clinicRepo.findByClinicName(clinicName);
-		if (clinic == null)
-			return CustomResponseHandler.response("Record Not Found ",HttpStatus.NOT_FOUND,clinicName);
-		return CustomResponseHandler.response("Record found ",HttpStatus.OK,clinicService.findByClinicName(clinicName));
-	}
+    // fetch All Clinic
 
-	/*
-	 * Delete All Clinic
-	 */
-	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
-	@DeleteMapping("/delete-all")
-	public String deleteAllClinic() {
-		clinicService.deleteAllClinic();
-		return "Clinic Deleted ";
-	}
-	/*
-	 * Delete clinic By ClinicId
-	 */
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @GetMapping("/get-All")
+    public ResponseEntity<?> getAllClinic() {
+        return CustomResponseHandler.response("Record Found ", HttpStatus.OK, clinicService.getAllClinic());
+    }
+    // fetch clinic By ClinicID
 
-	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
-	@DeleteMapping("delete/{id}")
-	public ResponseEntity<?> deleteByClinicById(@PathVariable Long id) throws UserNotFoundException {
-		Clinic clinic = this.clinicService.getClinicById(id);
-		if (clinic==null)
-			return CustomResponseHandler.response("Record Not found ",HttpStatus.NOT_FOUND,id);
-		else {
-			clinicService.deleteClinicById(id);
-			return CustomResponseHandler.response("Record Deleted ",HttpStatus.OK, id);
-		}
-	}
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @GetMapping("/get/{id}")
+    public ResponseEntity<?> getClinicById(@PathVariable Long id) throws UserNotFoundException {
+        Clinic roles = this.clinicRepo.getClinicById(id);
+        if (roles == null)
+            return CustomResponseHandler.response("Record Not found", HttpStatus.NOT_FOUND, id);
+        return CustomResponseHandler.response("Record Found ", HttpStatus.OK, clinicService.getClinicById(id));
+    }
+
+    // fetch clinic By ClinicName
+
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @GetMapping("get-clinicName/{clinicName}")
+    public ResponseEntity<?> findByClinicName(@PathVariable String clinicName) {
+        Clinic clinic = this.clinicRepo.findByClinicName(clinicName);
+        if (clinic == null)
+            return CustomResponseHandler.response("Record Not Found ", HttpStatus.NOT_FOUND, clinicName);
+        return CustomResponseHandler.response("Record found ", HttpStatus.OK, clinicService.findByClinicName(clinicName));
+    }
+
+    // Delete All Clinic
+
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @DeleteMapping("/delete-all")
+    public String deleteAllClinic() {
+        clinicService.deleteAllClinic();
+        return "Clinic Deleted ";
+    }
+    //Delete clinic By ClinicId
+
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @DeleteMapping("delete/{id}")
+    public ResponseEntity<?> deleteByClinicById(@PathVariable Long id) throws UserNotFoundException {
+        Clinic clinic = this.clinicService.getClinicById(id);
+        if (clinic == null)
+            return CustomResponseHandler.response("Record Not found ", HttpStatus.NOT_FOUND, id);
+        else {
+            clinicService.deleteClinicById(id);
+            return CustomResponseHandler.response("Record Deleted ", HttpStatus.OK, id);
+        }
+    }
 }

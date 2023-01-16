@@ -18,50 +18,43 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import com.hospitaltask.service.MyUserDetails;
 
 @Component
-public class JwtAuthenticationFilter  extends OncePerRequestFilter {
+public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
-    private  JwtUtil jwtUtil;
+    private JwtUtil jwtUtil;
     @Autowired
     private MyUserDetails myUserDetails;
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         //get Token
         //Bearer
         //Validate
-        String requestTokenHeader =request.getHeader("Authorization");
-        String userName=null;
-        String token=null;
+        String requestTokenHeader = request.getHeader("Authorization");
+        String userName = null;
+        String token = null;
         //check null & format
-        if(requestTokenHeader!=null && requestTokenHeader.startsWith("Bearer "))
-        {
-            token=requestTokenHeader.substring(7);
-            try
-            {
+        if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
+            token = requestTokenHeader.substring(7);
+            try {
                 userName = this.jwtUtil.getUsernameFromToken(token);
                 System.out.println(userName);
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
             //get user Details
             UserDetails userDetails = this.myUserDetails.loadUserByUsername(userName);
             //security Validate
-            if(userName !=null && SecurityContextHolder.getContext().getAuthentication()==null)
-            {
+            if (userName != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-            }
-            else {
+            } else {
                 System.out.println("token not validate found");
             }
-        }
-        else
-        {
+        } else {
             System.out.println("not found ");
         }
-        filterChain.doFilter(request,response);
+        filterChain.doFilter(request, response);
     }
 }
