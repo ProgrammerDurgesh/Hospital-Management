@@ -8,6 +8,7 @@ import com.hospitaltask.repository.DoctorRepo;
 import com.hospitaltask.repository.PatientEntityRepo;
 import com.hospitaltask.response.CustomResponseHandler;
 import com.hospitaltask.service.MyUserDetails;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,10 +17,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/dur")
@@ -39,6 +37,8 @@ public class LoginController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AuthRequest authRequest) throws Exception {
+        String str=null;
+        System.out.println(str.length());
         System.out.println("Request Data    :    " + authRequest.toString());
         Authentication authenticate;
         String getPasswordByEmailFromDB = null;
@@ -65,4 +65,6 @@ public class LoginController {
             return CustomResponseHandler.response("Credential Not Found", HttpStatus.NOT_FOUND, authRequest.getUserName() + authRequest.getPassword());
         }
     }
+
+
 }

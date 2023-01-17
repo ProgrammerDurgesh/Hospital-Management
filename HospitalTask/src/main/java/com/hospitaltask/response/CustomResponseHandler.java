@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Component
-public class CustomResponseHandler {
+public class CustomResponseHandler extends  Exception{
 
     public static ResponseEntity<Object> response(String message, HttpStatus httpStatus, Object object) {
         Map<String, Object> map = new HashMap<>();

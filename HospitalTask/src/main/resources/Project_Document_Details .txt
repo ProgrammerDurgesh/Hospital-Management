@@ -117,36 +117,3 @@ deletePatientByName(String name);
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Update Doctor JSON
-{
-  "doctorId": 11,
-  "doctorName": "Kajal",
-  "email": "Poyitri@gmail.com",
-  "password": "Poyitri@123",
-  "specialization": "Neuro",
-  "experience": "11",
-  "address": "Ranchi",
-  "clinic": {
-    "id": 3
-  },
-  "roles": {
-    "id": 2
-  }
-}

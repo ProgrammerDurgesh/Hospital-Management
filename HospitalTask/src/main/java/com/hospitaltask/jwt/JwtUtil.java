@@ -3,6 +3,7 @@ package com.hospitaltask.jwt;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springdoc.core.GenericResponseService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,7 @@ public class JwtUtil {
     public static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60;
     private String SECRET_KEY = "secret";
 
+    Date expirationTime=new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10);
     public String getUsernameFromToken(String token) {
         return getClaimFromToken(token, Claims::getSubject);
     }
@@ -45,7 +47,7 @@ public class JwtUtil {
     private String createToken(Map<String, Object> claims, String subject) {
 
         return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
+                .setExpiration(expirationTime)
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
     }
 

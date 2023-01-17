@@ -5,18 +5,12 @@ import java.util.List;
 import javax.annotation.security.RolesAllowed;
 
 import com.hospitaltask.response.CustomResponseHandler;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.hospitaltask.entity.Doctor;
 import com.hospitaltask.exception.UserNotFoundException;
@@ -90,7 +84,14 @@ public class DoctorController {
     @PreAuthorize("hasAuthority('ROLE_DOCTOR') or hasAuthority('ROLE_ADMIN')")
     @GetMapping("/get-id/{id}")
     public ResponseEntity<?> getDoctorByID(@PathVariable Long id) {
-        Doctor doctor = this.doctorRepo.findById(id).orElse(null);
+        Doctor doctor=null;
+        try {
+             doctor = this.doctorRepo.findById(id).orElse(null);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
         if (doctor == null) return CustomResponseHandler.response(RECORD_NOT_FOUND, HttpStatus.NOT_FOUND, id);
         return CustomResponseHandler.response("Record Found Success", HttpStatus.OK, this.doctorService.getDoctorById(id));
     }
@@ -160,4 +161,5 @@ public class DoctorController {
             return CustomResponseHandler.response("Record Deleted", HttpStatus.OK, id);
         }
     }
+
 }

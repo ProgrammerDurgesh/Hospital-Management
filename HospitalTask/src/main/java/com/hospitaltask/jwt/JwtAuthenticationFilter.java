@@ -7,7 +7,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.hospitaltask.response.CustomResponseHandler;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,6 +26,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     private MyUserDetails myUserDetails;
 
+
+    private  UserDetails userDetails;
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         //get Token
@@ -35,12 +39,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         //check null & format
         if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
             token = requestTokenHeader.substring(7);
-            try {
                 userName = this.jwtUtil.getUsernameFromToken(token);
-                System.out.println(userName);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
 
             //get user Details
             UserDetails userDetails = this.myUserDetails.loadUserByUsername(userName);
