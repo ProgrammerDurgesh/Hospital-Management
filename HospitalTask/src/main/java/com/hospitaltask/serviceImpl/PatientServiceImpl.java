@@ -3,10 +3,10 @@ package com.hospitaltask.serviceImpl;
 import com.hospitaltask.entity.*;
 import com.hospitaltask.repository.*;
 import com.hospitaltask.service.PatientService;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -20,7 +20,7 @@ public class PatientServiceImpl implements PatientService {
 
     // Add & Update Operation
     @Override
-    public Patient save(Patient patient) {
+    public Patient save(@NotNull Patient patient) {
         Patient save = null;
         Patient email = patientRepo.findByEmail(patient.getEmail());
         if (email == null) {

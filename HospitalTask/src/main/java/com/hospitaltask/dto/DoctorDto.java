@@ -11,7 +11,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class DoctorDto
 {
-
     private String doctorName;
     private String email;
     private String password;

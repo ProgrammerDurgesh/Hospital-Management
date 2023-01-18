@@ -1,15 +1,15 @@
 package com.hospitaltask.controller;
 
-import com.hospitaltask.entity.*;
+import com.hospitaltask.entity.Roles;
 import com.hospitaltask.repository.RoleRepo;
 import com.hospitaltask.response.CustomResponseHandler;
-import com.hospitaltask.service.*;
+import com.hospitaltask.service.RoleService;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -24,7 +24,7 @@ public class RoleController {
 
     //add & Update Controller
     @PostMapping("/save")
-    public ResponseEntity<?> addRoles(@RequestBody Roles roles) {
+    public ResponseEntity<?> addRoles(@RequestBody @NotNull Roles roles) {
         String roleName = roleRepo.getRoleName(roles.getRoleName());
         if (roleName != null)
             return CustomResponseHandler.response("Role Already exist", HttpStatus.ALREADY_REPORTED, roles);

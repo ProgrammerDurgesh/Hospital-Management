@@ -1,22 +1,20 @@
 package com.hospitaltask.controller;
 
-import java.util.List;
-import java.util.Optional;
-
-import com.hospitaltask.response.CustomResponseHandler;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.parameters.P;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-
 import com.hospitaltask.entity.Doctor;
 import com.hospitaltask.entity.Patient;
 import com.hospitaltask.repository.DoctorRepo;
 import com.hospitaltask.repository.PatientEntityRepo;
+import com.hospitaltask.response.CustomResponseHandler;
 import com.hospitaltask.service.PatientService;
+import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/patient")
@@ -32,21 +30,24 @@ public class PatientController {
 	//Add & Update Patient operation
 	@PreAuthorize("hasAuthority('ROLE_DOCTOR')")
 	@PostMapping("/save")
-	public ResponseEntity<?> save(@RequestBody Patient patient) {
+	public ResponseEntity<?> save(@RequestBody @NotNull Patient patient) {
 		String exceptionShow=null;
 		Doctor doctor1 = patient.getDoctor();
 		Optional<Doctor> doctor=doctorRepo.findById(doctor1.getDoctorId());
 		if(doctor.isEmpty()) {
 			exceptionShow = "Doctor Not found";
-		return  new ResponseEntity<>(exceptionShow,HttpStatus.NOT_FOUND);
+			return CustomResponseHandler.response("Doctor Not found ",HttpStatus.NOT_FOUND,doctor);
 		}
 		Patient patient1 = patientService.findByEmail(patient.getEmail());
 		if(patient1 !=null)
 		{
 			exceptionShow="Email Already Exists";
-			return new ResponseEntity<>(exceptionShow, HttpStatus.CREATED);
+			return CustomResponseHandler.response("Email Already Exists ",HttpStatus.OK,patient.getEmail());
 		}
-		return new ResponseEntity<>(patientService.save(patient), HttpStatus.CREATED);
+		else {
+			Patient save = patientService.save(patient);
+			return CustomResponseHandler.response("Data Saved ",HttpStatus.CREATED,save);
+		}
 	}
 	// TODO Under process.....
 	@PreAuthorize("hasAuthority('ROLE_DOCTOR')")
@@ -55,7 +56,7 @@ public class PatientController {
 		Patient patientUpdate = patientService.updatePatientById(patient, id);
 		if (patientUpdate == null)
 			return CustomResponseHandler.response("Record Not  Found ",HttpStatus.NOT_FOUND,id);
-		return CustomResponseHandler.response("created successfully",HttpStatus.CREATED,patientService.updatePatientById(patient, id));
+		return CustomResponseHandler.response("Record Update successfully",HttpStatus.OK,patientService.updatePatientById(patient, id));
 	}
 	 //fetch & filter Patient
 	@PreAuthorize("hasAuthority('ROLE_DOCTOR')")
@@ -77,13 +78,16 @@ public class PatientController {
 		return  CustomResponseHandler.response("Record Found Success",HttpStatus.OK,patientService.getPatientById(id));
 	}
 	//TODo under working .........
-/*
+
 	@PreAuthorize("hasAuthority('ROLE_DOCTOR') or hasAuthority('ROLE_ADMIN,ROLE_PATIENT')")
 	@GetMapping({"/patient/email/{email}","p-email/{email}"})
-	public ResponseEntity<Patient> findByEmail(@PathVariable String email) {
-		return new ResponseEntity<>(patientService.findByEmail(email), HttpStatus.OK);
+	public ResponseEntity<?> findByEmail(@PathVariable String email) {
+		Patient byEmail = patientService.findByEmail(email);
+		if(byEmail !=null)
+			return CustomResponseHandler.response("Record Found Success",HttpStatus.OK,byEmail);
+		return CustomResponseHandler.response("Record Not Found",HttpStatus.NOT_FOUND,email);
 	}
-*/
+
 
 	 // Fetch patient By Name
 	@PreAuthorize("hasAuthority('ROLE_DOCTOR') or hasAuthority('ROLE_ADMIN,ROLE_PATIENT')") 

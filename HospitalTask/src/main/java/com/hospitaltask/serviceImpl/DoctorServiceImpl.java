@@ -2,11 +2,11 @@ package com.hospitaltask.serviceImpl;
 
 import java.util.List;
 
+import org.jetbrains.annotations.NotNull;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import com.hospitaltask.dto.DoctorDto;
 import com.hospitaltask.entity.Doctor;
 import com.hospitaltask.repository.DoctorRepo;
@@ -28,7 +28,7 @@ public class DoctorServiceImpl implements DoctorService {
 
     // Add & Update Operation
     @Override
-    public Doctor addDoctor(Doctor dto) {
+    public Doctor addDoctor(@NotNull Doctor dto) {
 
         dto.setPassword(passwordEncoder.encode(dto.getPassword()));
         return this.doctorRepo.save(dto);
@@ -135,7 +135,7 @@ public class DoctorServiceImpl implements DoctorService {
 
 
     //Update repeated value in one method
-    public Doctor updateMethod(Doctor doctor) {
+    public Doctor updateMethod(@NotNull Doctor doctor) {
 
         Doctor doctorSave = new Doctor();
         doctorSave.setDoctorName(doctor.getDoctorName());

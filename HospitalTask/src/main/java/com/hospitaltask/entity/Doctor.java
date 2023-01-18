@@ -17,36 +17,32 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table( name="tbl_doctor" )
+@Table(name = "tbl_doctor")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class Doctor {
 
+    @Column(name = "doctor_joining_date")
+    private final Date createdDate = Calendar.getInstance().getTime();
     @Id
-    @Column(name="doctorId")
-    @GeneratedValue( strategy=GenerationType.AUTO )
+    @Column(name = "doctorId")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long doctorId;
     private String doctorName;
-    @Column(unique=true,nullable=false,length=35 )
+    @Column(unique = true, nullable = false, length = 35)
     private String email;
     private String password;
     private String specialization;
     private String experience;
     private String address;
-
-    @Column(name="doctor_joining_date")
-    private final  Date createdDate = Calendar.getInstance().getTime();
-
     @ManyToOne
-    @JoinColumn( name="clinic_id" ,nullable=false)
+    @JoinColumn(name = "clinic_id", nullable = false)
     private Clinic clinic;
 
-
     @ManyToOne
-        @JoinColumn( name="role_id" ,nullable=false,updatable =true)
+    @JoinColumn(name = "role_id", nullable = false, updatable = true)
     private Roles roles;
-
 
 
 }

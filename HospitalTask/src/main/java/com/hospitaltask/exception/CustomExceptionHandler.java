@@ -5,10 +5,16 @@ import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.SignatureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.web.firewall.RequestRejectedException;
+import org.springframework.web.bind.MissingPathVariableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+
+import java.sql.SQLIntegrityConstraintViolationException;
 
 @ControllerAdvice
 public class CustomExceptionHandler {
@@ -51,5 +57,28 @@ public class CustomExceptionHandler {
     }
 
 
+    @ExceptionHandler(value = SQLIntegrityConstraintViolationException.class)
+    public ResponseEntity<?> sqlException() {
+        return CustomResponseHandler.response("Record Already Exist", HttpStatus.INTERNAL_SERVER_ERROR, "SQL Error");
+    }
+
+    @ExceptionHandler(value = AccessDeniedException.class)
+    public ResponseEntity<?> accessDeniedException() {
+        return CustomResponseHandler.response("Login first", HttpStatus.UNAUTHORIZED, "401");
+    }
+    @ExceptionHandler(value = MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<?> methodArgumentTypeMismatchException() {
+        return CustomResponseHandler.response("Enter Valid Data", HttpStatus.BAD_REQUEST, "401");
+    }
+
+    @ExceptionHandler(value = org.springframework.security.web.firewall.RequestRejectedException.class)
+    public ResponseEntity<?> requestRejectedException() {
+        return CustomResponseHandler.response("Remove Extra Slas in URL(URL NOT VALID)", HttpStatus.INTERNAL_SERVER_ERROR, "500");
+    }
+
+    @ExceptionHandler(value = MissingPathVariableException.class)
+    public ResponseEntity<?> missingPathVariableException() {
+        return CustomResponseHandler.response("@PathVariable Incorrect", HttpStatus.INTERNAL_SERVER_ERROR, "500");
+    }
 
 }

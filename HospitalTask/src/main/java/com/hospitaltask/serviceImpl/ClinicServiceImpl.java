@@ -3,9 +3,9 @@ package com.hospitaltask.serviceImpl;
 import java.util.List;
 import java.util.Objects;
 
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.hospitaltask.entity.Clinic;
 import com.hospitaltask.exception.UserNotFoundException;
 import com.hospitaltask.repository.ClinicRepo;
@@ -23,7 +23,7 @@ public class ClinicServiceImpl implements ClinicService {
     }
 
     @Override
-    public Clinic updateClinicById(Clinic clinic, Long id) {
+    public Clinic updateClinicById(@NotNull Clinic clinic, Long id) {
         Clinic clinic1 = clinicRepo.findById(id).get();
 
         if (Objects.nonNull(clinic.getClinicName()) && !"".equalsIgnoreCase(clinic.getClinicName())) {
@@ -40,7 +40,7 @@ public class ClinicServiceImpl implements ClinicService {
     }
 
     @Override
-    public Clinic updateClinicByName(Clinic clinic, String name) {
+    public Clinic updateClinicByName(@NotNull Clinic clinic, String name) {
         Clinic clinic1 = clinicRepo.findByClinicName(name);
 
         if (Objects.nonNull(clinic.getClinicName()) && !"".equalsIgnoreCase(clinic.getClinicName())) {

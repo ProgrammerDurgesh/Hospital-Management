@@ -1,5 +1,6 @@
 package com.hospitaltask.controller;
 
+import com.hospitaltask.dto.SuperUserDto;
 import com.hospitaltask.entity.SuperAdmin;
 import com.hospitaltask.repository.SuperAdminRepo;
 import com.hospitaltask.response.CustomResponseHandler;
@@ -23,48 +24,43 @@ public class SuperAdminController {
 
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PostMapping("/save")
-    public ResponseEntity<?> save(@RequestBody SuperAdmin superAdmin) {
+    public ResponseEntity<?> save(@RequestBody SuperUserDto superAdmin) {
         SuperAdmin superAdmin1 = superAdminService.save(superAdmin);
-        if (superAdmin1 != null)
-            return CustomResponseHandler.response("Record Save", HttpStatus.CREATED, superAdmin1);
+        if (superAdmin1 != null) return CustomResponseHandler.response("Record Save", HttpStatus.CREATED, superAdmin1);
         return CustomResponseHandler.response("Enter Valid Information", HttpStatus.BAD_REQUEST, superAdmin);
     }
 
+    //TODO .... Under Process.....
     @PutMapping("/update/{id}")
     public ResponseEntity<?> update(@RequestBody SuperAdmin data, Long id) {
         SuperAdmin findData = superAdminRepo.findById(id).orElse(null);
-        if (findData == null)
-            return CustomResponseHandler.response("Enter Valid Id", HttpStatus.NOT_FOUND, id);
-        else
-            superAdminService.update(data, id);
+        if (findData == null) return CustomResponseHandler.response("Enter Valid Id", HttpStatus.NOT_FOUND, id);
+        else superAdminService.update(data, id);
         return CustomResponseHandler.response("Record Updated ", HttpStatus.OK, data);
     }
-
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping("/getID/{id}")
     public ResponseEntity<?> findById(@PathVariable Long id) {
         SuperAdmin superAdmin = superAdminService.findById(id);
-        if (superAdmin != null)
-            return CustomResponseHandler.response("Record Found", HttpStatus.OK, superAdmin);
+        if (superAdmin != null) return CustomResponseHandler.response("Record Found", HttpStatus.OK, superAdmin);
         return CustomResponseHandler.response("Record Not Found", HttpStatus.NOT_FOUND, id);
     }
-
-    @GetMapping("/get/{id}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @GetMapping("/get/{email}")
     public ResponseEntity<?> findByEmail(@PathVariable String email) {
         SuperAdmin superAdmin = superAdminService.findByEmail(email);
-        if (superAdmin != null)
-            return CustomResponseHandler.response("Record Found", HttpStatus.OK, superAdmin);
+        if (superAdmin != null) return CustomResponseHandler.response("Record Found", HttpStatus.OK, superAdmin);
         return CustomResponseHandler.response("Record Not Found", HttpStatus.NOT_FOUND, email);
     }
-
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping("/get/all")
     public ResponseEntity<?> findAll() {
         List<SuperAdmin> superAdmins = superAdminService.findAll();
         if (superAdmins != null)
-            return CustomResponseHandler.response("Record Founded " + "All User   " + superAdmins.size()
-                    , HttpStatus.OK, superAdmins);
+            return CustomResponseHandler.response("Record Found " + "All User   " + superAdmins.size(), HttpStatus.OK, superAdmins);
         return CustomResponseHandler.response("Record Not Found", HttpStatus.NOT_FOUND, "null");
     }
-
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @DeleteMapping("deleteId/{id}")
     public ResponseEntity<?> deleteById(@PathVariable Long id) {
         SuperAdmin superAdmin = superAdminService.findById(id);
@@ -74,7 +70,7 @@ public class SuperAdminController {
         }
         return CustomResponseHandler.response("Record Not Found", HttpStatus.NOT_FOUND, id);
     }
-
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @DeleteMapping("delete/{id}")
     public ResponseEntity<?> deleteByEmail(@PathVariable String id) {
         SuperAdmin superAdmin = superAdminService.findByEmail(id);

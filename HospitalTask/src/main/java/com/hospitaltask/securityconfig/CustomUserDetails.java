@@ -1,23 +1,23 @@
 package com.hospitaltask.securityconfig;
 
-import java.util.Collection;
-import java.util.List;
-
+import com.hospitaltask.entity.Doctor;
+import com.hospitaltask.entity.Patient;
+import com.hospitaltask.entity.SuperAdmin;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import com.hospitaltask.entity.Doctor;
-import com.hospitaltask.entity.Patient;
+import java.util.Collection;
+import java.util.List;
 
+//Provide User Details in UserDetails Class & Authorities
 public class CustomUserDetails implements UserDetails {
 
     private static final long serialVersionUID = 1L;
     String userPassword = null, userName = null, roleNameByRoleId;
 
-    public CustomUserDetails(Doctor doctor, Patient patient) {
+    public CustomUserDetails(Doctor doctor, Patient patient, SuperAdmin superAdmin) {
+
         if (doctor != null) {
             userName = doctor.getEmail();
             userPassword = doctor.getPassword();
@@ -27,6 +27,12 @@ public class CustomUserDetails implements UserDetails {
             userName = patient.getEmail();
             userPassword = patient.getPassword();
             roleNameByRoleId = patient.getRoles().getRoleName();
+        }
+        if (superAdmin != null) {
+
+            userName = superAdmin.getEmail();
+            userPassword = superAdmin.getPassword();
+            roleNameByRoleId = superAdmin.getRoles().getRoleName();
         }
     }
 

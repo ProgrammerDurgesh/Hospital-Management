@@ -20,7 +20,6 @@ public class HospitalTaskApplication {
         SpringApplication.run(HospitalTaskApplication.class, args);
         System.out.println("This is Hospital Management");
     }
-
     @Bean
     public ModelMapper mapper() {
         return new ModelMapper();

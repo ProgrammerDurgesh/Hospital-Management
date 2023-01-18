@@ -1,21 +1,19 @@
 package com.hospitaltask.controller;
 
-import java.util.List;
-
-import javax.annotation.security.RolesAllowed;
-
+import com.hospitaltask.entity.Doctor;
+import com.hospitaltask.exception.UserNotFoundException;
+import com.hospitaltask.repository.DoctorRepo;
 import com.hospitaltask.response.CustomResponseHandler;
-import io.jsonwebtoken.ExpiredJwtException;
+import com.hospitaltask.service.DoctorService;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import com.hospitaltask.entity.Doctor;
-import com.hospitaltask.exception.UserNotFoundException;
-import com.hospitaltask.repository.DoctorRepo;
-import com.hospitaltask.service.DoctorService;
+import javax.annotation.security.RolesAllowed;
+import java.util.List;
 
 @RestController
 @RequestMapping("/doctor")
@@ -31,7 +29,7 @@ public class DoctorController {
 
     @RolesAllowed("ROLE_ADMIN")
     @PostMapping("/save")
-    public ResponseEntity<?> addDoctor(@RequestBody Doctor doctor) {
+    public ResponseEntity<?> addDoctor(@RequestBody @NotNull Doctor doctor) {
         String email = doctorRepo.getEmailByEmai(doctor.getEmail());
         if (email != null)
             return CustomResponseHandler.response("Email already exist", HttpStatus.OK, doctor.getEmail());
@@ -57,7 +55,7 @@ public class DoctorController {
             doctorService.updateDoctorByEmail(doctor, email);
             return new ResponseEntity<>("Doctor Update By :  " + email + doctor.getEmail(), HttpStatus.OK);
         } else
-            return new ResponseEntity<>("Doctor Not Availeble This Email :" + email, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Doctor Not Available This Email :" + email, HttpStatus.NOT_FOUND);
     }
 
     @PutMapping("/save-name/{name}")
@@ -67,9 +65,10 @@ public class DoctorController {
             doctorService.updateDoctorByEmail(doctor, name);
             return new ResponseEntity<>("Doctor Update By :  " + name + doctor.getEmail(), HttpStatus.OK);
         } else
-            return new ResponseEntity<>("Doctor Not Availeble This Email :" + name, HttpStatus.NOT_FOUND);
-    }
-*/
+            return new ResponseEntity<>("Doctor Not Available This Email :" + name, HttpStatus.NOT_FOUND);
+         }
+    */
+
     // fetch All Doctor
     @PreAuthorize("hasAuthority('ROLE_DOCTOR') or hasAuthority('ROLE_ADMIN')or hasAuthority('ROLE_PATIENT')")
     @GetMapping("/All")
@@ -84,12 +83,10 @@ public class DoctorController {
     @PreAuthorize("hasAuthority('ROLE_DOCTOR') or hasAuthority('ROLE_ADMIN')")
     @GetMapping("/get-id/{id}")
     public ResponseEntity<?> getDoctorByID(@PathVariable Long id) {
-        Doctor doctor=null;
+        Doctor doctor = null;
         try {
-             doctor = this.doctorRepo.findById(id).orElse(null);
-        }
-        catch (Exception e)
-        {
+            doctor = this.doctorRepo.findById(id).orElse(null);
+        } catch (Exception e) {
             e.printStackTrace();
         }
         if (doctor == null) return CustomResponseHandler.response(RECORD_NOT_FOUND, HttpStatus.NOT_FOUND, id);

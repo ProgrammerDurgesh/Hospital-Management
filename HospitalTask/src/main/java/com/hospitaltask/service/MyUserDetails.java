@@ -4,6 +4,9 @@ package com.hospitaltask.service;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.hospitaltask.entity.SuperAdmin;
+import com.hospitaltask.repository.SuperAdminRepo;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -11,7 +14,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
 import com.hospitaltask.entity.Doctor;
 import com.hospitaltask.entity.Patient;
 import com.hospitaltask.exception.UserNotFoundException;
@@ -27,26 +29,35 @@ public class MyUserDetails implements UserDetailsService {
     @SuppressWarnings("unused")
     private Doctor doctor;
 
+    @Autowired
+    private SuperAdminRepo superAdminRepo;
+
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) {
         System.out.println(username);
         Doctor doctor = doctorRepo.findByEmail(username);
         Patient patient = entityRepo.findByEmail(username);
-
-        if (doctor != null) return new User(doctor.getEmail(), doctor.getPassword(), getAuthority(doctor, patient));
+        SuperAdmin superAdmin = superAdminRepo.findByEmail(username);
+        if (doctor != null)
+            return new User(doctor.getEmail(), doctor.getPassword(), getAuthority(doctor, patient, superAdmin));
         else if (patient != null)
-            return new User(patient.getEmail(), patient.getPassword(), getAuthority(doctor, patient));
+            return new User(patient.getEmail(), patient.getPassword(), getAuthority(doctor, patient, superAdmin));
+        else if (superAdmin != null)
+            return new User(superAdmin.getEmail(), superAdmin.getPassword(), getAuthority(doctor, patient, superAdmin));
         else throw new UserNotFoundException("User not Found Exception");
 
     }
 
-    private Set<SimpleGrantedAuthority> getAuthority(Doctor doctor, Patient patient) {
+    private @NotNull Set<SimpleGrantedAuthority> getAuthority(Doctor doctor, Patient patient, SuperAdmin superAdmin) {
         Set<SimpleGrantedAuthority> authorities = new HashSet<SimpleGrantedAuthority>();
         if (doctor != null) {
             SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(doctor.getRoles().getRoleName());
             authorities.add(simpleGrantedAuthority);
-        } else {
+        } else if (patient != null) {
             SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(patient.getRoles().getRoleName());
+            authorities.add(simpleGrantedAuthority);
+        } else {
+            SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(superAdmin.getRoles().getRoleName());
             authorities.add(simpleGrantedAuthority);
         }
         return authorities;

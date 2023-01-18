@@ -9,28 +9,25 @@ import java.util.Calendar;
 import java.util.Date;
 
 @Entity
-@Table ( name = "tbl_Patient" )
+@Table(name = "tbl_Patient")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Patient{
+public class Patient {
+    @Column(name = "patient_admitted_Date")
+    private final Date createdDate = Calendar.getInstance().getTime();
     @Id
-    @GeneratedValue ( strategy = GenerationType.SEQUENCE )
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
-
-    @Column ( name = "patientEmail" )
+    @Column(name = "patientEmail")
     private String email;
     private String password, name, age, bloodGroup, illness;
-
-    @Column(name="patient_admitted_Date")
-    private final Date createdDate = Calendar.getInstance().getTime();
+    @ManyToOne
+    @JoinColumn(name = "doctor_id")
+    private Doctor doctor;
 
     @ManyToOne
-    @JoinColumn( name="doctor_id" )
-    private  Doctor doctor;
-
-    @ManyToOne
-    @JoinColumn(name ="role_id")
+    @JoinColumn(name = "role_id")
     private Roles roles;
 
 }
