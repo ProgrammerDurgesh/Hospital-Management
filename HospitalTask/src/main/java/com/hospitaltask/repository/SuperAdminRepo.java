@@ -1,8 +1,8 @@
 package com.hospitaltask.repository;
 
 import com.hospitaltask.entity.SuperAdmin;
+import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -16,10 +16,10 @@ public interface SuperAdminRepo extends JpaRepository<SuperAdmin, Long> {
     //    @Query(value = " select * from tbl_super_user",nativeQuery = true)
     @Query(value = " select * from tbl_super_user where flag=true", nativeQuery = true)
     List<SuperAdmin> findAll();
-
+    @Query(value = "select * from tbl_super_user where email=:email",nativeQuery = true)
     SuperAdmin findByEmail(String email);
 
-    @Query(value = "update tbl_super_user set flag=false where id=1",nativeQuery=true)
+   /* @Query(value = "update tbl_super_user set flag=false where id=1",nativeQuery=true)
     void disableById(long id);
     @Modifying
     @Query(value = "update SuperAdmin sa set sa.flag=true where sa.id=:id")
@@ -30,6 +30,6 @@ public interface SuperAdminRepo extends JpaRepository<SuperAdmin, Long> {
 
     @Query(value = "update tbl_super_user set flag=true where email=:id",nativeQuery=true)
     void enableByEmail(String id);
-
+*/
 
 }

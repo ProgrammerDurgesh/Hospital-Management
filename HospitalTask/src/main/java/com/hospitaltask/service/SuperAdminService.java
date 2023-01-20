@@ -17,7 +17,7 @@ public interface SuperAdminService {
 
     List<SuperAdmin> findAll();
 
-    Optional<SuperAdmin> disableById(long id);
+    SuperAdmin disableById(long id);
     SuperAdmin enableById(long id);
     SuperAdmin disableByEmail(String id);
     SuperAdmin enableByEmail(String id);

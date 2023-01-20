@@ -62,7 +62,7 @@ public class SuperAdminController {
         return CustomResponseHandler.response("Record Not Found", HttpStatus.NOT_FOUND, "null");
     }
 
-    @DeleteMapping("disableById/{id}")
+    @PutMapping("disableById/{id}")
     public ResponseEntity<?> disableById(@PathVariable Long id) {
         SuperAdmin superAdmin = superAdminService.findById(id);
         if (superAdmin != null) {
@@ -75,7 +75,10 @@ public class SuperAdminController {
     @PutMapping("enableById/{id}")
     public ResponseEntity<?> enableById(@PathVariable Long id) {
         SuperAdmin superAdmin = superAdminService.findById(id);
-        if (superAdmin != null) superAdminService.enableById(id);
+        if (superAdmin != null) {
+            SuperAdmin superAdmin1 = superAdminService.enableById(id);
+            return CustomResponseHandler.response("Update Successfully ", HttpStatus.OK, id);
+        }
         return CustomResponseHandler.response("Record Not Found", HttpStatus.NOT_FOUND, id);
     }
 

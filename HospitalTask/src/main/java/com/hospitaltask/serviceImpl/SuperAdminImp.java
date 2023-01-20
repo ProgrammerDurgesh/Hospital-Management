@@ -11,17 +11,38 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class SuperAdminImp implements SuperAdminService {
 
+    SuperAdmin superAdmin = null;
     @Autowired
     private ModelMapper modelMapper;
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     @Autowired
     private SuperAdminRepo superAdminRepo;
+
+    public SuperAdmin enable(long idL, String id) {
+        if (idL >= 0 && id.isBlank())
+            superAdmin = superAdminRepo.findById(idL).get();
+        else
+            superAdmin = superAdminRepo.findByEmail(id);
+
+        superAdmin.setFlag(true);
+        superAdminRepo.save(superAdmin);
+        return superAdmin;
+    }
+    public SuperAdmin disable(long idL, String id) {
+        if (idL == 0 && id.isBlank())
+            superAdmin = superAdminRepo.findById(idL).get();
+        else
+            superAdmin = superAdminRepo.findByEmail(id);
+
+        superAdmin.setFlag(false);
+        superAdminRepo.save(superAdmin);
+        return superAdmin;
+    }
 
     public SuperAdmin dtoToSuperUser(SuperUserDto superUserDto) {
         SuperAdmin superAdmin = this.modelMapper.map(superUserDto, SuperAdmin.class);
@@ -65,38 +86,27 @@ public class SuperAdminImp implements SuperAdminService {
     }
 
     @Override
-    public Optional<SuperAdmin> disableById(long id) {
-        try {
-            superAdminRepo.disableById(id);
-        }catch (Exception e)
-        {
-
-            e.printStackTrace();
-        }
-        return superAdminRepo.findById(id);
+    public SuperAdmin disableById(long id) {
+        SuperAdmin superAdmin1 = disable(id, null);
+        return superAdmin1;
     }
 
     @Override
     public SuperAdmin enableById(long id) {
-            try {
-               superAdminRepo.enableById(id);
-            }catch (Exception e)
-            {
-                e.printStackTrace();
-            }
-        return superAdminRepo.findById(id).get();
+        SuperAdmin superAdmin1 = enable(id, null);
+        return superAdmin1;
     }
 
     //TODO ....Delete By Email.....
     @Override
     public SuperAdmin disableByEmail(String id) {
-      superAdminRepo.disableByEmail(id);
-        return null;
+        SuperAdmin superAdmin1 = disable(0, id);
+        return superAdmin1;
     }
 
     @Override
     public SuperAdmin enableByEmail(String id) {
-         superAdminRepo.enableByEmail(id);
-        return null;
+        SuperAdmin superAdmin1 = enable(0, id);
+        return superAdmin1;
     }
 }
