@@ -2,6 +2,7 @@ package com.hospitaltask.serviceImpl;
 
 import java.util.List;
 
+import com.hospitaltask.entity.SuperAdmin;
 import org.jetbrains.annotations.NotNull;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ public class DoctorServiceImpl implements DoctorService {
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
     private ModelMapper modelMapper;
-
+    Doctor doctor = null;
     Doctor dtoToDoctor(DoctorDto doctorDto) {
         Doctor doctor = this.modelMapper.map(doctorDto, Doctor.class);
         return doctor;
@@ -133,6 +134,32 @@ public class DoctorServiceImpl implements DoctorService {
         if (!doctor.equals(null)) doctorRepo.deleteById(doctor.getDoctorId());
     }
 
+    @Override
+    public Doctor disableById(long id) {
+        Doctor Doctor = disable(id, null);
+        return Doctor;
+    }
+
+    @Override
+    public Doctor enableById(long id) {
+        Doctor doctor1 = enable(id, null);
+        return doctor1;
+    }
+
+    //TODO ....Delete By Email.....
+    @Override
+    public Doctor disableByEmail(String id) {
+        Doctor doctor1 = disable(0, id);
+        return doctor1;
+    }
+
+    @Override
+    public Doctor enableByEmail(String id) {
+        Doctor doctor1 = enable(0, id);
+        return doctor1;
+    }
+
+
 
     //Update repeated value in one method
     public Doctor updateMethod(@NotNull Doctor doctor) {
@@ -149,5 +176,26 @@ public class DoctorServiceImpl implements DoctorService {
         Doctor save = doctorRepo.save(doctorSave);
         return save;
     }
+
+    public Doctor enable(long idL, String id) {
+        if (idL > 0 && id==null)
+            doctor = getDoctorById(idL);
+        else
+            doctor = doctorRepo.findByEmail(id);
+        doctor.setFlag(true);
+        doctorRepo.save(doctor);
+        return doctor;
+    }
+    public Doctor disable(long idL, String id) {
+        if (idL > 0 && id==null)
+            doctor = getDoctorById(idL);
+        else
+            doctor = doctorRepo.findByEmail(id);
+        doctor.setFlag(false);
+        doctorRepo.save(doctor);
+        return doctor;
+    }
+
+
 
 }

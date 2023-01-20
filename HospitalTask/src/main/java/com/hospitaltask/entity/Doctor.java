@@ -33,7 +33,7 @@ public class Doctor {
     @Column(unique = true, nullable = false, length = 35)
     private String email;
     private String password;
-    private final boolean flag=true;
+    private  boolean flag=true;
     private String specialization;
     private String experience;
     private String address;

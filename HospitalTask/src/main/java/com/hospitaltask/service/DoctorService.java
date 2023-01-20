@@ -3,6 +3,7 @@ package com.hospitaltask.service;
 import java.util.List;
 
 import com.hospitaltask.entity.Doctor;
+import com.hospitaltask.entity.SuperAdmin;
 
 public interface DoctorService {
 
@@ -47,4 +48,11 @@ public interface DoctorService {
     String getPasswordByEmail(String email);
 
     String getUsername(String username);
+
+
+    //Enable & disable
+    Doctor disableById(long id);
+    Doctor enableById(long id);
+    Doctor disableByEmail(String id);
+    Doctor enableByEmail(String id);
 }

@@ -12,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.security.RolesAllowed;
 import java.util.List;
 
 @RestController
@@ -157,6 +156,46 @@ public class DoctorController {
             doctorService.deleteDoctorById(doctor.getDoctorId());
             return CustomResponseHandler.response("Record Deleted", HttpStatus.OK, id);
         }
+    }
+
+    @PutMapping("disableById/{id}")
+    public ResponseEntity<?> disableById(@PathVariable Long id) {
+        Doctor doctor = doctorService.getDoctorById(id);
+        if (doctor != null) {
+            doctorService.disableById(id);
+            return CustomResponseHandler.response("Record disable ", HttpStatus.OK, id);
+        }
+        return CustomResponseHandler.response("Record Not Found", HttpStatus.NOT_FOUND, id);
+    }
+
+    @PutMapping("enableById/{id}")
+    public ResponseEntity<?> enableById(@PathVariable Long id) {
+        Doctor doctor = doctorService.getDoctorById(id);
+        if (doctor != null) {
+            doctorService.enableById(id);
+            return CustomResponseHandler.response("Update Successfully ", HttpStatus.OK, id);
+        }
+        return CustomResponseHandler.response("Record Not Found", HttpStatus.NOT_FOUND, id);
+    }
+
+    @PutMapping("disableByEmail/{id}")
+    public ResponseEntity<?> disableByEmail(@PathVariable String id) {
+        Doctor doctor = doctorService.findByEmail(id);
+        if (doctor != null) {
+            doctorService.disableByEmail(id);
+            return CustomResponseHandler.response("Record disable ", HttpStatus.OK, id);
+        }
+        return CustomResponseHandler.response("Record Not Found", HttpStatus.NOT_FOUND, id);
+    }
+
+    @PutMapping("enableByEmail/{id}")
+    public ResponseEntity<?> enableByEmail(@PathVariable String id) {
+        Doctor doctor = doctorService.findByEmail(id);
+        if (doctor != null) {
+            doctorService.enableByEmail(id);
+            return CustomResponseHandler.response("Record enable ", HttpStatus.OK, id);
+        }
+        return CustomResponseHandler.response("Record Not Found", HttpStatus.NOT_FOUND, id);
     }
 
 }
