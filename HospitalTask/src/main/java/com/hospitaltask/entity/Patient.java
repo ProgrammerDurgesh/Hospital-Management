@@ -22,6 +22,7 @@ public class Patient {
     @Column(name = "patientEmail")
     private String email;
     private String password, name, age, bloodGroup, illness;
+    private final boolean flag=true;
     @ManyToOne
     @JoinColumn(name = "doctor_id")
     private Doctor doctor;

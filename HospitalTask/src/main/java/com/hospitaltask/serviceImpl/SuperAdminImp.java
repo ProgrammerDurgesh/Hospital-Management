@@ -11,23 +11,22 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SuperAdminImp implements SuperAdminService {
 
     @Autowired
-    private  ModelMapper modelMapper;
-
-    public  SuperAdmin dtoToSuperUser(SuperUserDto superUserDto)
-    {
-        SuperAdmin superAdmin=this.modelMapper.map(superUserDto,SuperAdmin.class);
-        return superAdmin;
-    }
-
+    private ModelMapper modelMapper;
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     @Autowired
     private SuperAdminRepo superAdminRepo;
+
+    public SuperAdmin dtoToSuperUser(SuperUserDto superUserDto) {
+        SuperAdmin superAdmin = this.modelMapper.map(superUserDto, SuperAdmin.class);
+        return superAdmin;
+    }
 
     @Override
     public SuperAdmin save(@NotNull SuperUserDto save) {
@@ -66,14 +65,38 @@ public class SuperAdminImp implements SuperAdminService {
     }
 
     @Override
-    public String deleteById(long id) {
-        superAdminRepo.deleteById(id);
-        return "Deleted";
+    public Optional<SuperAdmin> disableById(long id) {
+        try {
+            superAdminRepo.disableById(id);
+        }catch (Exception e)
+        {
+
+            e.printStackTrace();
+        }
+        return superAdminRepo.findById(id);
+    }
+
+    @Override
+    public SuperAdmin enableById(long id) {
+            try {
+               superAdminRepo.enableById(id);
+            }catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        return superAdminRepo.findById(id).get();
     }
 
     //TODO ....Delete By Email.....
     @Override
-    public String deleteByEmail(String id) {
-        return superAdminRepo.deleteByEmail(id);
+    public SuperAdmin disableByEmail(String id) {
+      superAdminRepo.disableByEmail(id);
+        return null;
+    }
+
+    @Override
+    public SuperAdmin enableByEmail(String id) {
+         superAdminRepo.enableByEmail(id);
+        return null;
     }
 }

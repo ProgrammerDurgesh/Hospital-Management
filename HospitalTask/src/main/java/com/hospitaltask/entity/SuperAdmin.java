@@ -23,6 +23,7 @@ public class SuperAdmin {
     private String userName;
     @NotNull
     private String password;
+    private boolean flag=true;
     @ManyToOne
     private Roles roles;
 }

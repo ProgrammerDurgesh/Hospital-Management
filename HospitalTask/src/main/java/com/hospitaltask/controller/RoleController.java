@@ -28,7 +28,10 @@ public class RoleController {
         String roleName = roleRepo.getRoleName(roles.getRoleName());
         if (roleName != null)
             return CustomResponseHandler.response("Role Already exist", HttpStatus.ALREADY_REPORTED, roles);
-        return CustomResponseHandler.response("Role Created ", HttpStatus.CREATED, roles);
+        else {
+            roleService.save(roles);
+            return CustomResponseHandler.response("Role Created ", HttpStatus.CREATED, roles);
+        }
     }
 
     // fetch & filter Controller

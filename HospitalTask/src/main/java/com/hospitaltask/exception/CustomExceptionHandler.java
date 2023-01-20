@@ -22,13 +22,13 @@ public class CustomExceptionHandler {
     @ExceptionHandler(value = ExpiredJwtException.class)
     @ResponseBody
     public ResponseEntity<?> tokenExpired() {
-        return CustomResponseHandler.response("NULL Pointer Exception", HttpStatus.INTERNAL_SERVER_ERROR, "Token invalid");
+        return CustomResponseHandler.response("Null Pointer Exception", HttpStatus.INTERNAL_SERVER_ERROR, "Token invalid");
     }
 
     @ExceptionHandler(value = UserNotFoundException.class)
     @ResponseBody
     public ResponseEntity<?> userNotFoundException() {
-        return CustomResponseHandler.response("NULL Pointer Exception", HttpStatus.NOT_FOUND, "Token invalid");
+        return CustomResponseHandler.response("Null Pointer Exception", HttpStatus.NOT_FOUND, "Token invalid");
     }
 
     @ExceptionHandler(value = NullPointerException.class)

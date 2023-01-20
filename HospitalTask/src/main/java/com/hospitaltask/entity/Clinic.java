@@ -25,6 +25,7 @@ public class Clinic
     @Column(nullable = false, length = 45)
     private  String  clinicName;
     private String  clinicAddress;
+    private final boolean flag=true;
     @Column(name="state",nullable = true, unique = false, length = 45)
     private String clinicState;
 

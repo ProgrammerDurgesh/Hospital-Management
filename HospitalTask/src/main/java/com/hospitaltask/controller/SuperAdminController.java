@@ -15,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/sup")
+@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 public class SuperAdminController {
 
     @Autowired
@@ -22,7 +23,7 @@ public class SuperAdminController {
     @Autowired
     private SuperAdminRepo superAdminRepo;
 
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+
     @PostMapping("/save")
     public ResponseEntity<?> save(@RequestBody SuperUserDto superAdmin) {
         SuperAdmin superAdmin1 = superAdminService.save(superAdmin);
@@ -38,21 +39,21 @@ public class SuperAdminController {
         else superAdminService.update(data, id);
         return CustomResponseHandler.response("Record Updated ", HttpStatus.OK, data);
     }
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+
     @GetMapping("/getID/{id}")
     public ResponseEntity<?> findById(@PathVariable Long id) {
         SuperAdmin superAdmin = superAdminService.findById(id);
         if (superAdmin != null) return CustomResponseHandler.response("Record Found", HttpStatus.OK, superAdmin);
         return CustomResponseHandler.response("Record Not Found", HttpStatus.NOT_FOUND, id);
     }
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+
     @GetMapping("/get/{email}")
     public ResponseEntity<?> findByEmail(@PathVariable String email) {
         SuperAdmin superAdmin = superAdminService.findByEmail(email);
         if (superAdmin != null) return CustomResponseHandler.response("Record Found", HttpStatus.OK, superAdmin);
         return CustomResponseHandler.response("Record Not Found", HttpStatus.NOT_FOUND, email);
     }
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+
     @GetMapping("/get/all")
     public ResponseEntity<?> findAll() {
         List<SuperAdmin> superAdmins = superAdminService.findAll();
@@ -60,23 +61,40 @@ public class SuperAdminController {
             return CustomResponseHandler.response("Record Found " + "All User   " + superAdmins.size(), HttpStatus.OK, superAdmins);
         return CustomResponseHandler.response("Record Not Found", HttpStatus.NOT_FOUND, "null");
     }
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    @DeleteMapping("deleteId/{id}")
-    public ResponseEntity<?> deleteById(@PathVariable Long id) {
+
+    @DeleteMapping("disableById/{id}")
+    public ResponseEntity<?> disableById(@PathVariable Long id) {
         SuperAdmin superAdmin = superAdminService.findById(id);
         if (superAdmin != null) {
-            superAdminService.deleteById(id);
-            return CustomResponseHandler.response("Record Deleted ", HttpStatus.OK, id);
+            superAdminService.disableById(id);
+            return CustomResponseHandler.response("Record disable ", HttpStatus.OK, id);
         }
         return CustomResponseHandler.response("Record Not Found", HttpStatus.NOT_FOUND, id);
     }
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    @DeleteMapping("delete/{id}")
-    public ResponseEntity<?> deleteByEmail(@PathVariable String id) {
+
+    @PutMapping("enableById/{id}")
+    public ResponseEntity<?> enableById(@PathVariable Long id) {
+        SuperAdmin superAdmin = superAdminService.findById(id);
+        if (superAdmin != null) superAdminService.enableById(id);
+        return CustomResponseHandler.response("Record Not Found", HttpStatus.NOT_FOUND, id);
+    }
+
+    @PutMapping("disableByEmail/{id}")
+    public ResponseEntity<?> disableByEmail(@PathVariable String id) {
         SuperAdmin superAdmin = superAdminService.findByEmail(id);
         if (superAdmin != null) {
-            superAdminService.deleteByEmail(id);
-            return CustomResponseHandler.response("Record Deleted ", HttpStatus.OK, id);
+            superAdminService.disableByEmail(id);
+            return CustomResponseHandler.response("Record disable ", HttpStatus.OK, id);
+        }
+        return CustomResponseHandler.response("Record Not Found", HttpStatus.NOT_FOUND, id);
+    }
+
+    @PutMapping("enableByEmail/{id}")
+    public ResponseEntity<?> enableByEmail(@PathVariable String id) {
+        SuperAdmin superAdmin = superAdminService.findByEmail(id);
+        if (superAdmin != null) {
+            superAdminService.enableByEmail(id);
+            return CustomResponseHandler.response("Record enable ", HttpStatus.OK, id);
         }
         return CustomResponseHandler.response("Record Not Found", HttpStatus.NOT_FOUND, id);
     }

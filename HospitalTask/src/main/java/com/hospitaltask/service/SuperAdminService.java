@@ -4,6 +4,7 @@ import com.hospitaltask.dto.SuperUserDto;
 import com.hospitaltask.entity.SuperAdmin;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface SuperAdminService {
     SuperAdmin save(SuperUserDto superAdmin);
@@ -16,9 +17,10 @@ public interface SuperAdminService {
 
     List<SuperAdmin> findAll();
 
-    String deleteById(long id);
-
-    String deleteByEmail(String id);
+    Optional<SuperAdmin> disableById(long id);
+    SuperAdmin enableById(long id);
+    SuperAdmin disableByEmail(String id);
+    SuperAdmin enableByEmail(String id);
 
 
 }

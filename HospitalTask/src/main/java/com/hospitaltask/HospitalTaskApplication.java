@@ -1,6 +1,13 @@
 package com.hospitaltask;
 
+import com.hospitaltask.entity.Roles;
+import com.hospitaltask.entity.SuperAdmin;
+import com.hospitaltask.repository.RoleRepo;
+import com.hospitaltask.repository.SuperAdminRepo;
+import com.hospitaltask.service.RoleService;
+import com.hospitaltask.service.SuperAdminService;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -20,6 +27,36 @@ public class HospitalTaskApplication {
         SpringApplication.run(HospitalTaskApplication.class, args);
         System.out.println("This is Hospital Management");
     }
+    /*@Autowired
+    private SuperAdminService superAdminService;
+
+    @Autowired
+    private  RoleService roleService;
+    @Autowired
+    private RoleRepo roleRepo;
+
+    private void superuserSave()
+    {
+        List<SuperAdmin> superAdmin=superAdminService.findAll();
+        if(superAdmin.size()<1)
+        {
+            SuperAdmin superAdmin1=new SuperAdmin();
+            superAdmin1.setId(1);
+            superAdmin1.setEmail("Admin@gmail.com");
+            superAdmin1.setPassword("Admin");
+            superAdmin1.setUserName("Admin");
+            List<Roles> roles= roleService.getAllRoles();
+            if(roles.size()<1)
+            {
+                Roles roles1=new Roles();
+                roles1.setId(1);
+                roles1.setRoleName("ROLE_ADMIN");
+                roles1.setRoleDescription("Admin Control");
+            }
+            superAdmin1.setRoles(roleRepo.getRoleById(1L));
+            //superAdminService.save(superAdmin1)
+        }
+    }*/
     @Bean
     public ModelMapper mapper() {
         return new ModelMapper();

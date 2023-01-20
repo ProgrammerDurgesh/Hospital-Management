@@ -27,7 +27,7 @@ public class DoctorController {
 
     // Add Doctor
 
-    @RolesAllowed("ROLE_ADMIN")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PostMapping("/save")
     public ResponseEntity<?> addDoctor(@RequestBody @NotNull Doctor doctor) {
         String email = doctorRepo.getEmailByEmai(doctor.getEmail());
