@@ -129,6 +129,47 @@ public class PatientController {
 			return CustomResponseHandler.response("Record Deleted ",HttpStatus.OK,patient.getId() +" "+patient.getEmail()+" "+patient.getName());
 		}
 	}
+	@PreAuthorize("hasAuthority('ROLE_DOCTOR')")
+	@PutMapping("disableById/{id}")
+	public ResponseEntity<?> disableById(@PathVariable Long id) {
+		Patient patient = patientService.getPatientById(id);
+		if (patient != null) {
+			patientService.disableById(id);
+			return CustomResponseHandler.response("Record disable ", HttpStatus.OK, id);
+		}
+		return CustomResponseHandler.response("Record Not Found", HttpStatus.NOT_FOUND, id);
+	}
+
+	@PreAuthorize("hasAuthority('ROLE_DOCTOR')")
+	@PutMapping("enableById/{id}")
+	public ResponseEntity<?> enableById(@PathVariable Long id) {
+		Patient patient = patientService.getPatientById(id);
+		if (patient != null) {
+			patientService.enableById(id);
+			return CustomResponseHandler.response("Update Successfully ", HttpStatus.OK, id);
+		}
+		return CustomResponseHandler.response("Record Not Found", HttpStatus.NOT_FOUND, id);
+	}
+	@PreAuthorize("hasAuthority('ROLE_DOCTOR')")
+	@PutMapping("disableByEmail/{id}")
+	public ResponseEntity<?> disableByEmail(@PathVariable String id) {
+		Patient patient = patientService.findByEmail(id);
+		if (patient != null) {
+			patientService.disableByEmail(id);
+			return CustomResponseHandler.response("Record disable ", HttpStatus.OK, id);
+		}
+		return CustomResponseHandler.response("Record Not Found", HttpStatus.NOT_FOUND, id);
+	}
+	@PreAuthorize("hasAuthority('ROLE_DOCTOR')")
+	@PutMapping("enableByEmail/{id}")
+	public ResponseEntity<?> enableByEmail(@PathVariable String id) {
+		Patient patient = patientService.findByEmail(id);
+		if (patient != null) {
+			patientService.enableByEmail(id);
+			return CustomResponseHandler.response("Record enable ", HttpStatus.OK, id);
+		}
+		return CustomResponseHandler.response("Record Not Found", HttpStatus.NOT_FOUND, id);
+	}
 }
 /*
  * @GetMapping ( "/patient/doctor/{id}" ) public ResponseEntity < Patient >

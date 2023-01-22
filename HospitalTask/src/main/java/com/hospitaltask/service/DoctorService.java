@@ -7,7 +7,6 @@ import com.hospitaltask.entity.SuperAdmin;
 
 public interface DoctorService {
 
-
     //Add & Update Operation
 
     Doctor addDoctor(Doctor doctor);
@@ -20,7 +19,6 @@ public interface DoctorService {
 
     String loadUserByUsername(String s);
 
-
     //fetch & filter Operation
 
     List<Doctor> getAllDoctor();
@@ -30,7 +28,6 @@ public interface DoctorService {
     Doctor findByEmail(String email);
 
     List<Doctor> findByDoctorName(String doctorName);
-
 
     //Delete Operation
 
@@ -44,15 +41,16 @@ public interface DoctorService {
 
     //External methods
 
-
     String getPasswordByEmail(String email);
 
     String getUsername(String username);
 
-
     //Enable & disable
     Doctor disableById(long id);
+
     Doctor enableById(long id);
+
     Doctor disableByEmail(String id);
+
     Doctor enableByEmail(String id);
 }

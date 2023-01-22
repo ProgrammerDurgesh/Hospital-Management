@@ -16,12 +16,13 @@ import com.hospitaltask.service.DoctorService;
 @Service
 public class DoctorServiceImpl implements DoctorService {
 
+    Doctor doctor = null;
     @Autowired
     private DoctorRepo doctorRepo;
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
     private ModelMapper modelMapper;
-    Doctor doctor = null;
+
     Doctor dtoToDoctor(DoctorDto doctorDto) {
         Doctor doctor = this.modelMapper.map(doctorDto, Doctor.class);
         return doctor;
@@ -160,7 +161,6 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
 
-
     //Update repeated value in one method
     public Doctor updateMethod(@NotNull Doctor doctor) {
 
@@ -178,24 +178,20 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
     public Doctor enable(long idL, String id) {
-        if (idL > 0 && id==null)
-            doctor = getDoctorById(idL);
-        else
-            doctor = doctorRepo.findByEmail(id);
+        if (idL > 0 && id == null) doctor = getDoctorById(idL);
+        else doctor = doctorRepo.findByEmail(id);
         doctor.setFlag(true);
         doctorRepo.save(doctor);
         return doctor;
     }
+
     public Doctor disable(long idL, String id) {
-        if (idL > 0 && id==null)
-            doctor = getDoctorById(idL);
-        else
-            doctor = doctorRepo.findByEmail(id);
+        if (idL > 0 && id == null) doctor = getDoctorById(idL);
+        else doctor = doctorRepo.findByEmail(id);
         doctor.setFlag(false);
         doctorRepo.save(doctor);
         return doctor;
     }
-
 
 
 }

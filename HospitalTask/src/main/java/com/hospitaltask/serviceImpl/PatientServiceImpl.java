@@ -15,6 +15,7 @@ public class PatientServiceImpl implements PatientService {
     @Autowired
     PatientEntityRepo patientRepo;
 
+    Patient patient = null;
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
@@ -97,5 +98,49 @@ public class PatientServiceImpl implements PatientService {
 
         this.patientRepo.deleteById(patientId);
     }
+
+    @Override
+    public Patient disableById(long id) {
+        Patient patient = disable(id, null);
+        return patient;
+    }
+
+    @Override
+    public Patient enableById(long id) {
+        Patient patient = enable(id, null);
+        return patient;
+    }
+
+    //TODO ....Delete By Email.....
+    @Override
+    public Patient disableByEmail(String id) {
+        Patient patient = disable(0, id);
+        return patient;
+    }
+
+    @Override
+    public Patient enableByEmail(String id) {
+        Patient patient = enable(0, id);
+        return patient;
+    }
+
+
+
+    public Patient enable(long idL, String id) {
+        if (idL > 0 && id == null) patient = getPatientById(idL);
+        else patient = patientRepo.findByEmail(id);
+        patient.setFlag(true);
+        Patient save = patientRepo.save(patient);
+        return save;
+    }
+
+    public Patient disable(long idL, String id) {
+        if (idL > 0 && id == null) patient = getPatientById(idL);
+        else patient = patientRepo.findByEmail(id);
+        patient.setFlag(false);
+        Patient save = patientRepo.save(patient);
+        return save;
+    }
+
 
 }

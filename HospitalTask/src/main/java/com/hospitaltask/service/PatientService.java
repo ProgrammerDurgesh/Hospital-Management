@@ -33,4 +33,14 @@ public interface PatientService {
     void deletePatientByID(Long patientId);
 
 
+    //Enable & disable
+    Patient disableById(long id);
+
+    Patient enableById(long id);
+
+    Patient disableByEmail(String id);
+
+    Patient enableByEmail(String id);
+
+
 }
