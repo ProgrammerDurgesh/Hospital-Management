@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -68,7 +69,7 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     public Patient getPatientById(Long id) {
-        return patientRepo.findById(id).get();
+        return patientRepo.findById(id).orElse(null);
     }
 
     @Override
@@ -123,7 +124,6 @@ public class PatientServiceImpl implements PatientService {
         Patient patient = enable(0, id);
         return patient;
     }
-
 
 
     public Patient enable(long idL, String id) {

@@ -38,7 +38,6 @@ public class SuperAdminImp implements SuperAdminService {
             superAdmin = superAdminRepo.findById(idL).get();
         else
             superAdmin = superAdminRepo.findByEmail(id);
-
         superAdmin.setFlag(false);
         superAdminRepo.save(superAdmin);
         return superAdmin;

@@ -59,7 +59,7 @@ public class ClinicServiceImpl implements ClinicService {
     // fetch & filter Operation
     @Override
     public Clinic getClinicById(Long id) throws UserNotFoundException {
-        Clinic clinic = clinicRepo.findById(id).get();
+        Clinic clinic = clinicRepo.findById(id).orElse(null);
         if (!clinic.equals(null)) return clinic;
         else ;
         return clinic;

@@ -30,7 +30,7 @@ public class RolesImpl implements RoleService {
 
     @Override
     public Roles getRolesByID(Long id) {
-        return roleRepo.findById(id).get();
+        return roleRepo.findById(id).orElse(null);
     }
 
     @Override

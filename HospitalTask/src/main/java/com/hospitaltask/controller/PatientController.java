@@ -20,185 +20,190 @@ import java.util.Optional;
 @RequestMapping("/patient")
 public class PatientController {
 
-	@Autowired
-	private PatientEntityRepo entityRepo;
-	@Autowired
-	PatientService patientService;
-	@Autowired
-	private DoctorRepo doctorRepo;
+    @Autowired
+    PatientService patientService;
+    @Autowired
+    private PatientEntityRepo entityRepo;
+    @Autowired
+    private DoctorRepo doctorRepo;
 
-	//Add & Update Patient operation
-	@PreAuthorize("hasAuthority('ROLE_DOCTOR')")
-	@PostMapping("/save")
-	public ResponseEntity<?> save(@RequestBody @NotNull Patient patient) {
-		String exceptionShow=null;
-		Doctor doctor1 = patient.getDoctor();
-		Optional<Doctor> doctor=doctorRepo.findById(doctor1.getDoctorId());
-		if(doctor.isEmpty()) {
-			exceptionShow = "Doctor Not found";
-			return CustomResponseHandler.response("Doctor Not found ",HttpStatus.NOT_FOUND,doctor);
-		}
-		Patient patient1 = patientService.findByEmail(patient.getEmail());
-		if(patient1 !=null)
-		{
-			exceptionShow="Email Already Exists";
-			return CustomResponseHandler.response("Email Already Exists ",HttpStatus.OK,patient.getEmail());
-		}
-		else {
-			Patient save = patientService.save(patient);
-			return CustomResponseHandler.response("Data Saved ",HttpStatus.CREATED,save);
-		}
-	}
-	// TODO Under process.....
-	@PreAuthorize("hasAuthority('ROLE_DOCTOR')")
-	@PutMapping("/patient/{id}")
-	public ResponseEntity<?> updatePatientById(@RequestBody Patient patient, @PathVariable Long id) {
-		Patient patientUpdate = patientService.updatePatientById(patient, id);
-		if (patientUpdate == null)
-			return CustomResponseHandler.response("Record Not  Found ",HttpStatus.NOT_FOUND,id);
-		return CustomResponseHandler.response("Record Update successfully",HttpStatus.OK,patientService.updatePatientById(patient, id));
-	}
-	 //fetch & filter Patient
-	@PreAuthorize("hasAuthority('ROLE_DOCTOR')")
-	@GetMapping("/p-all")
-	public ResponseEntity<?> getAllPatient() {
-		List<Patient> list=patientService.getAllPatient();
-		if(list.size() !=0) return CustomResponseHandler.response(" Patient List  : "+"Total Patient "+list.size(),HttpStatus.OK,list);
-		return CustomResponseHandler.response("Record Not Found ",HttpStatus.OK,list);
-	}
-	 // fetch Patient By PatientEmailId
-	@PreAuthorize("hasAuthority('ROLE_DOCTOR') or hasAuthority('ROLE_ADMIN,ROLE_PATIENT')") 
-	@GetMapping({"/patient/{id}","p-Id/{id}"})
-	public ResponseEntity<?> getPatientById(@PathVariable Long id) {
-		Patient patient=this.entityRepo.findById(id).orElse(null);
-		if(patient==null)
-		{
-			return CustomResponseHandler.response("Record Not Found ",HttpStatus.NOT_FOUND,id);
-		}
-		return  CustomResponseHandler.response("Record Found Success",HttpStatus.OK,patientService.getPatientById(id));
-	}
-	//TODo under working .........
+    //Add & Update Patient operation
+    @PreAuthorize("hasAuthority('ROLE_DOCTOR')")
+    @PostMapping("/save")
+    public ResponseEntity<?> save(@RequestBody @NotNull Patient patient) {
+        String exceptionShow = null;
+        Doctor doctor1 = patient.getDoctor();
+        Optional<Doctor> doctor = doctorRepo.findById(doctor1.getDoctorId());
+        if (doctor.isEmpty()) {
+            exceptionShow = "Doctor Not found";
+            return CustomResponseHandler.response("Doctor Not found ", HttpStatus.NOT_FOUND, doctor);
+        }
+        Patient patient1 = patientService.findByEmail(patient.getEmail());
+        if (patient1 != null) {
+            exceptionShow = "Email Already Exists";
+            return CustomResponseHandler.response("Email Already Exists ", HttpStatus.OK, patient.getEmail());
+        } else {
+            Patient save = patientService.save(patient);
+            return CustomResponseHandler.response("Data Saved ", HttpStatus.CREATED, save);
+        }
+    }
 
-	@PreAuthorize("hasAuthority('ROLE_DOCTOR') or hasAuthority('ROLE_ADMIN,ROLE_PATIENT')")
-	@GetMapping({"/patient/email/{email}","p-email/{email}"})
-	public ResponseEntity<?> findByEmail(@PathVariable String email) {
-		Patient byEmail = patientService.findByEmail(email);
-		if(byEmail !=null)
-			return CustomResponseHandler.response("Record Found Success",HttpStatus.OK,byEmail);
-		return CustomResponseHandler.response("Record Not Found",HttpStatus.NOT_FOUND,email);
-	}
+    // TODO Under process.....
+    @PreAuthorize("hasAuthority('ROLE_DOCTOR')")
+    @PutMapping("/patient/{id}")
+    public ResponseEntity<?> updatePatientById(@RequestBody Patient patient, @PathVariable Long id) {
+        Patient patientUpdate = patientService.updatePatientById(patient, id);
+        if (patientUpdate == null)
+            return CustomResponseHandler.response("Record Not  Found ", HttpStatus.NOT_FOUND, id);
+        return CustomResponseHandler.response("Record Update successfully", HttpStatus.OK, patientService.updatePatientById(patient, id));
+    }
 
+    //fetch & filter Patient
+    @PreAuthorize("hasAuthority('ROLE_DOCTOR')")
+    @GetMapping("/p-all")
+    public ResponseEntity<?> getAllPatient() {
+        List<Patient> list = patientService.getAllPatient();
+        if (list.size() != 0)
+            return CustomResponseHandler.response(" Patient List  : " + "Total Patient " + list.size(), HttpStatus.OK, list);
+        return CustomResponseHandler.response("Record Not Found ", HttpStatus.OK, list);
+    }
 
-	 // Fetch patient By Name
-	@PreAuthorize("hasAuthority('ROLE_DOCTOR') or hasAuthority('ROLE_ADMIN,ROLE_PATIENT')") 
-	@GetMapping("/patient/name/{name}")
-	public ResponseEntity<?> findByName(@PathVariable String name) {
-		List<Patient> patient = patientService.findByName(name);
-		if (patient == null)
-			return CustomResponseHandler.response("Record Not Found ", HttpStatus.NOT_FOUND, name);
-		return CustomResponseHandler.response("Record Found Success", HttpStatus.OK, patientService.findByName(name));
-	}
-	 //Fetch patient By DoctorID
-	@PreAuthorize("hasAuthority('ROLE_DOCTOR') or hasAuthority('ROLE_ADMIN,ROLE_PATIENT')") 
-	@GetMapping("/patient/doctor/{doctorId}")
-	public ResponseEntity<?> findByByDoctorId(@PathVariable Long doctorId) {
-			List<Patient> patients = entityRepo.findAllPatientByDoctorId(doctorId);
-				if (patients.size() == 0)return CustomResponseHandler.response("Record Not Found",HttpStatus.NOT_FOUND,doctorId);
-					return CustomResponseHandler.response("Record Found Success",HttpStatus.OK,patients);
-	}
-	// Delete Operations
-	//Delete All Patient
-	@PreAuthorize("hasAuthority('ROLE_DOCTOR') or hasAuthority('ROLE_ADMIN')")
-	@DeleteMapping("patient")
-	public ResponseEntity<?> deleteAllPatient() {
-		this.patientService.deleteAllPatient();
-		List<Patient> patient=patientService.getAllPatient();
-		if(patient.size()==0)return CustomResponseHandler.response("Delete All Record",HttpStatus.OK,patient);
-		return CustomResponseHandler.response("Record Not Deleted ",HttpStatus.EXPECTATION_FAILED,patient);
-	}
+    // fetch Patient By PatientEmailId
+    @PreAuthorize("hasAuthority('ROLE_DOCTOR') or hasAuthority('ROLE_ADMIN,ROLE_PATIENT')")
+    @GetMapping({"/patient/{id}", "p-Id/{id}"})
+    public ResponseEntity<?> getPatientById(@PathVariable Long id) {
+        Patient patient = this.entityRepo.findById(id).orElse(null);
+        if (patient == null) {
+            return CustomResponseHandler.response("Record Not Found ", HttpStatus.NOT_FOUND, id);
+        }
+        return CustomResponseHandler.response("Record Found Success", HttpStatus.OK, patientService.getPatientById(id));
+    }
+    //TODo under working .........
+
+    @PreAuthorize("hasAuthority('ROLE_DOCTOR') or hasAuthority('ROLE_ADMIN,ROLE_PATIENT')")
+    @GetMapping({"/patient/email/{email}", "p-email/{email}"})
+    public ResponseEntity<?> findByEmail(@PathVariable String email) {
+        Patient byEmail = patientService.findByEmail(email);
+        if (byEmail != null) return CustomResponseHandler.response("Record Found Success", HttpStatus.OK, byEmail);
+        return CustomResponseHandler.response("Record Not Found", HttpStatus.NOT_FOUND, email);
+    }
 
 
-	 //Delete Patient By PatientId
-	@PreAuthorize("hasAuthority('ROLE_DOCTOR') or hasAuthority('ROLE_ADMIN')") 
-	@DeleteMapping("patient/patient/{Id}")
-	public ResponseEntity<?> deletePatientByID(@PathVariable Long Id) {
-		Patient patient = entityRepo.findById(Id).orElse(null);
-		if (patient == null)return CustomResponseHandler.response("Record Not Found",HttpStatus.NOT_FOUND,Id);
-		else {
-			this.patientService.deletePatientByID(Id);
-			return CustomResponseHandler.response("Record Deleted ",HttpStatus.OK,patient.getId() +" "+patient.getEmail()+" "+patient.getName());
-		}
-	}
-	@PreAuthorize("hasAuthority('ROLE_DOCTOR')")
-	@PutMapping("disableById/{id}")
-	public ResponseEntity<?> disableById(@PathVariable Long id) {
-		Patient patient = patientService.getPatientById(id);
-		if (patient != null) {
-			patientService.disableById(id);
-			return CustomResponseHandler.response("Record disable ", HttpStatus.OK, id);
-		}
-		return CustomResponseHandler.response("Record Not Found", HttpStatus.NOT_FOUND, id);
-	}
+    // Fetch patient By Name
+    @PreAuthorize("hasAuthority('ROLE_DOCTOR') or hasAuthority('ROLE_ADMIN,ROLE_PATIENT')")
+    @GetMapping("/patient/name/{name}")
+    public ResponseEntity<?> findByName(@PathVariable String name) {
+        List<Patient> patient = patientService.findByName(name);
+        if (patient == null) return CustomResponseHandler.response("Record Not Found ", HttpStatus.NOT_FOUND, name);
+        return CustomResponseHandler.response("Record Found Success", HttpStatus.OK, patientService.findByName(name));
+    }
 
-	@PreAuthorize("hasAuthority('ROLE_DOCTOR')")
-	@PutMapping("enableById/{id}")
-	public ResponseEntity<?> enableById(@PathVariable Long id) {
-		Patient patient = patientService.getPatientById(id);
-		if (patient != null) {
-			patientService.enableById(id);
-			return CustomResponseHandler.response("Update Successfully ", HttpStatus.OK, id);
-		}
-		return CustomResponseHandler.response("Record Not Found", HttpStatus.NOT_FOUND, id);
-	}
-	@PreAuthorize("hasAuthority('ROLE_DOCTOR')")
-	@PutMapping("disableByEmail/{id}")
-	public ResponseEntity<?> disableByEmail(@PathVariable String id) {
-		Patient patient = patientService.findByEmail(id);
-		if (patient != null) {
-			patientService.disableByEmail(id);
-			return CustomResponseHandler.response("Record disable ", HttpStatus.OK, id);
-		}
-		return CustomResponseHandler.response("Record Not Found", HttpStatus.NOT_FOUND, id);
-	}
-	@PreAuthorize("hasAuthority('ROLE_DOCTOR')")
-	@PutMapping("enableByEmail/{id}")
-	public ResponseEntity<?> enableByEmail(@PathVariable String id) {
-		Patient patient = patientService.findByEmail(id);
-		if (patient != null) {
-			patientService.enableByEmail(id);
-			return CustomResponseHandler.response("Record enable ", HttpStatus.OK, id);
-		}
-		return CustomResponseHandler.response("Record Not Found", HttpStatus.NOT_FOUND, id);
-	}
+    //Fetch patient By DoctorID
+    @PreAuthorize("hasAuthority('ROLE_DOCTOR') or hasAuthority('ROLE_ADMIN,ROLE_PATIENT')")
+    @GetMapping("/patient/doctor/{doctorId}")
+    public ResponseEntity<?> findByByDoctorId(@PathVariable Long doctorId) {
+        List<Patient> patients = entityRepo.findAllPatientByDoctorId(doctorId);
+        if (patients.size() == 0)
+            return CustomResponseHandler.response("Record Not Found", HttpStatus.NOT_FOUND, doctorId);
+        return CustomResponseHandler.response("Record Found Success", HttpStatus.OK, patients);
+    }
+
+    // Delete Operations
+    //Delete All Patient
+    @PreAuthorize("hasAuthority('ROLE_DOCTOR') or hasAuthority('ROLE_ADMIN')")
+    @DeleteMapping("patient")
+    public ResponseEntity<?> deleteAllPatient() {
+        this.patientService.deleteAllPatient();
+        List<Patient> patient = patientService.getAllPatient();
+        if (patient.size() == 0) return CustomResponseHandler.response("Delete All Record", HttpStatus.OK, patient);
+        return CustomResponseHandler.response("Record Not Deleted ", HttpStatus.EXPECTATION_FAILED, patient);
+    }
+
+
+    //Delete Patient By PatientId
+    @PreAuthorize("hasAuthority('ROLE_DOCTOR') or hasAuthority('ROLE_ADMIN')")
+    @DeleteMapping("patient/patient/{Id}")
+    public ResponseEntity<?> deletePatientByID(@PathVariable Long Id) {
+        Patient patient = entityRepo.findById(Id).orElse(null);
+        if (patient == null) return CustomResponseHandler.response("Record Not Found", HttpStatus.NOT_FOUND, Id);
+        else {
+            this.patientService.deletePatientByID(Id);
+            return CustomResponseHandler.response("Record Deleted ", HttpStatus.OK, patient.getId() + " " + patient.getEmail() + " " + patient.getName());
+        }
+    }
+
+    @PreAuthorize("hasAuthority('ROLE_DOCTOR')")
+    @PutMapping("disableById/{id}")
+    public ResponseEntity<?> disableById(@PathVariable Long id) {
+        Patient patient = patientService.getPatientById(id);
+        if (patient != null) {
+            patientService.disableById(id);
+            return CustomResponseHandler.response("Record disable ", HttpStatus.OK, id);
+        }
+        return CustomResponseHandler.response("Record Not Found", HttpStatus.NOT_FOUND, id);
+    }
+
+    @PreAuthorize("hasAuthority('ROLE_DOCTOR')")
+    @PutMapping("enableById/{id}")
+    public ResponseEntity<?> enableById(@PathVariable Long id) {
+        Patient patient = patientService.getPatientById(id);
+        if (patient != null) {
+            patientService.enableById(id);
+            return CustomResponseHandler.response("Update Successfully ", HttpStatus.OK, id);
+        }
+        return CustomResponseHandler.response("Record Not Found", HttpStatus.NOT_FOUND, id);
+    }
+
+    @PreAuthorize("hasAuthority('ROLE_DOCTOR')")
+    @PutMapping("disableByEmail/{id}")
+    public ResponseEntity<?> disableByEmail(@PathVariable String id) {
+        Patient patient = patientService.findByEmail(id);
+        if (patient != null) {
+            patientService.disableByEmail(id);
+            return CustomResponseHandler.response("Record disable ", HttpStatus.OK, id);
+        }
+        return CustomResponseHandler.response("Record Not Found", HttpStatus.NOT_FOUND, id);
+    }
+
+    @PreAuthorize("hasAuthority('ROLE_DOCTOR')")
+    @PutMapping("enableByEmail/{id}")
+    public ResponseEntity<?> enableByEmail(@PathVariable String id) {
+        Patient patient = patientService.findByEmail(id);
+        if (patient != null) {
+            patientService.enableByEmail(id);
+            return CustomResponseHandler.response("Record enable ", HttpStatus.OK, id);
+        }
+        return CustomResponseHandler.response("Record Not Found", HttpStatus.NOT_FOUND, id);
+    }
 }
 /*
  * @GetMapping ( "/patient/doctor/{id}" ) public ResponseEntity < Patient >
  * getPatientByDoctorId (@PathVariable Long doctorId ) { return new
  * ResponseEntity <> ( patientService.getPatientByDoctorId ( doctorId ) ,
  * HttpStatus.OK ); }
- * 
+ *
  * @GetMapping ( "/patient/email{email}" ) public ResponseEntity < Patient >
  * getPatientByEmailId (@PathVariable String email ) { return new ResponseEntity
  * <> ( patientService.getPatientByEmailId ( email ) , HttpStatus.OK ); }
- * 
+ *
  * @GetMapping ( "/patient/clinicID{clinicID}" ) public ResponseEntity < Patient
  * > getPatientByClinicId (@PathVariable String clinicID ) { return new
  * ResponseEntity <> ( patientService.getPatientByClinicId ( clinicID ) ,
  * HttpStatus.OK ); }
- * 
- * 
+ *
+ *
  * @DeleteMapping ( "patient/emailId{emailId}" ) public void
  * deletePatientIdByEmailID (@PathVariable String emailId ) {
  * this.patientService.deletePatientIdByEmailID ( emailId );
- * 
+ *
  * }
- * 
+ *
  * @DeleteMapping ( "patient/clinicCode{clinicCode}" ) public void
  * deletePatientByClinicCode (@PathVariable String clinicCode ) {
  * this.patientService.deletePatientByClinicCode ( clinicCode ); }
- * 
+ *
  * this code is not Working
- * 
+ *
  * @PutMapping ( "/patient/email/{emailId}" ) public ResponseEntity < Patient >
  * updatePatientByEmailId (@RequestBody Patient patient,@PathVariable String
  * emailId ) { return new ResponseEntity <> (

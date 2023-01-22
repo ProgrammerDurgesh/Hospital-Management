@@ -89,7 +89,7 @@ public class DoctorServiceImpl implements DoctorService {
 
     @Override
     public Doctor getDoctorById(Long id) {
-        return this.doctorRepo.findById(id).get();
+        return this.doctorRepo.findById(id).orElse(null);
     }
 
     @Override
