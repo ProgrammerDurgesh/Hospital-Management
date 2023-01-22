@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -19,8 +20,10 @@ public class Patient {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
+    @NotNull
     @Column(name = "patientEmail")
     private String email;
+    @NotNull
     private String password, name, age, bloodGroup, illness;
     private boolean flag = true;
     @ManyToOne

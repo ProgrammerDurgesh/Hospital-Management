@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -32,11 +33,16 @@ public class Doctor {
     private String doctorName;
     @Column(unique = true, nullable = false, length = 35)
     private String email;
+    @NotNull
     private String password;
     private  boolean flag=true;
+    @NotNull
     private String specialization;
+    @NotNull
     private String experience;
+    @NotNull
     private String address;
+
     @ManyToOne
     @JoinColumn(name = "clinic_id", nullable = false)
     private Clinic clinic;
