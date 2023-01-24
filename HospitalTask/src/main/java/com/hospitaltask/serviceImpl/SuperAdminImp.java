@@ -34,7 +34,7 @@ public class SuperAdminImp implements SuperAdminService {
         return superAdmin;
     }
     public SuperAdmin disable(long idL, String id) {
-        if (idL == 0 && id.isBlank())
+        if (idL > 0 && id==null)
             superAdmin = superAdminRepo.findById(idL).get();
         else
             superAdmin = superAdminRepo.findByEmail(id);

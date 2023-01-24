@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.firewall.RequestRejectedException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MissingPathVariableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -28,7 +29,7 @@ public class CustomExceptionHandler {
     @ExceptionHandler(value = UserNotFoundException.class)
     @ResponseBody
     public ResponseEntity<?> userNotFoundException() {
-        return CustomResponseHandler.response("Null Pointer Exception", HttpStatus.NOT_FOUND, "Token invalid");
+        return CustomResponseHandler.response("User Not Found", HttpStatus.NOT_FOUND,"User Not Found");
     }
 
     @ExceptionHandler(value = NullPointerException.class)
@@ -79,6 +80,11 @@ public class CustomExceptionHandler {
     @ExceptionHandler(value = MissingPathVariableException.class)
     public ResponseEntity<?> missingPathVariableException() {
         return CustomResponseHandler.response("@PathVariable Incorrect", HttpStatus.INTERNAL_SERVER_ERROR, "500");
+    }
+
+    @ExceptionHandler(value = HttpRequestMethodNotSupportedException.class)
+    public ResponseEntity<?> httpRequestMethodNotSupportedException() {
+        return CustomResponseHandler.response("Request Method Not Allowed", HttpStatus.METHOD_NOT_ALLOWED, "405");
     }
 
 }
