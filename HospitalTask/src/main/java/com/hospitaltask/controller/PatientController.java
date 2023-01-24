@@ -60,9 +60,9 @@ public class PatientController {
 
     //fetch & filter Patient
     @PreAuthorize("hasAuthority('ROLE_DOCTOR')")
-    @GetMapping("/p-all")
-    public ResponseEntity<?> getAllPatient() {
-        List<Patient> list = patientService.getAllPatient();
+    @GetMapping("/p-all/{flag}")
+    public ResponseEntity<?> getAllPatient(@PathVariable boolean flag) {
+        List<Patient> list = patientService.getAllPatient(flag);
         if (list.size() != 0)
             return CustomResponseHandler.response(" Patient List  : " + "Total Patient " + list.size(), HttpStatus.OK, list);
         return CustomResponseHandler.response("Record Not Found ", HttpStatus.OK, list);

@@ -20,4 +20,7 @@ public interface PatientEntityRepo extends JpaRepository<Patient, Long> {
 
     List<Patient> findByName(String name);
 
+    @Query(value = "select * from tbl_patient p where p.flag=:flag", nativeQuery = true)
+    List<Patient> findAllByFlag(boolean flag);
+
 }

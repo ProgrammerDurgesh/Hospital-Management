@@ -17,7 +17,10 @@ public interface PatientService {
 
     //Fetch & filter Operation
 
+    List<Patient> getAllPatient(boolean flag);
+
     List<Patient> getAllPatient();
+
 
     Patient getPatientById(Long id);
 

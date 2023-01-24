@@ -63,9 +63,17 @@ public class PatientServiceImpl implements PatientService {
     // fetch & Filter Operation
 
     @Override
+    public List<Patient> getAllPatient(boolean flag) {
+            return patientRepo.findAllByFlag(flag);
+
+
+
+    }
+
     public List<Patient> getAllPatient() {
         return patientRepo.findAll();
     }
+
 
     @Override
     public Patient getPatientById(Long id) {
