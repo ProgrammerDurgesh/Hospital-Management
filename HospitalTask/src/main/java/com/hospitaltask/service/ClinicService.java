@@ -21,6 +21,8 @@ public interface ClinicService {
 
     Clinic findByClinicName(String clinicName);
 
+    List<Clinic> getAllClinic(Boolean aBoolean);
+
 
     // Delete Operation
     void deleteAllClinic();

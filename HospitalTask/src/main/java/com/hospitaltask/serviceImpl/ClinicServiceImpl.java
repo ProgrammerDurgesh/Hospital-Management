@@ -75,6 +75,11 @@ public class ClinicServiceImpl implements ClinicService {
         return clinicRepo.findByClinicName(clinicName);
     }
 
+    @Override
+    public List<Clinic> getAllClinic(Boolean aBoolean) {
+        return clinicRepo.getAllEnableClinic(aBoolean);
+    }
+
     // Delete operations
 
     @Override

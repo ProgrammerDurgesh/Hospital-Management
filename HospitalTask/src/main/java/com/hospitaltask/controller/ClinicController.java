@@ -23,8 +23,9 @@ import com.hospitaltask.service.ClinicService;
 
 import javax.persistence.Id;
 
+
 @RestController
-@RequestMapping("/HM/clinic")
+@RequestMapping("/clinic")
 public class ClinicController {
 
     @Autowired
@@ -65,9 +66,10 @@ public class ClinicController {
     // fetch All Clinic
 
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    @GetMapping("/get-All")
-    public ResponseEntity<?> getAllClinic() {
-        return CustomResponseHandler.response("Record Found ", HttpStatus.OK, clinicService.getAllClinic());
+    @GetMapping("/get-All/{aBoolean}")
+    public ResponseEntity<?> getAllClinic(@PathVariable Boolean aBoolean) {
+        List<Clinic> allEnableClinic = clinicService.getAllClinic(aBoolean);
+        return CustomResponseHandler.response("Record Found "+"Total Find Record Founded : "+allEnableClinic.size(), HttpStatus.OK, allEnableClinic);
     }
     // fetch clinic By ClinicID
 
@@ -75,8 +77,7 @@ public class ClinicController {
     @GetMapping("/get/{id}")
     public ResponseEntity<?> getClinicById(@PathVariable Long id) throws UserNotFoundException {
         Clinic roles = this.clinicRepo.getClinicById(id);
-        if (roles == null)
-            return CustomResponseHandler.response("Record Not found", HttpStatus.NOT_FOUND, id);
+        if (roles == null) return CustomResponseHandler.response("Record Not found", HttpStatus.NOT_FOUND, id);
         return CustomResponseHandler.response("Record Found ", HttpStatus.OK, clinicService.getClinicById(id));
     }
 
@@ -105,8 +106,7 @@ public class ClinicController {
     @DeleteMapping("delete/{id}")
     public ResponseEntity<?> deleteByClinicById(@PathVariable Long id) throws UserNotFoundException {
         Clinic clinic = this.clinicService.getClinicById(id);
-        if (clinic == null)
-            return CustomResponseHandler.response("Record Not found ", HttpStatus.NOT_FOUND, id);
+        if (clinic == null) return CustomResponseHandler.response("Record Not found ", HttpStatus.NOT_FOUND, id);
         else {
             clinicService.deleteClinicById(id);
             return CustomResponseHandler.response("Record Deleted ", HttpStatus.OK, id);
