@@ -56,4 +56,6 @@ public interface DoctorService {
 
     List<Doctor> findDoctorByFlag(Integer id, Boolean aBoolean);
 
+    List<Doctor> findDoctorByEmailAndFlag(String id,Boolean aBoolean);
+
 }

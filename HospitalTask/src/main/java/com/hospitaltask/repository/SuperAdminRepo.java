@@ -21,6 +21,9 @@ public interface SuperAdminRepo extends JpaRepository<SuperAdmin, Long> {
     @Query(value = "select * from tbl_super_user d where d.id =:id and d.flag=:aBoolean",nativeQuery = true)
     List<SuperAdmin> findSuperAdminByFlag(Integer id, Boolean aBoolean);
 
+    @Query(value = "select * from tbl_super_user d where d.email =:id and d.flag=:aBoolean",nativeQuery = true)
+    List<SuperAdmin> findSuperAdminByEmailAndFlag(String id, Boolean aBoolean);
+
    /* @Query(value = "update tbl_super_user set flag=false where id=1",nativeQuery=true)
     void disableById(long id);
     @Modifying

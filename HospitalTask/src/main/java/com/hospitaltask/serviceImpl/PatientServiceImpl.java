@@ -137,6 +137,11 @@ public class PatientServiceImpl implements PatientService {
         return patientRepo.findPatientByFlag(id, aBoolean);
     }
 
+    @Override
+    public List<Patient> findPatientByEmailAndFlag(String id, Boolean aBoolean) {
+        return patientRepo.findPatientByEmailAndFlag(id,aBoolean);
+    }
+
 
     public Patient enable(long idL, String id) {
         if (idL > 0 && id == null) patient = getPatientById(idL);

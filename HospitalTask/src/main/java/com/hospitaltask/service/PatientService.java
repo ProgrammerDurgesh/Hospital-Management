@@ -48,5 +48,7 @@ public interface PatientService {
 
     List<Patient> findPatientByFlag(Integer id, Boolean aBoolean);
 
+    List<Patient> findPatientByEmailAndFlag(String  id, Boolean aBoolean);
+
 
 }

@@ -26,4 +26,7 @@ public interface PatientEntityRepo extends JpaRepository<Patient, Long> {
     @Query(value = "select * from tbl_patient d where d.id =:id and d.flag=:aBoolean",nativeQuery = true)
     List<Patient> findPatientByFlag(Integer id, Boolean aBoolean);
 
+    @Query(value = "select * from tbl_patient d where d.patient_email =:id and d.flag=:aBoolean",nativeQuery = true)
+    List<Patient> findPatientByEmailAndFlag(String id, Boolean aBoolean);
+
 }

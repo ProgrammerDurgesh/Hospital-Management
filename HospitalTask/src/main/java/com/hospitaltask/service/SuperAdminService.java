@@ -28,5 +28,7 @@ public interface SuperAdminService {
 
     List<SuperAdmin> findSuperUserByFlag(Integer id, Boolean aBoolean);
 
+    List<SuperAdmin> findSuperAdminByEmailAndFlag(String id, Boolean aBoolean);
+
 
 }

@@ -147,6 +147,15 @@ public class DoctorController {
             return CustomResponseHandler.response("Record Found", HttpStatus.OK, doctors);
     }
 
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @GetMapping("/findByEmail/{id}/{aBoolean}")
+    public ResponseEntity<?> findDoctorByEmailAndFlag(@PathVariable String id, @PathVariable Boolean aBoolean) {
+        List<Doctor> doctors = doctorService.findDoctorByEmailAndFlag(id,aBoolean);
+        if (doctors.size() == 0) {
+            return CustomResponseHandler.response("Record Not Found", HttpStatus.NOT_FOUND, id + " " + aBoolean);
+        } else
+            return CustomResponseHandler.response("Record Found", HttpStatus.OK, doctors);
+    }
 
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @DeleteMapping("Delete/name/{name}")

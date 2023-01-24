@@ -35,5 +35,10 @@ public interface DoctorRepo extends JpaRepository<Doctor, Long> {
 
     @Query(value = "select * from tbl_doctor d where d.doctor_id =:id and d.flag=:aBoolean",nativeQuery = true)
     List<Doctor> findDoctorByFlag(Integer id,Boolean aBoolean);
+
+
+
+    @Query(value = "select * from tbl_doctor d where d.email =:id and d.flag=:aBoolean",nativeQuery = true)
+    List<Doctor> findDoctorByEmailAndFlag(String  id,Boolean aBoolean);
 }
 

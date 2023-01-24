@@ -115,4 +115,9 @@ public class SuperAdminImp implements SuperAdminService {
     public List<SuperAdmin> findSuperUserByFlag(Integer id, Boolean aBoolean) {
         return superAdminRepo.findSuperAdminByFlag(id, aBoolean);
     }
+
+    @Override
+    public List<SuperAdmin> findSuperAdminByEmailAndFlag(String id, Boolean aBoolean) {
+        return superAdminRepo.findSuperAdminByEmailAndFlag(id,aBoolean);
+    }
 }
