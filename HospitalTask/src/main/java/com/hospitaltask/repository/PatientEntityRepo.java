@@ -1,11 +1,11 @@
 package com.hospitaltask.repository;
 
-import java.util.List;
-
+import com.hospitaltask.entity.Patient;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-import com.hospitaltask.entity.Patient;
+
+import java.util.List;
 
 @Repository
 public interface PatientEntityRepo extends JpaRepository<Patient, Long> {
@@ -22,5 +22,8 @@ public interface PatientEntityRepo extends JpaRepository<Patient, Long> {
 
     @Query(value = "select * from tbl_patient p where p.flag=:flag", nativeQuery = true)
     List<Patient> findAllByFlag(boolean flag);
+
+    @Query(value = "select * from tbl_patient d where d.id =:id and d.flag=:aBoolean",nativeQuery = true)
+    List<Patient> findPatientByFlag(Integer id, Boolean aBoolean);
 
 }

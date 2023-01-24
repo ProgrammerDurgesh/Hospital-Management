@@ -1,6 +1,7 @@
 package com.hospitaltask.serviceImpl;
 
 import com.hospitaltask.dto.SuperUserDto;
+import com.hospitaltask.entity.Doctor;
 import com.hospitaltask.entity.SuperAdmin;
 import com.hospitaltask.repository.SuperAdminRepo;
 import com.hospitaltask.service.SuperAdminService;
@@ -33,8 +34,9 @@ public class SuperAdminImp implements SuperAdminService {
         superAdminRepo.save(superAdmin);
         return superAdmin;
     }
+
     public SuperAdmin disable(long idL, String id) {
-        if (idL > 0 && id==null)
+        if (idL > 0 && id == null)
             superAdmin = superAdminRepo.findById(idL).get();
         else
             superAdmin = superAdminRepo.findByEmail(id);
@@ -107,5 +109,10 @@ public class SuperAdminImp implements SuperAdminService {
     public SuperAdmin enableByEmail(String id) {
         SuperAdmin superAdmin1 = enable(0, id);
         return superAdmin1;
+    }
+
+    @Override
+    public List<SuperAdmin> findSuperUserByFlag(Integer id, Boolean aBoolean) {
+        return superAdminRepo.findSuperAdminByFlag(id, aBoolean);
     }
 }

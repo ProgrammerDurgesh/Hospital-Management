@@ -55,7 +55,23 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain filterChain(@NotNull HttpSecurity http) throws Exception {
-        http.cors().and().csrf().disable().authorizeRequests().antMatchers(authorizedURL).permitAll().antMatchers("/admin/**").hasAnyAuthority("ROLE_ADMIN").antMatchers("/doctor/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_DOCTOR", "ROLE_PATIENT").antMatchers("/patient/**").hasAnyAuthority("ROLE_DOCTOR").and().formLogin().and().exceptionHandling().authenticationEntryPoint(invalidLoginException).and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+        http.cors().
+                and().
+                csrf().
+                disable().
+                authorizeRequests().
+                antMatchers(authorizedURL).
+                permitAll().
+                antMatchers("/admin/**").hasAnyAuthority("ROLE_ADMIN").
+                antMatchers("/doctor/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_DOCTOR", "ROLE_PATIENT").
+                antMatchers("/patient/**").hasAnyAuthority("ROLE_DOCTOR","ROLE_ADMIN").
+                and().formLogin().
+                and().
+                exceptionHandling().
+                authenticationEntryPoint(invalidLoginException).
+                and().sessionManagement().
+                sessionCreationPolicy(SessionCreationPolicy.STATELESS).
+                and()
                 //register filter for 2nd request ....
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 		/*.and()

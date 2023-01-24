@@ -20,4 +20,6 @@ public interface RoleService {
     public void removeAll();
 
     public void removeById(Long id);
+
+
 }

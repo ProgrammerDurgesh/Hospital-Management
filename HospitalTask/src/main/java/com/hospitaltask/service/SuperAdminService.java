@@ -1,6 +1,7 @@
 package com.hospitaltask.service;
 
 import com.hospitaltask.dto.SuperUserDto;
+import com.hospitaltask.entity.Doctor;
 import com.hospitaltask.entity.SuperAdmin;
 
 import java.util.List;
@@ -18,9 +19,14 @@ public interface SuperAdminService {
     List<SuperAdmin> findAll();
 
     SuperAdmin disableById(long id);
+
     SuperAdmin enableById(long id);
+
     SuperAdmin disableByEmail(String id);
+
     SuperAdmin enableByEmail(String id);
+
+    List<SuperAdmin> findSuperUserByFlag(Integer id, Boolean aBoolean);
 
 
 }

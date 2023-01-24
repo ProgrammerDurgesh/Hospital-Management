@@ -15,7 +15,7 @@ public interface ClinicService {
     Clinic updateClinicByName(Clinic clinic, String name);
 
     //fetch & filter operation
-    Clinic getClinicById(Long id) throws UserNotFoundException;
+    Clinic getClinicById(Long id, Boolean aBoolean) throws UserNotFoundException;
 
     List<Clinic> getAllClinic();
 
@@ -28,4 +28,7 @@ public interface ClinicService {
     void deleteAllClinic();
 
     void deleteClinicById(Long id);
+
+    List<Clinic> findClinicByFlag(Integer id, Boolean aBoolean);
+
 }

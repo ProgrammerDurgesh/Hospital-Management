@@ -69,17 +69,28 @@ public class ClinicController {
     @GetMapping("/get-All/{aBoolean}")
     public ResponseEntity<?> getAllClinic(@PathVariable Boolean aBoolean) {
         List<Clinic> allEnableClinic = clinicService.getAllClinic(aBoolean);
-        return CustomResponseHandler.response("Record Found "+"Total Find Record Founded : "+allEnableClinic.size(), HttpStatus.OK, allEnableClinic);
+        return CustomResponseHandler.response("Record Found " + "Total Find Record Founded : " + allEnableClinic.size(), HttpStatus.OK, allEnableClinic);
     }
     // fetch clinic By ClinicID
 
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    @GetMapping("/get/{id}")
-    public ResponseEntity<?> getClinicById(@PathVariable Long id) throws UserNotFoundException {
+    @GetMapping("/get/{id}/{aBoolean}")
+    public ResponseEntity<?> getClinicById(@PathVariable Long id, @PathVariable Boolean aBoolean) throws UserNotFoundException {
         Clinic roles = this.clinicRepo.getClinicById(id);
         if (roles == null) return CustomResponseHandler.response("Record Not found", HttpStatus.NOT_FOUND, id);
-        return CustomResponseHandler.response("Record Found ", HttpStatus.OK, clinicService.getClinicById(id));
+        return CustomResponseHandler.response("Record Found ", HttpStatus.OK, clinicService.getClinicById(id, aBoolean));
     }
+
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @GetMapping("/findById/{id}/{aBoolean}")
+    public ResponseEntity<?> findClinicByFlag(@PathVariable Integer id, @PathVariable Boolean aBoolean) {
+        List<Clinic> clinics = clinicService.findClinicByFlag(id, aBoolean);
+        if (clinics.size() == 0) {
+            return CustomResponseHandler.response("Record Not Found", HttpStatus.NOT_FOUND, id + " " + aBoolean);
+        } else
+            return CustomResponseHandler.response("Record Found", HttpStatus.OK, clinics);
+    }
+
 
     // fetch clinic By ClinicName
 
@@ -105,11 +116,11 @@ public class ClinicController {
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @DeleteMapping("delete/{id}")
     public ResponseEntity<?> deleteByClinicById(@PathVariable Long id) throws UserNotFoundException {
-        Clinic clinic = this.clinicService.getClinicById(id);
-        if (clinic == null) return CustomResponseHandler.response("Record Not found ", HttpStatus.NOT_FOUND, id);
-        else {
-            clinicService.deleteClinicById(id);
-            return CustomResponseHandler.response("Record Deleted ", HttpStatus.OK, id);
-        }
+        //   Clinic clinic = this.clinicService.getClinicById(id);
+        //        if (clinic == null) return CustomResponseHandler.response("Record Not found ", HttpStatus.NOT_FOUND, id);
+        //        else {
+        clinicService.deleteClinicById(id);
+        return CustomResponseHandler.response("Record Deleted ", HttpStatus.OK, id);
     }
 }
+

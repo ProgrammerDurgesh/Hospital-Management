@@ -136,6 +136,18 @@ public class DoctorController {
         }
     }
 
+
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @GetMapping("/findById/{id}/{aBoolean}")
+    public ResponseEntity<?> findDoctorByFlag(@PathVariable Integer id, @PathVariable Boolean aBoolean) {
+        List<Doctor> doctors = doctorService.findDoctorByFlag(id, aBoolean);
+        if (doctors.size() == 0) {
+            return CustomResponseHandler.response("Record Not Found", HttpStatus.NOT_FOUND, id + " " + aBoolean);
+        } else
+            return CustomResponseHandler.response("Record Found", HttpStatus.OK, doctors);
+    }
+
+
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @DeleteMapping("Delete/name/{name}")
     public ResponseEntity<?> deleteDoctorByName(@PathVariable String name) throws UserNotFoundException {

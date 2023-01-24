@@ -160,6 +160,11 @@ public class DoctorServiceImpl implements DoctorService {
         return doctor1;
     }
 
+    @Override
+    public List<Doctor> findDoctorByFlag(Integer id, Boolean aBoolean) {
+        return doctorRepo.findDoctorByFlag(id, aBoolean);
+    }
+
 
     //Update repeated value in one method
     public Doctor updateMethod(@NotNull Doctor doctor) {

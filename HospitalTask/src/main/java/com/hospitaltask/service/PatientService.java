@@ -46,5 +46,7 @@ public interface PatientService {
 
     Patient enableByEmail(String id);
 
+    List<Patient> findPatientByFlag(Integer id, Boolean aBoolean);
+
 
 }

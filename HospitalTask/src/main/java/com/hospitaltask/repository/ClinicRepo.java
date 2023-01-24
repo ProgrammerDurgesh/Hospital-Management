@@ -9,7 +9,7 @@ import java.util.List;
 
 @Repository
 public interface ClinicRepo extends JpaRepository<Clinic, Long> {
-    // @Query(value = "select * from tbl_clinic where clinic_name=:id",nativeQuery =true)
+    //@Query(value = "select * from tbl_clinic where clinic_name=:clinicName",nativeQuery =true)
     Clinic findByClinicName(String clinicName);
 
     @Query(value = "select * from tbl_clinic where clinic_id=:id", nativeQuery = true)
@@ -18,5 +18,9 @@ public interface ClinicRepo extends JpaRepository<Clinic, Long> {
 
     @Query(value = "select * from tbl_clinic c where c.flag=:aBoolean", nativeQuery = true)
     List<Clinic> getAllEnableClinic(Boolean aBoolean);
+
+
+    @Query(value = "select * from tbl_clinic c where c.clinic_id=:id and c.flag=:aBoolean", nativeQuery = true)
+    List<Clinic> findClinicByFlag(Integer id, Boolean aBoolean);
 
 }
