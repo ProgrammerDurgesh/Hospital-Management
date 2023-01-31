@@ -10,19 +10,26 @@ import java.util.List;
 @Repository
 public interface SuperAdminRepo extends JpaRepository<SuperAdmin, Long> {
     String deleteByEmail(String id);
+
     //TODO...
     //    @Query(value = " select * from tbl_super_user",nativeQuery = true)
     @Query(value = " select * from tbl_super_user where flag=true", nativeQuery = true)
     List<SuperAdmin> findAll();
-    @Query(value = "select * from tbl_super_user where email=:email",nativeQuery = true)
+
+    @Query(value = "select * from tbl_super_user where email=:email", nativeQuery = true)
     SuperAdmin findByEmail(String email);
 
 
-    @Query(value = "select * from tbl_super_user d where d.id =:id and d.flag=:aBoolean",nativeQuery = true)
+    @Query(value = "select * from tbl_super_user d where d.id =:id and d.flag=:aBoolean", nativeQuery = true)
     List<SuperAdmin> findSuperAdminByFlag(Integer id, Boolean aBoolean);
 
-    @Query(value = "select * from tbl_super_user d where d.email =:id and d.flag=:aBoolean",nativeQuery = true)
+    @Query(value = "select * from tbl_super_user d where d.email =:id and d.flag=:aBoolean", nativeQuery = true)
     List<SuperAdmin> findSuperAdminByEmailAndFlag(String id, Boolean aBoolean);
+
+    @Query(value = "select Id from tbl_super_user where email=:email", nativeQuery = true)
+    Long findUserIDByEmail(String email);
+
+
 
    /* @Query(value = "update tbl_super_user set flag=false where id=1",nativeQuery=true)
     void disableById(long id);
