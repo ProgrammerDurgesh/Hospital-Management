@@ -69,8 +69,7 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     public List<Patient> getAllPatient(boolean flag) {
-            return patientRepo.findAllByFlag(flag);
-
+        return patientRepo.findAllByFlag(flag);
 
 
     }
@@ -198,6 +197,16 @@ public class PatientServiceImpl implements PatientService {
     public Patient enableByEmail(String id) {
         Patient patient = enable(0, id);
         return patient;
+    }
+
+    @Override
+    public List<Patient> findPatientByFlag(Integer id, Boolean aBoolean) {
+        return patientRepo.findPatientByFlag(id, aBoolean);
+    }
+
+    @Override
+    public List<Patient> findPatientByEmailAndFlag(String id, Boolean aBoolean) {
+        return patientRepo.findPatientByEmailAndFlag(id,aBoolean);
     }
 
 

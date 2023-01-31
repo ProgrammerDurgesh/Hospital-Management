@@ -62,6 +62,26 @@ public class SuperAdminController {
         return CustomResponseHandler.response("Record Not Found", HttpStatus.NOT_FOUND, "null");
     }
 
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @GetMapping("/findById/{id}/{aBoolean}")
+    public ResponseEntity<?> findSuperUserByFlag(@PathVariable Integer id, @PathVariable Boolean aBoolean) {
+        List<SuperAdmin> superAdmins = superAdminService.findSuperUserByFlag(id, aBoolean);
+        if (superAdmins.size() == 0) {
+            return CustomResponseHandler.response("Record Not Found", HttpStatus.NOT_FOUND, id + " " + aBoolean);
+        } else return CustomResponseHandler.response("Record Found", HttpStatus.OK, superAdmins);
+    }
+
+
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @GetMapping("/findByEmail/{id}/{aBoolean}")
+    public ResponseEntity<?> findSuperUserByFlag(@PathVariable String id, @PathVariable Boolean aBoolean) {
+        List<SuperAdmin> superAdmins = superAdminService.findSuperAdminByEmailAndFlag(id,aBoolean);
+        if (superAdmins.size() == 0) {
+            return CustomResponseHandler.response("Record Not Found", HttpStatus.NOT_FOUND, id + " " + aBoolean);
+        } else return CustomResponseHandler.response("Record Found", HttpStatus.OK, superAdmins);
+    }
+
+
     @PutMapping("disableById/{id}")
     public ResponseEntity<?> disableById(@PathVariable Long id) {
         SuperAdmin superAdmin = superAdminService.findById(id);

@@ -3,6 +3,8 @@ package com.hospitaltask.serviceImpl;
 import java.util.List;
 import java.util.Objects;
 
+import com.hospitaltask.entity.Doctor;
+import com.hospitaltask.exception.CustomExceptionHandler;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -58,10 +60,17 @@ public class ClinicServiceImpl implements ClinicService {
 
     // fetch & filter Operation
     @Override
-    public Clinic getClinicById(Long id) throws UserNotFoundException {
+    public Clinic getClinicById(Long id, Boolean aBoolean) throws UserNotFoundException {
         Clinic clinic = clinicRepo.findById(id).orElse(null);
-        if (!clinic.equals(null)) return clinic;
-        else ;
+        if (!clinic.equals(null)) {
+            if (clinic.isFlag() && aBoolean) {
+                return clinic;
+            } else if (clinic.isFlag() && !aBoolean) {
+                return clinic;
+            }
+
+        }
+
         return clinic;
     }
 
@@ -91,5 +100,12 @@ public class ClinicServiceImpl implements ClinicService {
     public void deleteClinicById(Long id) {
         clinicRepo.findById(id);
         this.clinicRepo.deleteById(id);
+    }
+
+    @Override
+    public List<Clinic> findClinicByFlag(Integer id, Boolean aBoolean) {
+        List<Clinic> clinicByFlag = clinicRepo.findClinicByFlag(id, aBoolean);
+
+        return clinicByFlag;
     }
 }

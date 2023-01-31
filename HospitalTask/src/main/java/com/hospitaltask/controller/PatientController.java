@@ -88,6 +88,26 @@ public class PatientController {
         return CustomResponseHandler.response("Record Not Found ", HttpStatus.OK, list);
     }
 
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @GetMapping("/findById/{id}/{aBoolean}")
+    public ResponseEntity<?> findPatientByFlag(@PathVariable Integer id, @PathVariable Boolean aBoolean) {
+        List<Patient> patient = patientService.findPatientByFlag(id, aBoolean);
+        if (patient.size() == 0) {
+            return CustomResponseHandler.response("Record Not Found", HttpStatus.NOT_FOUND, id + " " + aBoolean);
+        } else return CustomResponseHandler.response("Record Found", HttpStatus.OK, patient);
+    }
+
+
+
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @GetMapping("/findByEmail/{id}/{aBoolean}")
+    public ResponseEntity<?> findPatientByFlag(@PathVariable String id, @PathVariable Boolean aBoolean) {
+        List<Patient> patient = patientService.findPatientByEmailAndFlag(id,aBoolean);
+        if (patient.size() == 0) {
+            return CustomResponseHandler.response("Record Not Found", HttpStatus.NOT_FOUND, id + " " + aBoolean);
+        } else return CustomResponseHandler.response("Record Found", HttpStatus.OK, patient);
+    }
+
     // fetch Patient By PatientEmailId
     @PreAuthorize("hasAuthority('ROLE_DOCTOR') or hasAuthority('ROLE_ADMIN,ROLE_PATIENT')")
     @GetMapping({"/patient/{id}", "p-Id/{id}"})

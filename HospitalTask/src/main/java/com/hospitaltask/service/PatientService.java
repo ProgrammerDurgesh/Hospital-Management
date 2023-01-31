@@ -46,9 +46,15 @@ public interface PatientService {
 
     Patient enableByEmail(String id);
 
+<<<<<<< HEAD
     String forgotPassword(String email);
 
     String resetPassword(String token, String password);
+=======
+    List<Patient> findPatientByFlag(Integer id, Boolean aBoolean);
+
+    List<Patient> findPatientByEmailAndFlag(String  id, Boolean aBoolean);
+>>>>>>> 1fcbbd3bf2af57267520666a01388df14284fa77
 
 
 }

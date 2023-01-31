@@ -53,4 +53,9 @@ public interface DoctorService {
     Doctor disableByEmail(String id);
 
     Doctor enableByEmail(String id);
+
+    List<Doctor> findDoctorByFlag(Integer id, Boolean aBoolean);
+
+    List<Doctor> findDoctorByEmailAndFlag(String id,Boolean aBoolean);
+
 }

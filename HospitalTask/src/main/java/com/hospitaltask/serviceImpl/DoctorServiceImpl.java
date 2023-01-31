@@ -155,9 +155,19 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
     @Override
-    public Doctor enableByEmail(String id) {
+    public Doctor enableByEmail(@NotNull String id) {
         Doctor doctor1 = enable(0, id);
         return doctor1;
+    }
+
+    @Override
+    public List<Doctor> findDoctorByFlag(@NotNull Integer id,@NotNull Boolean aBoolean) {
+        return doctorRepo.findDoctorByFlag(id, aBoolean);
+    }
+
+    @Override
+    public List<Doctor> findDoctorByEmailAndFlag(@NotNull String id,@NotNull Boolean aBoolean) {
+        return doctorRepo.findDoctorByEmailAndFlag(id,aBoolean);
     }
 
 
