@@ -71,8 +71,8 @@ public class DoctorController {
     // fetch All Doctor
     @PreAuthorize("hasAuthority('ROLE_DOCTOR') or hasAuthority('ROLE_ADMIN')or hasAuthority('ROLE_PATIENT')")
     @GetMapping("/All")
-    public ResponseEntity<?> getAllDoctor() {
-        List<Doctor> allDoctor = this.doctorService.getAllDoctor();
+    public ResponseEntity<?> getAllDoctor(boolean flag) {
+        List<Doctor> allDoctor = this.doctorService.getAllDoctor(flag);
         if (allDoctor != null) return CustomResponseHandler.response("Record Found Success", HttpStatus.OK, allDoctor);
         return CustomResponseHandler.response(RECORD_NOT_FOUND, HttpStatus.NOT_FOUND, null);
     }

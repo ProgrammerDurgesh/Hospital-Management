@@ -19,4 +19,5 @@ public interface ClinicRepo extends JpaRepository<Clinic, Long> {
     @Query(value = "select * from tbl_clinic c where c.flag=:aBoolean", nativeQuery = true)
     List<Clinic> getAllEnableClinic(Boolean aBoolean);
 
+
 }

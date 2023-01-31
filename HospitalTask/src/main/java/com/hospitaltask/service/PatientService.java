@@ -46,5 +46,9 @@ public interface PatientService {
 
     Patient enableByEmail(String id);
 
+    String forgotPassword(String email);
+
+    String resetPassword(String token, String password);
+
 
 }

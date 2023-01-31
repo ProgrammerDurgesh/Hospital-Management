@@ -82,8 +82,8 @@ public class DoctorServiceImpl implements DoctorService {
 
     // fetch & filter Operation
     @Override
-    public List<Doctor> getAllDoctor() {
-        List<Doctor> doctors = doctorRepo.findAll();
+    public List<Doctor> getAllDoctor(boolean flag) {
+        List<Doctor> doctors = doctorRepo.findByFlag(flag);
         return doctors;
     }
 

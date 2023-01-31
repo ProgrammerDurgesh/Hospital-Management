@@ -8,13 +8,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class PatientServiceImpl implements PatientService {
     @Autowired
     PatientEntityRepo patientRepo;
+
+    private static final long EXPIRE_TOKEN_AFTER_MINUTES = 30;
 
     Patient patient = null;
     @Autowired
@@ -74,6 +79,68 @@ public class PatientServiceImpl implements PatientService {
         return patientRepo.findAll();
     }
 
+
+    public String forgotPassword(String email){
+        Optional<Patient> optional = Optional.ofNullable(patientRepo.findByEmail(email));
+
+        if(!optional.isPresent()){
+            return "Invalid email id:" + email;
+        }
+
+        Patient patient= optional.get();
+        patient.setToken(generateToken());
+        patient.setTokenCreationDate(LocalDateTime.now());
+
+        patient = patientRepo.save(patient);
+
+        return patient.getToken();
+
+    }
+
+
+    public String resetPassword(String token, String password){
+
+        Optional<Patient> optional = Optional.ofNullable(patientRepo.findByToken(token));
+
+        if(!optional.isPresent()){
+            return "Invalid token";
+        }
+
+        LocalDateTime tokenCreationDate = optional.get().getTokenCreationDate();
+
+        if(isTokenExpired(tokenCreationDate)){
+            return "Token expired";
+        }
+
+        Patient patient=optional.get();
+
+
+
+        patient.setPassword(bCryptPasswordEncoder.encode(password));
+        patient.setToken(null);
+        patient.setTokenCreationDate(null);
+
+        System.out.println(patient);
+        patientRepo.save(patient);
+
+        return "Your password successfully updated";
+
+    }
+
+    private String generateToken(){
+        StringBuilder token = new StringBuilder();
+
+        return token.append(UUID.randomUUID().toString()).append(UUID.randomUUID().toString()).toString();
+    }
+
+    private boolean isTokenExpired(final LocalDateTime tokenCreationDate){
+
+        LocalDateTime now = LocalDateTime.now();
+        Duration diff = Duration.between(tokenCreationDate, now);
+
+
+        return diff.toMinutes() >= EXPIRE_TOKEN_AFTER_MINUTES;
+    }
 
     @Override
     public Patient getPatientById(Long id) {

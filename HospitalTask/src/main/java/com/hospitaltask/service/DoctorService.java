@@ -21,7 +21,7 @@ public interface DoctorService {
 
     //fetch & filter Operation
 
-    List<Doctor> getAllDoctor();
+    List<Doctor> getAllDoctor(boolean flag);
 
     Doctor getDoctorById(Long id);
 

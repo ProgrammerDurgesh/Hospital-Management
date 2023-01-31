@@ -35,6 +35,8 @@ public class HospitalTaskApplication {
     @Autowired
     private RoleRepo roleRepo;
 
+
+
     private void superuserSave()
     {
         List<SuperAdmin> superAdmin=superAdminService.findAll();

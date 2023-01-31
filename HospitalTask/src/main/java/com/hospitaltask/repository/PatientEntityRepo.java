@@ -13,6 +13,8 @@ public interface PatientEntityRepo extends JpaRepository<Patient, Long> {
     @Query(value = "select * from tbl_patient p where p.patient_email=:email", nativeQuery = true)
     Patient findByEmail(String email);
 
+    Patient findByToken(String token);
+
     @Query(value = "select * from tbl_patient p where p.doctor_id=:Id", nativeQuery = true)
     List<Patient> findAllPatientByDoctorId(Long Id);
 
@@ -22,5 +24,7 @@ public interface PatientEntityRepo extends JpaRepository<Patient, Long> {
 
     @Query(value = "select * from tbl_patient p where p.flag=:flag", nativeQuery = true)
     List<Patient> findAllByFlag(boolean flag);
+
+
 
 }

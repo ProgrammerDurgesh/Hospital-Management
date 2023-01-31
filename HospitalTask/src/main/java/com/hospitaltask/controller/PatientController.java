@@ -48,6 +48,26 @@ public class PatientController {
         }
     }
 
+    @PostMapping("/forgot-password/{email}")
+    public String forgotPassword(@PathVariable String email){
+
+        String response =  patientService.forgotPassword(email);
+
+        if(!response.startsWith("Invalid")){
+            response = "http://localhost:8000/reset-password?token=" + response;
+        }
+
+        return response;
+    }
+
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPassword(@RequestParam String token,@RequestParam String password){
+        String s = patientService.resetPassword(token, password);
+        return CustomResponseHandler.response(s,HttpStatus.OK,null);
+    }
+
+
     // TODO Under process.....
     @PreAuthorize("hasAuthority('ROLE_DOCTOR')")
     @PutMapping("/patient/{id}")

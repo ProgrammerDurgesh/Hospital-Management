@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -26,6 +27,12 @@ public class Patient {
     @NotNull
     private String password, name, age, bloodGroup, illness;
     private boolean flag = true;
+
+    private String token;
+
+    @Column(name = "TIMESTAMP")
+    private LocalDateTime tokenCreationDate;
+
     @ManyToOne
     @JoinColumn(name = "doctor_id")
     private Doctor doctor;
