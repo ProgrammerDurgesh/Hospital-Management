@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
+import javax.mail.AuthenticationFailedException;
 import java.sql.SQLIntegrityConstraintViolationException;
 
 @ControllerAdvice
@@ -87,4 +88,8 @@ public class CustomExceptionHandler {
         return CustomResponseHandler.response("Request Method Not Allowed", HttpStatus.METHOD_NOT_ALLOWED, "405");
     }
 
+    @ExceptionHandler(value = AuthenticationFailedException.class)
+    public ResponseEntity<?> javaxMailAuthenticationFailedException() {
+        return CustomResponseHandler.response("Email Password incorrect", HttpStatus.INTERNAL_SERVER_ERROR, "501");
+    }
 }

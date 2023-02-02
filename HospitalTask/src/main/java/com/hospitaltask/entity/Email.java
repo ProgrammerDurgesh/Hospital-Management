@@ -15,5 +15,4 @@ public class Email {
     final String FROM_EMAIL="testdemo000011@gmail.com";
     private String to;
     private String subject;
-    private String message;
 }

@@ -24,7 +24,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration {
-    private static final String[] authorizedURL = {"/dur/Home", "/dur/login", "/swagger-ui**"};
+    private static final String[] authorizedURL = {"/dur/Home", "/dur/login", "/swagger-ui**","/email"};
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
     @Autowired
@@ -55,9 +55,6 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain filterChain(@NotNull HttpSecurity http) throws Exception {
-<<<<<<< HEAD
-        http.cors().and().csrf().disable().authorizeRequests().antMatchers(authorizedURL).permitAll().antMatchers("/admin/**").hasAnyAuthority("ROLE_ADMIN").antMatchers("/doctor/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_DOCTOR", "ROLE_PATIENT").antMatchers("/patient/**").hasAnyAuthority("ROLE_DOCTOR", "ROLE_PATIENT").and().formLogin().and().exceptionHandling().authenticationEntryPoint(invalidLoginException).and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-=======
         http.cors().
                 and().
                 csrf().
@@ -67,7 +64,7 @@ public class SecurityConfiguration {
                 permitAll().
                 antMatchers("/admin/**").hasAnyAuthority("ROLE_ADMIN").
                 antMatchers("/doctor/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_DOCTOR", "ROLE_PATIENT").
-                antMatchers("/patient/**").hasAnyAuthority("ROLE_DOCTOR","ROLE_ADMIN").
+                antMatchers("/patient/**").hasAnyAuthority("ROLE_DOCTOR","ROLE_PATIENT").
                 and().formLogin().
                 and().
                 exceptionHandling().
@@ -75,7 +72,6 @@ public class SecurityConfiguration {
                 and().sessionManagement().
                 sessionCreationPolicy(SessionCreationPolicy.STATELESS).
                 and()
->>>>>>> 1fcbbd3bf2af57267520666a01388df14284fa77
                 //register filter for 2nd request ....
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 		/*.and()

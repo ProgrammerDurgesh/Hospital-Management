@@ -1,9 +1,13 @@
 package com.hospitaltask.entity;
 
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Calendar;
+import java.util.Date;
 
 @Entity
 @Getter
@@ -13,6 +17,12 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @Table(name = "tbl_superUser")
 public class SuperAdmin {
+    @CreatedDate
+    @Temporal(TemporalType.TIMESTAMP)
+    protected final Date creationDate= Calendar.getInstance().getTime();
+    @LastModifiedDate
+    @Temporal(TemporalType.TIMESTAMP)
+    protected Date lastModifiedDate=Calendar.getInstance().getTime();
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -26,5 +36,6 @@ public class SuperAdmin {
     private boolean flag = true;
     @ManyToOne
     private Roles roles;
+    private Long CreatedBy= 0L;
 }
 
