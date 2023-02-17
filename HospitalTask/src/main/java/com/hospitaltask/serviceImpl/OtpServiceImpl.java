@@ -75,7 +75,13 @@ public class OtpServiceImpl implements OtpService {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"OTP Expired");
             } else {
                 value = true;
-                otpRepo.deleteById(otpVerify.getId());
+                try {
+                    otpRepo.deleteById(otpVerify.getId());
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();

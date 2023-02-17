@@ -1,20 +1,9 @@
 package com.hospitaltask;
 
-import com.hospitaltask.entity.Roles;
-import com.hospitaltask.entity.SuperAdmin;
-import com.hospitaltask.repository.RoleRepo;
-import com.hospitaltask.repository.SuperAdminRepo;
-import com.hospitaltask.service.RoleService;
-import com.hospitaltask.service.SuperAdminService;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-
-import java.util.Collection;
-import java.util.Hashtable;
-import java.util.List;
 
 /*import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;

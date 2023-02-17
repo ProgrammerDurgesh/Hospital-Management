@@ -1,8 +1,6 @@
 package com.hospitaltask.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -12,7 +10,8 @@ import java.util.Date;
 
 @Entity
 @Table(name = "tbl_Patient")
-@Data
+@Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Patient {

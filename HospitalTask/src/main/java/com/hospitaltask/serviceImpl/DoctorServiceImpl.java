@@ -24,8 +24,7 @@ public class DoctorServiceImpl implements DoctorService {
     private ModelMapper modelMapper;
 
     Doctor dtoToDoctor(DoctorDto doctorDto) {
-        Doctor doctor = this.modelMapper.map(doctorDto, Doctor.class);
-        return doctor;
+        return this.modelMapper.map(doctorDto, Doctor.class);
     }
 
     // Add & Update Operation

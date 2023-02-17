@@ -1,6 +1,8 @@
 package com.hospitaltask.controller;
 
 import com.hospitaltask.jwt.JwtUtil;
+import org.apache.logging.log4j.MarkerManager;
+import org.slf4j.Marker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +17,8 @@ public class LogoutController {
     @GetMapping("/logout")
     public ResponseEntity<?> logout()
     {
-       /* boolean b=jwtUtil.validateToken(null,null);*/
+      //  Marker requestId = MarkerManager.getMarker(PasswordManager.generateUuid());
+
         return null;
     }
 }
