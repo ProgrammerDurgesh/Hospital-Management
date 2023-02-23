@@ -15,7 +15,6 @@ import com.hospitaltask.dto.AvailityDto;
 import com.hospitaltask.entity.Availity;
 import com.hospitaltask.entity.CreateSlot;
 import com.hospitaltask.entity.SaveSlot;
-import com.hospitaltask.repository.AvailityRepo;
 import com.hospitaltask.repository.CreateSlotRepo;
 import com.hospitaltask.repository.SaveSlotRepo;
 import com.hospitaltask.response.CustomResponseHandler;
@@ -27,9 +26,6 @@ public class AvailityController {
 
 	@Autowired
 	private ModelMapper modelMapper;
-	@Autowired
-	private AvailityRepo availityRepo;
-
 	@Autowired
 	private SaveSlotRepo repo;
 
@@ -101,70 +97,92 @@ public class AvailityController {
 		System.out.println(createSlots);
 		String STARTTIMEDB = createSlots.getStartTime();
 		String ENDTIMEDB = createSlots.getEndTime();
-		String dTimeDB = createSlots.getDurationMinutes();
+		String durationTimeDB = createSlots.getDurationMinutes();
 
-		int sTime = Integer.parseInt(STARTTIMEDB.substring(0, 2));
-		int sTimeCopy = sTime;
-		int dTime = Integer.parseInt(dTimeDB.substring(0, 2));
+		int startTimeDB = Integer.parseInt(STARTTIMEDB.substring(0, 2));
+		int startTimeOriginal = startTimeDB;
+		int durationTime = Integer.parseInt(durationTimeDB.substring(0, 2));
 		int endTime = Integer.parseInt(ENDTIMEDB.substring(0, 2));
-		int totalMinutes = (endTime - sTime) * 60;
-		int totalSlot = totalMinutes / dTime;
+		int totalMinutes = (endTime - startTimeDB) * 60;
+		int totalSlot = totalMinutes / durationTime;
 		int k = 1, l = 0, hourIncrement = 0;
 		int hours = 0;
 		int startMinutes = 0;
-		int endMinutes = dTime;
-		int manage = 0;
+		int endMinutes = durationTime;
 		hours = Integer.parseInt(STARTTIMEDB);
-
+		int oldHours = 0;
+		int exext60 = 0;
 		for (int i = 0; i < totalSlot; i++) {
 			SaveSlot saveSlot = new SaveSlot();
 
 			if (i != 0) {
 
-				if (endMinutes >= dTime) {
+				if (endMinutes >= durationTime) {
 					startMinutes = endMinutes;
-					endMinutes = dTime + endMinutes;
-				}
-
-				else {
-					endMinutes = dTime * k;
-					startMinutes = dTime * l;
+					endMinutes = durationTime + endMinutes;
+				} else {
+					if (startMinutes == 60) {
+						startMinutes = 0;
+						endMinutes = durationTime * k;
+					} else {
+						startMinutes = durationTime * l;
+						endMinutes = durationTime * k;
+					}
 
 				}
 				if (endMinutes >= 60) {
-					int oldHours = hours;
-					hourIncrement++;
-					hours = sTimeCopy + hourIncrement;
-
-					endMinutes = endMinutes - 60;
-					manage = endMinutes;
-					k = 1;
-					l = 1;
-
-					if (endMinutes == 0) {
-
-						saveSlot.setStartTime(String.valueOf(hours) + ":" + "00");
-						oldHours++;
-						endMinutes = endMinutes + dTime;
-						saveSlot.setEndTime(hours + ":" + endMinutes);
-						k = 1;
-						l = 1;
-					} else {
-						if (endMinutes < 10) {
-
+					exext60++;
+					if (exext60 != 0 && startMinutes <= 60) {
+						oldHours = hours;
+						if (endMinutes == 60) {
+							hourIncrement++;
+							hours = hours + hourIncrement;
+							endMinutes = endMinutes - endMinutes;
 							saveSlot.setStartTime(String.valueOf(oldHours) + ":" + startMinutes);
-							oldHours++;
-							saveSlot.setEndTime(hours + ":" + "0" + String.valueOf(endMinutes));
+							saveSlot.setEndTime(String.valueOf(hours) + ":" + "0" + endMinutes);
 
-						} else {
-							saveSlot.setStartTime(String.valueOf(oldHours) + ":" + startMinutes);
-							oldHours++;
-							saveSlot.setEndTime(String.valueOf(hours) + ":" + String.valueOf(endMinutes));
 							k = 1;
 							l = 1;
+							hourIncrement--;
+						} else {
+							saveSlot.setStartTime(String.valueOf(hours) + ":" + 00);
+							saveSlot.setEndTime(String.valueOf(hours) + ":" + String.valueOf(endMinutes));
 						}
-					}
 
+					} else {
+
+						hourIncrement++;
+						hours = startTimeOriginal + hourIncrement;
+
+						endMinutes = endMinutes - 60;
+						k = 1;
+						l = 1;
+
+						if (endMinutes == 0) {
+
+							saveSlot.setStartTime(String.valueOf(hours) + ":" + "00");
+							oldHours++;
+							endMinutes = endMinutes + durationTime;
+							saveSlot.setEndTime(hours + ":" + endMinutes);
+							k = 1;
+							l = 1;
+						} else {
+							if (endMinutes < 10) {
+
+								saveSlot.setStartTime(String.valueOf(oldHours) + ":" + startMinutes);
+								oldHours++;
+								saveSlot.setEndTime(hours + ":" + "0" + String.valueOf(endMinutes));
+
+							} else {
+								saveSlot.setStartTime(String.valueOf(oldHours) + ":" + startMinutes);
+								oldHours++;
+								saveSlot.setEndTime(String.valueOf(hours) + ":" + String.valueOf(endMinutes));
+								k = 1;
+								l = 1;
+							}
+						}
+
+					}
 				} else {
 
 					if (endMinutes < 10) {
@@ -180,9 +198,9 @@ public class AvailityController {
 
 					} else {
 						if (startMinutes < 10)
-							saveSlot.setStartTime(String.valueOf(hours) + ":" + "0" + String.valueOf(startMinutes));
+							saveSlot.setStartTime(String.valueOf(hours) + ":" + "0" + startMinutes);
 						else
-							saveSlot.setStartTime(String.valueOf(hours) + ":" + String.valueOf(startMinutes));
+							saveSlot.setStartTime(String.valueOf(hours) + ":" + startMinutes);
 						saveSlot.setEndTime(String.valueOf(hours) + ":" + String.valueOf(endMinutes));
 						k++;
 						l++;
@@ -214,13 +232,13 @@ public class AvailityController {
 		}
 
 		for (int i = 0; i < totalSlot; i++) {
-			if (sTime == userSTime) {
+			if (startTimeDB == userSTime) {
 				slot++;
 				break;
 			} else {
 
-				sTime = sTime + Integer.parseInt(dTimeDB);
-				String durtationHours = String.valueOf(sTime);
+				startTimeDB = startTimeDB + Integer.parseInt(durationTimeDB);
+				String durtationHours = String.valueOf(startTimeDB);
 				int minute = Integer
 						.parseInt(durtationHours.substring(durtationHours.length() - 2, durtationHours.length()));
 
