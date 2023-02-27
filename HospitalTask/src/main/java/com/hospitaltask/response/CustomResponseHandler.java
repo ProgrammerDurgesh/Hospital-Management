@@ -12,7 +12,9 @@ import java.util.Map;
 @Component
 public class CustomResponseHandler extends  Exception{
 
-    @Contract("_, _, _ -> new")
+    private static final long serialVersionUID = 1L;
+
+	@Contract("_, _, _ -> new")
     public static @NotNull ResponseEntity<Object> response(String message, HttpStatus httpStatus, Object object) {
         Map<String, Object> map = new HashMap<>();
         map.put("Message ", message);

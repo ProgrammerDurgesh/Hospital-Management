@@ -121,15 +121,14 @@ public class AvailityController {
 					startMinutes = endMinutes;
 					endMinutes = durationTime + endMinutes;
 				} else {
-					if (startMinutes == 60) {
+					if (endMinutes == 0) {
 						startMinutes = 0;
-						endMinutes = durationTime * k;
 					} else {
 						startMinutes = durationTime * l;
-						endMinutes = durationTime * k;
 					}
-
+					endMinutes = durationTime * k;
 				}
+
 				if (endMinutes >= 60) {
 					exext60++;
 					if (exext60 != 0 && startMinutes <= 60) {
@@ -140,7 +139,6 @@ public class AvailityController {
 							endMinutes = endMinutes - endMinutes;
 							saveSlot.setStartTime(String.valueOf(oldHours) + ":" + startMinutes);
 							saveSlot.setEndTime(String.valueOf(hours) + ":" + "0" + endMinutes);
-
 							k = 1;
 							l = 1;
 							hourIncrement--;
@@ -148,18 +146,14 @@ public class AvailityController {
 							saveSlot.setStartTime(String.valueOf(hours) + ":" + 00);
 							saveSlot.setEndTime(String.valueOf(hours) + ":" + String.valueOf(endMinutes));
 						}
-
 					} else {
 
 						hourIncrement++;
 						hours = startTimeOriginal + hourIncrement;
-
 						endMinutes = endMinutes - 60;
 						k = 1;
 						l = 1;
-
 						if (endMinutes == 0) {
-
 							saveSlot.setStartTime(String.valueOf(hours) + ":" + "00");
 							oldHours++;
 							endMinutes = endMinutes + durationTime;
@@ -168,11 +162,9 @@ public class AvailityController {
 							l = 1;
 						} else {
 							if (endMinutes < 10) {
-
 								saveSlot.setStartTime(String.valueOf(oldHours) + ":" + startMinutes);
 								oldHours++;
 								saveSlot.setEndTime(hours + ":" + "0" + String.valueOf(endMinutes));
-
 							} else {
 								saveSlot.setStartTime(String.valueOf(oldHours) + ":" + startMinutes);
 								oldHours++;
@@ -181,21 +173,16 @@ public class AvailityController {
 								l = 1;
 							}
 						}
-
 					}
 				} else {
-
 					if (endMinutes < 10) {
 						if (startMinutes < 10)
 							saveSlot.setStartTime(String.valueOf(hours) + ":" + "0" + String.valueOf(startMinutes));
 						else
 							saveSlot.setStartTime(String.valueOf(hours) + ":" + String.valueOf(startMinutes));
-
 						saveSlot.setEndTime(String.valueOf(hours) + ":" + String.valueOf(endMinutes));
-
 						k++;
 						l++;
-
 					} else {
 						if (startMinutes < 10)
 							saveSlot.setStartTime(String.valueOf(hours) + ":" + "0" + startMinutes);
@@ -204,43 +191,31 @@ public class AvailityController {
 						saveSlot.setEndTime(String.valueOf(hours) + ":" + String.valueOf(endMinutes));
 						k++;
 						l++;
-
 					}
-
 				}
 			} else {
-
 				saveSlot.setStartTime(String.valueOf(hours) + ":" + "00");
 				saveSlot.setEndTime(String.valueOf(hours) + ":" + String.valueOf(endMinutes));
 				k++;
 				l++;
-
 			}
 			System.out.println(saveSlot.getStartTime());
 			System.out.println(saveSlot.getEndTime());
 			repo.save(saveSlot);
-
 		}
 
 		int userSTime = 0;
-
 		String[] arrOfStr1 = createSlotDto.getStartTime().split(":", 2);
 		for (int j = 0; j < arrOfStr1.length; j++) {
-
 			int datavalue = Integer.parseInt(arrOfStr1[j]);
 			userSTime = userSTime + datavalue;
 		}
-
 		for (int i = 0; i < totalSlot; i++) {
 			if (startTimeDB == userSTime) {
 				slot++;
 				break;
 			} else {
-
 				startTimeDB = startTimeDB + Integer.parseInt(durationTimeDB);
-				String durtationHours = String.valueOf(startTimeDB);
-				int minute = Integer
-						.parseInt(durtationHours.substring(durtationHours.length() - 2, durtationHours.length()));
 
 				/*
 				 * if (minute >= 60) { sTimeCopy1 = sTimeCopy1 + 1; sTime = sTimeCopy1; }

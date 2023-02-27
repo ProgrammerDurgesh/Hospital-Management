@@ -21,56 +21,61 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequestMapping("/dur")
 public class LoginController {
-    @Autowired
-    private AuthenticationManager authenticationManager;
-    @Autowired
-    private MyUserDetails myUserDetailsService;
-    @Autowired
-    private PatientEntityRepo entityRepo;
-    @Autowired
-    private SuperAdminRepo superAdminRepo;
-    @Autowired
-    private DoctorRepo doctorRepo;
-    @Autowired
-    private JwtUtil jwtUtil;
-    @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
+	@Autowired
+	private AuthenticationManager authenticationManager;
+	@Autowired
+	private MyUserDetails myUserDetailsService;
+	@Autowired
+	private PatientEntityRepo entityRepo;
+	@Autowired
+	private SuperAdminRepo superAdminRepo;
+	@Autowired
+	private DoctorRepo doctorRepo;
+	@Autowired
+	private JwtUtil jwtUtil;
+	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
 
-    @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody @NotNull AuthRequest authRequest) throws Exception {
-        Authentication authenticate;
-        String getPasswordByEmailFromDB = null;
-        Doctor doctor = doctorRepo.getDoctorByEmail(authRequest.getUserName());
-        if (doctor != null && doctor.isFlag()) {
-            getPasswordByEmailFromDB = doctor.getPassword();
-        } else {
-            Patient patient = entityRepo.findByEmail(authRequest.getUserName());
-            if (patient != null && patient.isFlag()) {
-                getPasswordByEmailFromDB = patient.getPassword();
-            } else {
-                SuperAdmin superAdmin = superAdminRepo.findByEmail(authRequest.getUserName());
-                if (superAdmin != null && superAdmin.isFlag()) getPasswordByEmailFromDB = superAdmin.getPassword();
-                else {
-                    return CustomResponseHandler.response("Email incorrect", HttpStatus.BAD_REQUEST, authRequest.getUserName());
-                }
-            }
-        }
+	@PostMapping("/login")
+	public ResponseEntity<?> login(@RequestBody @NotNull AuthRequest authRequest) throws Exception {
+		Authentication authenticate;
+		String getPasswordByEmailFromDB = null;
+		Doctor doctor = doctorRepo.getDoctorByEmail(authRequest.getUserName());
+		if (doctor != null && doctor.isFlag()) {
+			getPasswordByEmailFromDB = doctor.getPassword();
+		} else {
+			Patient patient = entityRepo.findByEmail(authRequest.getUserName());
+			if (patient != null && patient.isFlag()) {
+				getPasswordByEmailFromDB = patient.getPassword();
+			} else {
+				SuperAdmin superAdmin = superAdminRepo.findByEmail(authRequest.getUserName());
+				if (superAdmin != null && superAdmin.isFlag())
+					getPasswordByEmailFromDB = superAdmin.getPassword();
+				else {
+					return CustomResponseHandler.response("Email incorrect", HttpStatus.BAD_REQUEST,
+							authRequest.getUserName());
+				}
+			}
+		}
 
-        try {
-            // boolean matches = passwordEncoder.matches(authRequest.getPassword(), getPasswordByEmailFromDB);
-            authenticate = this.authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUserName(), authRequest.getPassword()));
+		try {
+			// boolean matches = passwordEncoder.matches(authRequest.getPassword(),
+			// getPasswordByEmailFromDB);
+			authenticate = this.authenticationManager.authenticate(
+					new UsernamePasswordAuthenticationToken(authRequest.getUserName(), authRequest.getPassword()));
 
-        } catch (Exception e) {
-            return CustomResponseHandler.response("Password incorrect", HttpStatus.BAD_REQUEST, authRequest.getPassword());
-        }
-        if (authenticate.isAuthenticated()) {
-            UserDetails userDetails = this.myUserDetailsService.loadUserByUsername(authRequest.getUserName());
-            String token = this.jwtUtil.generateToken(userDetails);
-            return CustomResponseHandler.response("Token Create successfully ", HttpStatus.ACCEPTED, token);
-        } else {
-            return CustomResponseHandler.response("Credential Not Found", HttpStatus.NOT_FOUND, authRequest.getUserName() + authRequest.getPassword());
-        }
-    }
-
+		} catch (Exception e) {
+			return CustomResponseHandler.response("Password incorrect", HttpStatus.BAD_REQUEST,
+					authRequest.getPassword());
+		}
+		if (authenticate.isAuthenticated()) {
+			UserDetails userDetails = this.myUserDetailsService.loadUserByUsername(authRequest.getUserName());
+			String token = this.jwtUtil.generateToken(userDetails);
+			return CustomResponseHandler.response("Token Create successfully ", HttpStatus.ACCEPTED, token);
+		} else {
+			return CustomResponseHandler.response("Credential Not Found", HttpStatus.NOT_FOUND,
+					authRequest.getUserName() + authRequest.getPassword());
+		}
+	}
 
 }

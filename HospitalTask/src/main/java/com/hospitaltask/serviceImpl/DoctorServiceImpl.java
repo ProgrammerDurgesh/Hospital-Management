@@ -2,12 +2,12 @@ package com.hospitaltask.serviceImpl;
 
 import java.util.List;
 
-import com.hospitaltask.entity.SuperAdmin;
 import org.jetbrains.annotations.NotNull;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
 import com.hospitaltask.dto.DoctorDto;
 import com.hospitaltask.entity.Doctor;
 import com.hospitaltask.repository.DoctorRepo;
