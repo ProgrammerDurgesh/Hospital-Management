@@ -19,7 +19,7 @@ import javax.validation.constraints.NotNull;
 public class BookSlot {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private Integer id;
 
     @NotNull
     private LocalDate date;
@@ -28,6 +28,8 @@ public class BookSlot {
     
     private Long doctorId;
     
-    private Long slotId;
+    private Long slotId;;
 
+    private boolean accept;
+    private String status;
 }

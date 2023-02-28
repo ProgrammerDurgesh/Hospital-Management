@@ -4,6 +4,6 @@ import com.hospitaltask.dto.BookSlotDTO;
 
 public interface BookSlotService {
 	String save(BookSlotDTO bookSlotDTO);
-	
-	
+	void booked(String STATUS);
+
 }

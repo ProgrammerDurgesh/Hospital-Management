@@ -136,7 +136,7 @@ public class AvailityController {
 						if (endMinutes == 60) {
 							hourIncrement++;
 							hours = hours + hourIncrement;
-							endMinutes = endMinutes - endMinutes;
+							endMinutes = 0;
 							saveSlot.setStartTime(String.valueOf(oldHours) + ":" + startMinutes);
 							saveSlot.setEndTime(String.valueOf(hours) + ":" + "0" + endMinutes);
 							k = 1;
@@ -206,9 +206,9 @@ public class AvailityController {
 
 		int userSTime = 0;
 		String[] arrOfStr1 = createSlotDto.getStartTime().split(":", 2);
-		for (int j = 0; j < arrOfStr1.length; j++) {
-			int datavalue = Integer.parseInt(arrOfStr1[j]);
-			userSTime = userSTime + datavalue;
+		for (String s : arrOfStr1) {
+			int dataValue = Integer.parseInt(s);
+			userSTime = userSTime + dataValue;
 		}
 		for (int i = 0; i < totalSlot; i++) {
 			if (startTimeDB == userSTime) {
