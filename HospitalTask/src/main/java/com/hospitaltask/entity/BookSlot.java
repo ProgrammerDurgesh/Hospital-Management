@@ -17,19 +17,19 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 
 public class BookSlot {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private long id;
 
-    @NotNull
-    private LocalDate date;
-    @NotNull
-    private boolean isTrue;
-    
-    private Long doctorId;
-    
-    private Long slotId;;
+	@NotNull
+	private LocalDate date;
+	@NotNull
+	private  boolean ISTRUE = true;
 
-    private boolean accept;
-    private String status;
+	private Long doctorId;
+
+	private Long slotId;;
+
+	private  boolean ACCEPT = false;
+	private String status;
 }

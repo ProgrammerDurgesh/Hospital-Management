@@ -14,8 +14,8 @@ import lombok.Setter;
 public class BookSlotDTO {
 	private Long id;
     private LocalDate date;
-    private boolean isTrue;
     private int doctorId;
     private int slotId;
+   
 
 }

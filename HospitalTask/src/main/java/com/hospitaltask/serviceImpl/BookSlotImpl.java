@@ -1,8 +1,8 @@
 package com.hospitaltask.serviceImpl;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +11,10 @@ import org.springframework.stereotype.Service;
 import com.hospitaltask.dto.BookSlotDTO;
 import com.hospitaltask.entity.BookSlot;
 import com.hospitaltask.entity.Doctor;
+import com.hospitaltask.entity.SaveSlot;
 import com.hospitaltask.repository.BookSlotRepo;
 import com.hospitaltask.repository.DoctorRepo;
+import com.hospitaltask.repository.SaveSlotRepo;
 import com.hospitaltask.response.CustomResponseHandler;
 import com.hospitaltask.service.BookSlotService;
 
@@ -26,6 +28,9 @@ public class BookSlotImpl extends CustomResponseHandler implements BookSlotServi
 	private BookSlotRepo bookSlotRepo;
 
 	@Autowired
+	private SaveSlotRepo saveSlotRepo;
+	
+	@Autowired
 	private ModelMapper modelMapper;
 
 	BookSlot dtoToDoctor(BookSlotDTO bookSlotDTO) {
@@ -35,18 +40,10 @@ public class BookSlotImpl extends CustomResponseHandler implements BookSlotServi
 	@Override
 	public String save(BookSlotDTO bookSlotDTO) {
 
-		/*
-		 * List<?> list=availableSlot(bookSlotDTO); System.out.println(list.size()); for
-		 * (Object object : list) { System.out.println(object); }
-		 */
 		try {
-			/*
-			 * BookSlot bookSlot = dtoToDoctor(bookSlotDTO); System.out.println(bookSlot);
-			 * //Long id = (long) bookSlotDTO.getDoctorId(); Doctor doctor =
-			 * doctorRepo.findById(id).orElse(null);
-			 */
-			// System.out.println("Doctor ID : " + doctor.getDoctorId());
-			BookSlot save = bookSlotRepo.save(dtoToDoctor(bookSlotDTO));
+			BookSlot dtoToDoctor = dtoToDoctor(bookSlotDTO);
+			dtoToDoctor.setStatus("Pending");
+			BookSlot save = bookSlotRepo.save(dtoToDoctor);
 			System.out.println(save);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -54,65 +51,101 @@ public class BookSlotImpl extends CustomResponseHandler implements BookSlotServi
 		return "save";
 	}
 
-	public List<?> availableSlot(BookSlotDTO bookSlotDTO) {
-
-		List<BookSlot> bookSlots = bookSlotRepo.findAll();
-		List<Doctor> doctors = doctorRepo.findAll();
-		List<Doctor> doctors2 = new ArrayList<>();
-		List<Doctor> doctorsFalse = new ArrayList<>();
-		for (int i = 0; i < bookSlots.size(); i++) {
-			Long doctorId = bookSlots.get(i).getDoctorId();
-			bookSlots.get(i).getDate();
-			bookSlots.get(i).getDoctorId();
-			for (Doctor value : doctors) {
-				long doctor = value.getDoctorId();
-				if (doctorId == doctor) {
-					doctors.remove(value);
-				}
+	@Override
+	public List<?> availableSlot(LocalDate date) {
+		int bookslotindex=0;
+		List<SaveSlot> list= saveSlotRepo.findAll();
+		System.out.println("Starting List Size    :          "+list.size());
+		List<SaveSlot> finalShowList=new ArrayList<>();
+		List<BookSlot> bookSlots = bookSlotRepo.getBookedSlotByDate(date);
+		for (int i = 0; i < list.size(); i++) {
+			System.out.println("save slot size :  "+list.size());
+			System.out.println("bookSlots size :  "+bookSlots.size());
+			
+			Long doctorId = bookSlots.get(bookslotindex).getSlotId();
+			System.out.println("book slot ID     : "+doctorId);
+			System.out.println("save slot id     :    "+list.get(i).getId());
+			if(list.get(i).getId()==doctorId)
+			{
+				bookslotindex++;
+				if(bookslotindex==bookSlots.size())bookslotindex=bookslotindex-1;
+				
 			}
+			else
+			{
+				finalShowList.add( list.get(i));
+			}
+			/*
+			 * long slotId=bookSlots.get(0).getId(); System.out.println(slotId);
+			 * bookSlots.get(i).getDate(); bookSlots.get(i).getDoctorId(); for (Doctor value
+			 * : doctors) { long doctor = value.getDoctorId(); if (doctorId == doctor) {
+			 * list.remove(i); doctors.remove(value); }
+			 *
+			}*/
 
+			
 		}
 
-		return doctors;
+		return finalShowList;
 	}
 
 	@Override
-	public void booked(String STATUS) {
+	public void booked(long slotId,int STATUS) {
 
-		List<BookSlot> bookedSlotByDoctorId = bookSlotRepo.getBookedSlotByDoctorId(1);
-		for (int i = 0; i < bookedSlotByDoctorId.size(); i++) {
-
-			final String status[] = { "Accept", "Reject", "Pending" };
-			for (int j = 0; j < status.length; j++) {
-
-				if (status[j] == STATUS) {
-					try {
-						BookSlot findById = bookSlotRepo.findById(513).orElse(null);
-						findById.setStatus(STATUS);
-						bookSlotRepo.save(findById);
-						break;
-						
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-					
-
-				}
-
-			}
-			
+		// find slot by doctor
+		BookSlot bookedSlotByDoctorId = bookSlotRepo.findById(slotId).orElse(null);
+		final String status[] = { "Accept", "Reject", "Pending" };
+		if (STATUS == 0) {
+			BookSlot bookSlot = bookedSlotByDoctorId;
+			bookSlot.setACCEPT(true);
+			bookSlot.setISTRUE(true);
+			bookSlot.setStatus(status[0]);
+			bookSlotRepo.save(bookSlot);
 		}
+		if (STATUS == 1) {
+			BookSlot bookSlot = bookedSlotByDoctorId;
+			bookSlot.setACCEPT(false);
+			bookSlot.setISTRUE(false);
+			bookSlot.setStatus(status[1]);
+			bookSlotRepo.save(bookSlot);
+		}
+
 	}
-	/*
-	 * public String status(String STATUS) { final String status[] = { "Accept",
-	 * "Reject", "Pending" }; for (int i = 0; i < status.length; i++) {
-	 * 
-	 * if (status[i] == STATUS) { try { BookSlot findById =
-	 * bookSlotRepo.findById(511).orElse(null); findById.setStatus(STATUS);
-	 * bookSlotRepo.save(findById); } catch (Exception e) { e.printStackTrace(); }
-	 * 
-	 * } } return STATUS;
-	 * 
-	 * }
-	 */
+
+	@Override
+	public List<BookSlot> getPendingSlot(int doctorId) {
+		List<BookSlot> bookedSlotByDoctorId = null;
+		try {
+			bookedSlotByDoctorId = bookSlotRepo.getBookedSlotByDoctorId(doctorId);
+			return bookedSlotByDoctorId;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return bookedSlotByDoctorId;
+	}
+
+	@Override
+	public List<BookSlot> getRejectedSlot(int doctorId) {
+		List<BookSlot> rejectedSlot = null;
+		try {
+			rejectedSlot = bookSlotRepo.getRejectedSlot(doctorId);
+			return rejectedSlot;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return rejectedSlot;
+	}
+
+	@Override
+	public List<BookSlot> getAccepedSlot(int doctorId) {
+		List<BookSlot> acceptedSlot = null;
+		try {
+			acceptedSlot = bookSlotRepo.getAccepedSlot(doctorId);
+			return acceptedSlot;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return acceptedSlot;
+	}
+
 }
