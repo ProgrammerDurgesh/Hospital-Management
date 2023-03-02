@@ -11,7 +11,7 @@ import com.hospitaltask.entity.Doctor;
 @Repository
 public interface DoctorRepo extends JpaRepository<Doctor, Long> {
 
-    @Query(value = "select * from tbl_doctor d where d.email=:email", nativeQuery = true)
+//    @Query(value = "select * from tbl_doctor d where d.email=:email", nativeQuery = true)
     Doctor findByEmail(String email);
 
     List<Doctor> findByDoctorName(String doctorName);

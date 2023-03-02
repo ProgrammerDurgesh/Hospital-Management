@@ -71,7 +71,7 @@ public class LoginController {
 		if (authenticate.isAuthenticated()) {
 			UserDetails userDetails = this.myUserDetailsService.loadUserByUsername(authRequest.getUserName());
 			String token = this.jwtUtil.generateToken(userDetails);
-			return CustomResponseHandler.response("Token Create successfully ", HttpStatus.ACCEPTED, token);
+			return CustomResponseHandler.response("Login successfully ", HttpStatus.ACCEPTED, token);
 		} else {
 			return CustomResponseHandler.response("Credential Not Found", HttpStatus.NOT_FOUND,
 					authRequest.getUserName() + authRequest.getPassword());

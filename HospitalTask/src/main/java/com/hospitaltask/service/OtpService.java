@@ -1,7 +1,7 @@
 package com.hospitaltask.service;
 
 import com.hospitaltask.entity.OtpVerify;
-
+import com.hospitaltask.entity.Otp;
 public interface OtpService {
     void save(OtpVerify otpVerify);
 
@@ -9,5 +9,6 @@ public interface OtpService {
 
     public String generateEmailOTP(String email);
 
-    Boolean match(String otp);
+    Boolean match(Otp otp);
+    String passwordUpdate(String password,String email);
 }

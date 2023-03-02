@@ -1,6 +1,7 @@
 package com.hospitaltask.controller;
 
 import com.hospitaltask.entity.Email;
+import com.hospitaltask.entity.Otp;
 import com.hospitaltask.response.CustomResponseHandler;
 import com.hospitaltask.service.OtpService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,15 +70,15 @@ public class EmailController {
     @PostMapping("/send")
     public ResponseEntity<?> email(@RequestBody Email email) {
         String subject = email.getSubject();
-        String to = email.getTo();
-        String from = email.getFROM_EMAIL();
+        final String to = email.getTo();
+        final String from = "testdemo000011@gmail.com";
         Boolean otp = otpService.Otp(subject, to, from);
         if (otp) return CustomResponseHandler.response("Email Send ", HttpStatus.OK, "Okay");
         else return CustomResponseHandler.response("OTP Not Match", HttpStatus.BAD_REQUEST, "Bad Credentials ");
     }
 
-    @PostMapping("/match/{otp}")
-    public ResponseEntity<?> match(@PathVariable String otp) {
+    @PostMapping("/match")
+    public ResponseEntity<?> match(@RequestBody Otp otp) {
         Boolean match = otpService.match(otp);
         if (match) return CustomResponseHandler.response("Otp Match ", HttpStatus.OK, "Okay");
         else return CustomResponseHandler.response("Incorrect Otp", HttpStatus.BAD_REQUEST, "Bad Credentials ");

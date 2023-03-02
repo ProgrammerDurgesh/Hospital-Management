@@ -13,7 +13,7 @@ import javax.persistence.Entity;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Email {
-    private final String FROM_EMAIL="testdemo000011@gmail.com";
+    //private final String FROM_EMAIL="testdemo000011@gmail.com";
     private String to;
     private String subject;
 }
