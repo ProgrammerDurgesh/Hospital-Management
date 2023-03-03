@@ -6,6 +6,8 @@ import com.hospitaltask.repository.DoctorRepo;
 import com.hospitaltask.repository.PatientEntityRepo;
 import com.hospitaltask.response.CustomResponseHandler;
 import com.hospitaltask.service.PatientService;
+import com.hospitaltask.serviceImpl.SendEmailTemplate;
+
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,6 +24,10 @@ public class PatientController {
 
     @Autowired
     PatientService patientService;
+    
+    @Autowired
+	private SendEmailTemplate emailTemplate;
+
     @Autowired
     private PatientEntityRepo entityRepo;
     @Autowired
@@ -31,19 +37,23 @@ public class PatientController {
     @PreAuthorize("hasAuthority('ROLE_DOCTOR')")
     @PostMapping("/save")
     public ResponseEntity<?> save(@RequestBody @NotNull Patient patient) {
-        String exceptionShow = null;
         Doctor doctor1 = patient.getDoctor();
         Optional<Doctor> doctor = doctorRepo.findById(doctor1.getDoctorId());
         if (doctor.isEmpty()) {
-            exceptionShow = "Doctor Not found";
             return CustomResponseHandler.response("Doctor Not found ", HttpStatus.NOT_FOUND, doctor);
         }
         Patient patient1 = patientService.findByEmail(patient.getEmail());
         if (patient1 != null) {
-            exceptionShow = "Email Already Exists";
             return CustomResponseHandler.response("Email Already Exists ", HttpStatus.OK, patient.getEmail());
         } else {
-            Patient save = patientService.save(patient);
+        	String message = "Your Are Registered with Appollo Hospital ";
+
+			String obj = "Registration Details " + "\n" + "\n" + "Email : " + patient.getEmail() + "\n" + "Password : "
+					+ patient.getPassword();
+			Patient save = patientService.save(patient);
+
+			emailTemplate.sendAttached(obj, message, patient.getEmail());
+            
             return CustomResponseHandler.response("Data Saved ", HttpStatus.CREATED, save);
         }
     }

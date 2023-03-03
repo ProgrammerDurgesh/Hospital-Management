@@ -10,10 +10,8 @@ import org.springframework.stereotype.Service;
 
 import com.hospitaltask.dto.BookSlotDTO;
 import com.hospitaltask.entity.BookSlot;
-import com.hospitaltask.entity.Doctor;
 import com.hospitaltask.entity.SaveSlot;
 import com.hospitaltask.repository.BookSlotRepo;
-import com.hospitaltask.repository.DoctorRepo;
 import com.hospitaltask.repository.SaveSlotRepo;
 import com.hospitaltask.response.CustomResponseHandler;
 import com.hospitaltask.service.BookSlotService;
@@ -22,8 +20,6 @@ import com.hospitaltask.service.BookSlotService;
 public class BookSlotImpl extends CustomResponseHandler implements BookSlotService {
 
 	private static final long serialVersionUID = 1L;
-	@Autowired
-	private DoctorRepo doctorRepo;
 	@Autowired
 	private BookSlotRepo bookSlotRepo;
 

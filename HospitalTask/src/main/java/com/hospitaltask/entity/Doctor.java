@@ -11,7 +11,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+
+import org.springframework.data.annotation.LastModifiedDate;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -51,5 +55,10 @@ public class Doctor {
     @JoinColumn(name = "role_id", nullable = false, updatable = true)
     private Roles roles;
 
+    @LastModifiedDate
+    @Temporal(TemporalType.TIMESTAMP)
+    protected Date lastModifiedDate=Calendar.getInstance().getTime();
 
+    private String token;
+    private Boolean isActive;
 }

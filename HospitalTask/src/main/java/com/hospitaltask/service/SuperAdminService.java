@@ -1,11 +1,9 @@
 package com.hospitaltask.service;
 
-import com.hospitaltask.dto.SuperUserDto;
-import com.hospitaltask.entity.Doctor;
-import com.hospitaltask.entity.SuperAdmin;
-
 import java.util.List;
-import java.util.Optional;
+
+import com.hospitaltask.dto.SuperUserDto;
+import com.hospitaltask.entity.SuperAdmin;
 
 public interface SuperAdminService {
     SuperAdmin save(SuperUserDto superAdmin);

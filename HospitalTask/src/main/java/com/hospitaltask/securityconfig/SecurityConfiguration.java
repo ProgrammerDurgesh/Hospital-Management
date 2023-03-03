@@ -74,8 +74,8 @@ public class SecurityConfiguration {
                 and()
                 //register filter for 2nd request ....
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-		/*.and()
-		.logout();*/
+				/*.and()
+				.logout();*/
         return http.build();
 
     }

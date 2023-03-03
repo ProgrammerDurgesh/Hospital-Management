@@ -5,6 +5,8 @@ import com.hospitaltask.exception.UserNotFoundException;
 import com.hospitaltask.repository.DoctorRepo;
 import com.hospitaltask.response.CustomResponseHandler;
 import com.hospitaltask.service.DoctorService;
+import com.hospitaltask.serviceImpl.SendEmailTemplate;
+
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,17 +25,30 @@ public class DoctorController {
 	private DoctorRepo doctorRepo;
 	@Autowired
 	private DoctorService doctorService;
+	@Autowired
+	private SendEmailTemplate emailTemplate;
 
 	// Add Doctor
 
 	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	@PostMapping("/save")
-	public ResponseEntity<?> addDoctor(@RequestBody @NotNull Doctor doctor) {
+	public ResponseEntity<?> save(@RequestBody @NotNull Doctor doctor) {
 		String email = doctorRepo.getEmailByEmai(doctor.getEmail());
-		if (email != null)
+		if (email != null) {
 			return CustomResponseHandler.response("Email already exist", HttpStatus.OK, doctor.getEmail());
-		return CustomResponseHandler.response("Create successfully", HttpStatus.CREATED,
-				this.doctorService.addDoctor(doctor));
+		} else {
+
+			 
+			String message = "Your Are Registered with Appollo Hospital ";
+
+			String obj = "Registration Details " + "\n" + "\n" + "Email : " + doctor.getEmail() + "\n" + "Password : "
+					+ doctor.getPassword();
+			Doctor addDoctor = this.doctorService.addDoctor(doctor);
+
+			emailTemplate.sendAttached(obj, message, doctor.getEmail());
+			return CustomResponseHandler.response("Create successfully", HttpStatus.CREATED, addDoctor);
+		}
+
 	}
 
 	// Update Doctor By DoctorName/DoctorEmail/DoctorID
@@ -98,8 +113,8 @@ public class DoctorController {
 
 	// fetch Doctor By DoctorEmailID
 
-	 @PreAuthorize("hasAuthority('ROLE_DOCTOR') or hasAuthority('ROLE_ADMIN')")
-	 @GetMapping("get-email/{id}")
+	@PreAuthorize("hasAuthority('ROLE_DOCTOR') or hasAuthority('ROLE_ADMIN')")
+	@GetMapping("get-email/{id}")
 	public ResponseEntity<?> findByEmailId(@PathVariable String id) {
 		System.out.println(id);
 		Doctor doctor = this.doctorRepo.getDoctorByEmail(id);

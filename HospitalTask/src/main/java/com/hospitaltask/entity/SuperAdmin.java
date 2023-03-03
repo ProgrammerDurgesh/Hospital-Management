@@ -37,5 +37,9 @@ public class SuperAdmin {
     @ManyToOne
     private Roles roles;
     private Long CreatedBy= 0L;
+
+    private String token;
+    private Boolean isActive;
+
 }
 

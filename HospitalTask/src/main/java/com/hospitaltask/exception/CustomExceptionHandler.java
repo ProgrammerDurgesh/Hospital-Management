@@ -1,12 +1,12 @@
 package com.hospitaltask.exception;
 
-import com.hospitaltask.response.CustomResponseHandler;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.SignatureException;
+import java.sql.SQLIntegrityConstraintViolationException;
+
+import javax.mail.AuthenticationFailedException;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.web.firewall.RequestRejectedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MissingPathVariableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
-import javax.mail.AuthenticationFailedException;
-import java.sql.SQLIntegrityConstraintViolationException;
+import com.hospitaltask.response.CustomResponseHandler;
+
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.SignatureException;
 
 @ControllerAdvice
 public class CustomExceptionHandler {

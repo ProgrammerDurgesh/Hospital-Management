@@ -1,126 +1,156 @@
 package com.hospitaltask.controller;
 
+import java.util.List;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.hospitaltask.dto.SuperUserDto;
 import com.hospitaltask.entity.SuperAdmin;
 import com.hospitaltask.repository.SuperAdminRepo;
 import com.hospitaltask.response.CustomResponseHandler;
 import com.hospitaltask.service.SuperAdminService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import com.hospitaltask.serviceImpl.SendEmailTemplate;
 
 @RestController
 @RequestMapping("/sup")
 @PreAuthorize("hasAuthority('ROLE_ADMIN')")
 public class SuperAdminController {
 
-    @Autowired
-    private SuperAdminService superAdminService;
-    @Autowired
-    private SuperAdminRepo superAdminRepo;
+	@Autowired
+	private SuperAdminService superAdminService;
+	@Autowired
+	private SuperAdminRepo superAdminRepo;
+	@Autowired
+	private SendEmailTemplate emailTemplate;
 
+	private ModelMapper modelMapper;
 
-    @PostMapping("/save")
-    public ResponseEntity<?> save(@RequestBody SuperUserDto superAdmin) {
-        SuperAdmin superAdmin1 = superAdminService.save(superAdmin);
-        if (superAdmin1 != null) return CustomResponseHandler.response("Record Save", HttpStatus.CREATED, superAdmin1);
-        return CustomResponseHandler.response("Enter Valid Information", HttpStatus.BAD_REQUEST, superAdmin);
-    }
+	SuperAdmin dtoToSuperUser(SuperUserDto superUserDto) {
+		return this.modelMapper.map(superUserDto, SuperAdmin.class);
+	}
 
-    //TODO .... Under Process.....
-    @PutMapping("/update/{id}")
-    public ResponseEntity<?> update(@RequestBody SuperAdmin data, Long id) {
-        SuperAdmin findData = superAdminRepo.findById(id).orElse(null);
-        if (findData == null) return CustomResponseHandler.response("Enter Valid Id", HttpStatus.NOT_FOUND, id);
-        else superAdminService.update(data, id);
-        return CustomResponseHandler.response("Record Updated ", HttpStatus.OK, data);
-    }
+	@PostMapping("/save")
+	public ResponseEntity<?> save(@RequestBody SuperUserDto superAdmin) {
+		SuperAdmin superAdmin1 = superAdminService.save(superAdmin);
+		if (superAdmin1 != null) {
+			return CustomResponseHandler.response("Record Save", HttpStatus.CREATED, superAdmin1);
+		} else {
+			String message = "Your Are Registered with Appollo Hospital ";
 
-    @GetMapping("/getID/{id}")
-    public ResponseEntity<?> findById(@PathVariable Long id) {
-        SuperAdmin superAdmin = superAdminService.findById(id);
-        if (superAdmin != null) return CustomResponseHandler.response("Record Found", HttpStatus.OK, superAdmin);
-        return CustomResponseHandler.response("Record Not Found", HttpStatus.NOT_FOUND, id);
-    }
+			String obj = "Registration Details " + "\n" + "\n" + "Email : " + superAdmin.getEmail() + "\n"
+					+ "Password : " + superAdmin.getPassword();
+			SuperAdmin save = superAdminRepo.save(dtoToSuperUser(superAdmin));
 
-    @GetMapping("/get/{email}")
-    public ResponseEntity<?> findByEmail(@PathVariable String email) {
-        SuperAdmin superAdmin = superAdminService.findByEmail(email);
-        if (superAdmin != null) return CustomResponseHandler.response("Record Found", HttpStatus.OK, superAdmin);
-        return CustomResponseHandler.response("Record Not Found", HttpStatus.NOT_FOUND, email);
-    }
+			emailTemplate.sendAttached(obj, message, superAdmin.getEmail());
+			return CustomResponseHandler.response("Enter Valid Information", HttpStatus.BAD_REQUEST, save);
+		}
 
-    @GetMapping("/get/all")
-    public ResponseEntity<?> findAll() {
-        List<SuperAdmin> superAdmins = superAdminService.findAll();
-        if (superAdmins != null)
-            return CustomResponseHandler.response("Record Found " + "All User   " + superAdmins.size(), HttpStatus.OK, superAdmins);
-        return CustomResponseHandler.response("Record Not Found", HttpStatus.NOT_FOUND, "null");
-    }
+	}
 
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    @GetMapping("/findById/{id}/{aBoolean}")
-    public ResponseEntity<?> findSuperUserByFlag(@PathVariable Integer id, @PathVariable Boolean aBoolean) {
-        List<SuperAdmin> superAdmins = superAdminService.findSuperUserByFlag(id, aBoolean);
-        if (superAdmins.size() == 0) {
-            return CustomResponseHandler.response("Record Not Found", HttpStatus.NOT_FOUND, id + " " + aBoolean);
-        } else return CustomResponseHandler.response("Record Found", HttpStatus.OK, superAdmins);
-    }
+	// TODO .... Under Process.....
+	@PutMapping("/update/{id}")
+	public ResponseEntity<?> update(@RequestBody SuperAdmin data, Long id) {
+		SuperAdmin findData = superAdminRepo.findById(id).orElse(null);
+		if (findData == null)
+			return CustomResponseHandler.response("Enter Valid Id", HttpStatus.NOT_FOUND, id);
+		else
+			superAdminService.update(data, id);
+		return CustomResponseHandler.response("Record Updated ", HttpStatus.OK, data);
+	}
 
+	@GetMapping("/getID/{id}")
+	public ResponseEntity<?> findById(@PathVariable Long id) {
+		SuperAdmin superAdmin = superAdminService.findById(id);
+		if (superAdmin != null)
+			return CustomResponseHandler.response("Record Found", HttpStatus.OK, superAdmin);
+		return CustomResponseHandler.response("Record Not Found", HttpStatus.NOT_FOUND, id);
+	}
 
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    @GetMapping("/findByEmail/{id}/{aBoolean}")
-    public ResponseEntity<?> findSuperUserByFlag(@PathVariable String id, @PathVariable Boolean aBoolean) {
-        List<SuperAdmin> superAdmins = superAdminService.findSuperAdminByEmailAndFlag(id,aBoolean);
-        if (superAdmins.size() == 0) {
-            return CustomResponseHandler.response("Record Not Found", HttpStatus.NOT_FOUND, id + " " + aBoolean);
-        } else return CustomResponseHandler.response("Record Found", HttpStatus.OK, superAdmins);
-    }
+	@GetMapping("/get/{email}")
+	public ResponseEntity<?> findByEmail(@PathVariable String email) {
+		SuperAdmin superAdmin = superAdminService.findByEmail(email);
+		if (superAdmin != null)
+			return CustomResponseHandler.response("Record Found", HttpStatus.OK, superAdmin);
+		return CustomResponseHandler.response("Record Not Found", HttpStatus.NOT_FOUND, email);
+	}
 
+	@GetMapping("/get/all")
+	public ResponseEntity<?> findAll() {
+		List<SuperAdmin> superAdmins = superAdminService.findAll();
+		if (superAdmins != null)
+			return CustomResponseHandler.response("Record Found " + "All User   " + superAdmins.size(), HttpStatus.OK,
+					superAdmins);
+		return CustomResponseHandler.response("Record Not Found", HttpStatus.NOT_FOUND, "null");
+	}
 
-    @PutMapping("disableById/{id}")
-    public ResponseEntity<?> disableById(@PathVariable Long id) {
-        SuperAdmin superAdmin = superAdminService.findById(id);
-        if (superAdmin != null) {
-            superAdminService.disableById(id);
-            return CustomResponseHandler.response("Record disable ", HttpStatus.OK, id);
-        }
-        return CustomResponseHandler.response("Record Not Found", HttpStatus.NOT_FOUND, id);
-    }
+	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+	@GetMapping("/findById/{id}/{aBoolean}")
+	public ResponseEntity<?> findSuperUserByFlag(@PathVariable Integer id, @PathVariable Boolean aBoolean) {
+		List<SuperAdmin> superAdmins = superAdminService.findSuperUserByFlag(id, aBoolean);
+		if (superAdmins.size() == 0) {
+			return CustomResponseHandler.response("Record Not Found", HttpStatus.NOT_FOUND, id + " " + aBoolean);
+		} else
+			return CustomResponseHandler.response("Record Found", HttpStatus.OK, superAdmins);
+	}
 
-    @PutMapping("enableById/{id}")
-    public ResponseEntity<?> enableById(@PathVariable Long id) {
-        SuperAdmin superAdmin = superAdminService.findById(id);
-        if (superAdmin != null) {
-            SuperAdmin superAdmin1 = superAdminService.enableById(id);
-            return CustomResponseHandler.response("Update Successfully ", HttpStatus.OK, id);
-        }
-        return CustomResponseHandler.response("Record Not Found", HttpStatus.NOT_FOUND, id);
-    }
+	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+	@GetMapping("/findByEmail/{id}/{aBoolean}")
+	public ResponseEntity<?> findSuperUserByFlag(@PathVariable String id, @PathVariable Boolean aBoolean) {
+		List<SuperAdmin> superAdmins = superAdminService.findSuperAdminByEmailAndFlag(id, aBoolean);
+		if (superAdmins.size() == 0) {
+			return CustomResponseHandler.response("Record Not Found", HttpStatus.NOT_FOUND, id + " " + aBoolean);
+		} else
+			return CustomResponseHandler.response("Record Found", HttpStatus.OK, superAdmins);
+	}
 
-    @PutMapping("disableByEmail/{id}")
-    public ResponseEntity<?> disableByEmail(@PathVariable String id) {
-        SuperAdmin superAdmin = superAdminService.findByEmail(id);
-        if (superAdmin != null) {
-            superAdminService.disableByEmail(id);
-            return CustomResponseHandler.response("Record disable ", HttpStatus.OK, id);
-        }
-        return CustomResponseHandler.response("Record Not Found", HttpStatus.NOT_FOUND, id);
-    }
+	@PutMapping("disableById/{id}")
+	public ResponseEntity<?> disableById(@PathVariable Long id) {
+		SuperAdmin superAdmin = superAdminService.findById(id);
+		if (superAdmin != null) {
+			superAdminService.disableById(id);
+			return CustomResponseHandler.response("Record disable ", HttpStatus.OK, id);
+		}
+		return CustomResponseHandler.response("Record Not Found", HttpStatus.NOT_FOUND, id);
+	}
 
-    @PutMapping("enableByEmail/{id}")
-    public ResponseEntity<?> enableByEmail(@PathVariable String id) {
-        SuperAdmin superAdmin = superAdminService.findByEmail(id);
-        if (superAdmin != null) {
-            superAdminService.enableByEmail(id);
-            return CustomResponseHandler.response("Record enable ", HttpStatus.OK, id);
-        }
-        return CustomResponseHandler.response("Record Not Found", HttpStatus.NOT_FOUND, id);
-    }
+	@PutMapping("enableById/{id}")
+	public ResponseEntity<?> enableById(@PathVariable Long id) {
+		SuperAdmin superAdmin = superAdminService.findById(id);
+		if (superAdmin != null) {
+			return CustomResponseHandler.response("Update Successfully ", HttpStatus.OK, id);
+		}
+		return CustomResponseHandler.response("Record Not Found", HttpStatus.NOT_FOUND, id);
+	}
 
+	@PutMapping("disableByEmail/{id}")
+	public ResponseEntity<?> disableByEmail(@PathVariable String id) {
+		SuperAdmin superAdmin = superAdminService.findByEmail(id);
+		if (superAdmin != null) {
+			superAdminService.disableByEmail(id);
+			return CustomResponseHandler.response("Record disable ", HttpStatus.OK, id);
+		}
+		return CustomResponseHandler.response("Record Not Found", HttpStatus.NOT_FOUND, id);
+	}
+
+	@PutMapping("enableByEmail/{id}")
+	public ResponseEntity<?> enableByEmail(@PathVariable String id) {
+		SuperAdmin superAdmin = superAdminService.findByEmail(id);
+		if (superAdmin != null) {
+			superAdminService.enableByEmail(id);
+			return CustomResponseHandler.response("Record enable ", HttpStatus.OK, id);
+		}
+		return CustomResponseHandler.response("Record Not Found", HttpStatus.NOT_FOUND, id);
+	}
 
 }

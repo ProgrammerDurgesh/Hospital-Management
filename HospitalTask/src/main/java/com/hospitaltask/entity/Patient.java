@@ -4,6 +4,9 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+
+import org.springframework.data.annotation.LastModifiedDate;
+
 import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
@@ -27,8 +30,6 @@ public class Patient {
     private String password, name, age, bloodGroup, illness;
     private boolean flag = true;
 
-    private String token;
-
     @Column(name = "TIMESTAMP")
     private LocalDateTime tokenCreationDate;
 
@@ -39,5 +40,13 @@ public class Patient {
     @ManyToOne
     @JoinColumn(name = "role_id")
     private Roles roles;
+    
+    @LastModifiedDate
+    @Temporal(TemporalType.TIMESTAMP)
+    protected Date lastModifiedDate=Calendar.getInstance().getTime();
+
+
+    private String token;
+    private Boolean isActive;
 
 }

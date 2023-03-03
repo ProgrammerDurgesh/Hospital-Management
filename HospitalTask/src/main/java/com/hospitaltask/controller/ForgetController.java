@@ -14,7 +14,6 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,7 +33,8 @@ public class ForgetController {
     
 	String emailForget;
     
-    private static void sendEmail(String message, String subject, String to, String from) {
+    @SuppressWarnings("unused")
+	private static void sendEmail(String message, String subject, String to, String from) {
 
         //variable for gmail host
         String host = "smtp.gmail.com";

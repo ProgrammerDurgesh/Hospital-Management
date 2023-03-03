@@ -22,7 +22,8 @@ public class EmailController {
     private OtpService otpService;
 
     //this is responsible to send email
-    private static void sendEmail(String message, String subject, String to, String from) {
+    @SuppressWarnings("unused")
+	private static void sendEmail(String message, String subject, String to, String from) {
 
         //variable for gmail host
         String host = "smtp.gmail.com";

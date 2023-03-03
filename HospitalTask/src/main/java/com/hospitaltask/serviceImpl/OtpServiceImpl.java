@@ -4,6 +4,7 @@ import java.io.File;
 import java.text.DecimalFormat;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.Calendar;
 import java.util.Properties;
 import java.util.Random;
 
@@ -51,11 +52,9 @@ public class OtpServiceImpl implements OtpService {
 	@Autowired
 	private PatientEntityRepo entityRepo;
 
-	private String emailForget;
-
 	@Override
 	public void save(OtpVerify otpVerify) {
-		OtpVerify save = otpRepo.save(otpVerify);
+	 otpRepo.save(otpVerify);
 	}
 
 	@Override
@@ -179,21 +178,23 @@ public class OtpServiceImpl implements OtpService {
 
 		if (admin != null) {
 			admin.setPassword(passwordEncoder.encode(password));
+			admin.setLastModifiedDate(Calendar.getInstance().getTime());
 			adminRepo.save(admin);
 		} else {
 			Doctor doctor = doctorRepo.findByEmail(email);
 			if (doctor != null) {
 				doctor.setPassword(passwordEncoder.encode(password));
+				doctor.setLastModifiedDate(Calendar.getInstance().getTime());
 				doctorRepo.save(doctor);
 			} else {
 				Patient patient = entityRepo.findByEmail(email);
 				if (patient != null) {
 					patient.setPassword(passwordEncoder.encode(password));
+					patient.setLastModifiedDate(Calendar.getInstance().getTime());
 					entityRepo.save(patient);
 				}
 			}
 		}
 		return "Password Update !!";
-
 	}
 }

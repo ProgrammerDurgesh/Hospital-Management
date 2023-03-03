@@ -3,11 +3,10 @@ package com.hospitaltask.serviceImpl;
 import java.util.List;
 import java.util.Objects;
 
-import com.hospitaltask.entity.Doctor;
-import com.hospitaltask.exception.CustomExceptionHandler;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import com.hospitaltask.entity.Clinic;
 import com.hospitaltask.exception.UserNotFoundException;
 import com.hospitaltask.repository.ClinicRepo;

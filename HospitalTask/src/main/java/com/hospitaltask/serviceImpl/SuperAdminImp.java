@@ -1,17 +1,17 @@
 package com.hospitaltask.serviceImpl;
 
-import com.hospitaltask.dto.SuperUserDto;
-import com.hospitaltask.entity.SuperAdmin;
-import com.hospitaltask.repository.SuperAdminRepo;
-import com.hospitaltask.service.SuperAdminService;
-import io.jsonwebtoken.JwtParser;
+import java.util.List;
+
 import org.jetbrains.annotations.NotNull;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import com.hospitaltask.dto.SuperUserDto;
+import com.hospitaltask.entity.SuperAdmin;
+import com.hospitaltask.repository.SuperAdminRepo;
+import com.hospitaltask.service.SuperAdminService;
 
 @Service
 public class SuperAdminImp implements SuperAdminService {
@@ -61,7 +61,6 @@ public class SuperAdminImp implements SuperAdminService {
     @Override
     public SuperAdmin update(SuperAdmin data, Long id) {
         SuperAdmin findUser = superAdminRepo.findById(id).orElse(null);
-        SuperAdmin save=null;
         findUser.setUserName(data.getUserName());
         findUser.setEmail(data.getEmail());
         findUser.setCreatedBy(data.getCreatedBy());
