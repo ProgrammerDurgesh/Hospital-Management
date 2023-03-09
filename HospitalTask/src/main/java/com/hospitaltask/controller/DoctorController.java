@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,22 +29,24 @@ public class DoctorController {
 	private DoctorService doctorService;
 	@Autowired
 	private SendEmailTemplate emailTemplate;
-
+	
 	// Add Doctor
 
 	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	@PostMapping("/save")
 	public ResponseEntity<?> save(@RequestBody @NotNull Doctor doctor) {
+		
+		
+		
 		String email = doctorRepo.getEmailByEmai(doctor.getEmail());
 		if (email != null) {
 			return CustomResponseHandler.response("Email already exist", HttpStatus.OK, doctor.getEmail());
 		} else {
 
 			 
-			String message = "Your Are Registered with Appollo Hospital ";
+			String message = "Notification Account Activation";
 
-			String obj = "Registration Details " + "\n" + "\n" + "Email : " + doctor.getEmail() + "\n" + "Password : "
-					+ doctor.getPassword();
+			String obj = "Please verify your email address to get access to your account   " + "\n" + "\n" + "Thank You ";
 			Doctor addDoctor = this.doctorService.addDoctor(doctor);
 
 			emailTemplate.sendAttached(obj, message, doctor.getEmail());
@@ -87,11 +91,17 @@ public class DoctorController {
 	// fetch All Doctor
 	@PreAuthorize("hasAuthority('ROLE_DOCTOR') or hasAuthority('ROLE_ADMIN')or hasAuthority('ROLE_PATIENT')")
 	@GetMapping("/All")
-	public ResponseEntity<?> getAllDoctor(boolean flag) {
+	public String getAllDoctor(Model model, boolean flag) {
 		List<Doctor> allDoctor = this.doctorService.getAllDoctor(flag);
-		if (allDoctor != null)
-			return CustomResponseHandler.response("Record Found Success", HttpStatus.OK, allDoctor);
-		return CustomResponseHandler.response(RECORD_NOT_FOUND, HttpStatus.NOT_FOUND, null);
+		if (allDoctor != null) {
+			model.addAttribute("doctorList",allDoctor);
+			/*return CustomResponseHandler.response("Record Found Success", HttpStatus.OK, allDoctor);*/
+			return  "getAll";
+		}
+		else {
+			/*return CustomResponseHandler.response(RECORD_NOT_FOUND, HttpStatus.NOT_FOUND, null);*/
+			return  "getAll";
+		}
 	}
 
 	// fetch Doctor By DoctorById
