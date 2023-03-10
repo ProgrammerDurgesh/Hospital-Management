@@ -25,7 +25,7 @@ public interface DoctorRepo extends JpaRepository<Doctor, Long> {
     @Query(value = " select email from tbl_doctor d where d.email=:email", nativeQuery = true)
     String getEmailByEmai(String email);
 
-    @Query(value = "  select * from tbl_doctor d where d.email=:email", nativeQuery = true)
+    @Query(value = "  select * from tbl_doctor d where d.email=:email and d.is_active=true", nativeQuery = true)
     Doctor getDoctorByEmail(String email);
     // *    @Query(value = "  select * from tbl_doctor d where d.doctor_id= :id",nativeQuery = true)
     //   Doctor getDoctorById(Long id);*/
@@ -46,5 +46,14 @@ public interface DoctorRepo extends JpaRepository<Doctor, Long> {
     @Query(value = "select * from tbl_doctor d where d.email =:id and d.flag=:aBoolean",nativeQuery = true)
     List<Doctor> findDoctorByEmailAndFlag(String  id,Boolean aBoolean);
 
+    
+    @Query(value = "select * from tbl_doctor d where d.email =:email and d.confirmation_token=:token",nativeQuery = true)
+    Doctor acountVerify(String email,String token);
+    
+    
+    
+    
+    
+    
 }
 

@@ -1,6 +1,7 @@
 package com.hospitaltask.serviceImpl;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.jetbrains.annotations.NotNull;
 import org.modelmapper.ModelMapper;
@@ -25,6 +26,8 @@ public class DoctorServiceImpl implements DoctorService {
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
 	private ModelMapper modelMapper;
+	@Autowired
+	private SendEmailTemplate emailTemplate;
 
 	Doctor dtoToDoctor(DoctorDto doctorDto) {
 		return this.modelMapper.map(doctorDto, Doctor.class);
@@ -33,16 +36,24 @@ public class DoctorServiceImpl implements DoctorService {
 	// Add & Update Operation
 	@Override
 	public Doctor addDoctor(@NotNull Doctor dto) {
+
+		// Current Logged User Details
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 
-		// getAuthorities() - Returns the authorities granted to the user.
-		System.out.println("User has authorities: " + userDetails.getAuthorities());
+		// email for verification
 
+		String conformationToken = UUID.randomUUID().toString();
+		dto.setConfirmationToken(conformationToken);
+		String url = "127.0.0.1:8000/doctor/verify/"+dto.getEmail()+"/" + conformationToken;
 		dto.setPassword(passwordEncoder.encode(dto.getPassword()));
 		dto.setIsActive(false);
-
 		dto.setCreatedBy(userDetails.getUsername());
+
+		String message = "Notification Account Activation";
+		String obj = "Please verify your email address to get access to your account   " + "\n" + url + "\n"
+				+ "Thank You ";
+		emailTemplate.sendAttached(obj, message, dto.getEmail());
 
 		return this.doctorRepo.save(dto);
 	}
@@ -217,6 +228,22 @@ public class DoctorServiceImpl implements DoctorService {
 		doctor.setFlag(false);
 		doctorRepo.save(doctor);
 		return doctor;
+	}
+
+	@Override
+	public Doctor acountVerify(String email, String token) {
+		
+		Doctor acountVerify=null;
+		try {
+			 acountVerify = doctorRepo.acountVerify(email, token);
+			acountVerify.setIsActive(true);
+			acountVerify.setToken("");
+			doctorRepo.save(acountVerify);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return acountVerify;
 	}
 
 }

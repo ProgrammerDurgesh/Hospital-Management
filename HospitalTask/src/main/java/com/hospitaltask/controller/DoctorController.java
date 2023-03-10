@@ -1,55 +1,55 @@
 package com.hospitaltask.controller;
 
-import com.hospitaltask.entity.Doctor;
-import com.hospitaltask.exception.UserNotFoundException;
-import com.hospitaltask.repository.DoctorRepo;
-import com.hospitaltask.response.CustomResponseHandler;
-import com.hospitaltask.service.DoctorService;
-import com.hospitaltask.serviceImpl.SendEmailTemplate;
+import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import com.hospitaltask.entity.Doctor;
+import com.hospitaltask.exception.UserNotFoundException;
+import com.hospitaltask.jwt.JwtUtil;
+import com.hospitaltask.repository.DoctorRepo;
+import com.hospitaltask.response.CustomResponseHandler;
+import com.hospitaltask.service.DoctorService;
+import com.hospitaltask.serviceImpl.SendEmailTemplate;
 
 @RestController
 @RequestMapping("/doctor")
-
 public class DoctorController {
 	private final String RECORD_NOT_FOUND = "record Not Found";
 	@Autowired
 	private DoctorRepo doctorRepo;
 	@Autowired
 	private DoctorService doctorService;
-	@Autowired
-	private SendEmailTemplate emailTemplate;
-	
+
 	// Add Doctor
 
 	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	@PostMapping("/save")
 	public ResponseEntity<?> save(@RequestBody @NotNull Doctor doctor) {
-		
-		
-		
+
 		String email = doctorRepo.getEmailByEmai(doctor.getEmail());
+
 		if (email != null) {
+
 			return CustomResponseHandler.response("Email already exist", HttpStatus.OK, doctor.getEmail());
-		} else {
+		}
 
-			 
-			String message = "Notification Account Activation";
+		else {
 
-			String obj = "Please verify your email address to get access to your account   " + "\n" + "\n" + "Thank You ";
 			Doctor addDoctor = this.doctorService.addDoctor(doctor);
-
-			emailTemplate.sendAttached(obj, message, doctor.getEmail());
 			return CustomResponseHandler.response("Create successfully", HttpStatus.CREATED, addDoctor);
 		}
 
@@ -66,6 +66,21 @@ public class DoctorController {
 		} else
 			return CustomResponseHandler.response(RECORD_NOT_FOUND, HttpStatus.NOT_FOUND, id);
 	}
+	
+	@PostMapping("/verify/{email}/{token}")
+	public String acountVerify(@PathVariable String email,@PathVariable String token) {
+		{
+			Doctor acountVerify = doctorService.acountVerify(email, token);
+			if(acountVerify !=null)
+			{
+				return "thanks";
+			}
+			return "nikl laude";
+		}
+		
+	}
+	
+	
 
 	// todo ......under Working ......
 	/*
@@ -94,13 +109,18 @@ public class DoctorController {
 	public String getAllDoctor(Model model, boolean flag) {
 		List<Doctor> allDoctor = this.doctorService.getAllDoctor(flag);
 		if (allDoctor != null) {
-			model.addAttribute("doctorList",allDoctor);
-			/*return CustomResponseHandler.response("Record Found Success", HttpStatus.OK, allDoctor);*/
-			return  "getAll";
-		}
-		else {
-			/*return CustomResponseHandler.response(RECORD_NOT_FOUND, HttpStatus.NOT_FOUND, null);*/
-			return  "getAll";
+			model.addAttribute("doctorList", allDoctor);
+			/*
+			 * return CustomResponseHandler.response("Record Found Success", HttpStatus.OK,
+			 * allDoctor);
+			 */
+			return "getAll";
+		} else {
+			/*
+			 * return CustomResponseHandler.response(RECORD_NOT_FOUND, HttpStatus.NOT_FOUND,
+			 * null);
+			 */
+			return "getAll";
 		}
 	}
 

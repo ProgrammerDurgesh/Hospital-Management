@@ -10,6 +10,8 @@ public interface DoctorService {
 
 	Doctor addDoctor(Doctor doctor);
 
+	Doctor acountVerify(String email, String token);
+
 	Doctor updateDoctorById(Doctor createDoctor, Long id);
 
 	Doctor updateDoctorByEmail(Doctor createDoctor, String email);
