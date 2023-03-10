@@ -2,7 +2,6 @@ package com.hospitaltask.controller;
 
 import java.util.List;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,15 +14,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.hospitaltask.dto.SuperUserDto;
 import com.hospitaltask.entity.SuperAdmin;
 import com.hospitaltask.repository.SuperAdminRepo;
 import com.hospitaltask.response.CustomResponseHandler;
 import com.hospitaltask.service.SuperAdminService;
-import com.hospitaltask.serviceImpl.SendEmailTemplate;
 
 @RestController
-@RequestMapping("/sup")
+@RequestMapping("/super")
 @PreAuthorize("hasAuthority('ROLE_ADMIN')")
 public class SuperAdminController {
 
@@ -31,33 +28,42 @@ public class SuperAdminController {
 	private SuperAdminService superAdminService;
 	@Autowired
 	private SuperAdminRepo superAdminRepo;
-	@Autowired
-	private SendEmailTemplate emailTemplate;
+	
 
-	private ModelMapper modelMapper;
-
-	SuperAdmin dtoToSuperUser(SuperUserDto superUserDto) {
-		return this.modelMapper.map(superUserDto, SuperAdmin.class);
-	}
+	/*
+	 * SuperAdmin dtoToSuperUser(SuperUserDto superUserDto) { return
+	 * this.modelMapper.map(superUserDto, SuperAdmin.class); }
+	 */
 
 	@PostMapping("/save")
-	public ResponseEntity<?> save(@RequestBody SuperUserDto superAdmin) {
+	public ResponseEntity<?> save(@RequestBody SuperAdmin superAdmin) {
 		SuperAdmin superAdmin1 = superAdminService.save(superAdmin);
 		if (superAdmin1 != null) {
+			
 			return CustomResponseHandler.response("Record Save", HttpStatus.CREATED, superAdmin1);
 		} else {
-			String message = "Your Are Registered with Appollo Hospital ";
 
-			String obj = "Registration Details " + "\n" + "\n" + "Email : " + superAdmin.getEmail() + "\n"
-					+ "Password : " + superAdmin.getPassword();
-			SuperAdmin save = superAdminRepo.save(dtoToSuperUser(superAdmin));
-
-			emailTemplate.sendAttached(obj, message, superAdmin.getEmail());
-			return CustomResponseHandler.response("Enter Valid Information", HttpStatus.BAD_REQUEST, save);
+			return CustomResponseHandler.response("Enter Valid Information", HttpStatus.BAD_REQUEST, null);
 		}
 
 	}
 
+	
+	
+	
+	@PostMapping("/verify/{email}/{token}")
+	public String acountVerify(@PathVariable String email,@PathVariable String token) {
+		{
+			SuperAdmin acountVerify = superAdminRepo.acountVerify(email, token);
+			if(acountVerify !=null)
+			{
+				return "thanks";
+			}
+			return "nikl laude";
+		}
+		
+	}
+	
 	// TODO .... Under Process.....
 	@PutMapping("/update/{id}")
 	public ResponseEntity<?> update(@RequestBody SuperAdmin data, Long id) {

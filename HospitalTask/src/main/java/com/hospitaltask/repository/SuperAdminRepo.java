@@ -1,11 +1,12 @@
 package com.hospitaltask.repository;
 
-import com.hospitaltask.entity.SuperAdmin;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import com.hospitaltask.entity.SuperAdmin;
 
 @Repository
 public interface SuperAdminRepo extends JpaRepository<SuperAdmin, Long> {
@@ -16,7 +17,7 @@ public interface SuperAdminRepo extends JpaRepository<SuperAdmin, Long> {
     @Query(value = " select * from tbl_super_user where flag=true", nativeQuery = true)
     List<SuperAdmin> findAll();
 
-    @Query(value = "select * from tbl_super_user where email=:email", nativeQuery = true)
+    @Query(value = "select * from tbl_super_user where email=:email and is_active=true", nativeQuery = true)
     SuperAdmin findByEmail(String email);
 
 
@@ -29,6 +30,10 @@ public interface SuperAdminRepo extends JpaRepository<SuperAdmin, Long> {
     @Query(value = "select Id from tbl_super_user where email=:email", nativeQuery = true)
     Long findUserIDByEmail(String email);
 
+    
+    
+    @Query(value = "select * from tbl_super_user d where d.email =:email and d.confirmation_token=:token",nativeQuery = true)
+    SuperAdmin acountVerify(String email,String token);
 
 
    /* @Query(value = "update tbl_super_user set flag=false where id=1",nativeQuery=true)

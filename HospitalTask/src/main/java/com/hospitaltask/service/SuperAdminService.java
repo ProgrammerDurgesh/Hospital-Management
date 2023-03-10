@@ -2,11 +2,11 @@ package com.hospitaltask.service;
 
 import java.util.List;
 
-import com.hospitaltask.dto.SuperUserDto;
 import com.hospitaltask.entity.SuperAdmin;
 
 public interface SuperAdminService {
-    SuperAdmin save(SuperUserDto superAdmin);
+    SuperAdmin save(SuperAdmin superAdmin);
+    SuperAdmin acountVerify(String email, String token);
 
     SuperAdmin update(SuperAdmin superAdmin, Long id);
 
