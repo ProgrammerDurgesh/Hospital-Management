@@ -19,6 +19,7 @@ import java.util.function.Function;
 
 @Service
 public class JwtUtil {
+	static String compact =null;
     public static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60;
     Date expirationTime = new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10);
     private String SECRET_KEY = "secret";
@@ -54,9 +55,11 @@ public class JwtUtil {
 
     private String createToken(Map<String, Object> claims, String subject) {
 
-        return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
+          compact = Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(expirationTime)
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
+          System.out.println("This is Token you Can Access it          "+compact);
+    return compact;
     }
 
     public Boolean validateToken(String token, @NotNull UserDetails userDetails) {
@@ -68,4 +71,12 @@ public class JwtUtil {
     public ResponseEntity<?> tokenExpired() {
         return CustomResponseHandler.response("Token Expired", HttpStatus.INTERNAL_SERVER_ERROR, "Timeout");
     }
+    
+    public static String token()
+    {
+    	return compact;
+    	
+    }
+    
+    
 }

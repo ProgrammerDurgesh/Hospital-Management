@@ -52,14 +52,18 @@ public class SuperAdminController {
 	
 	
 	@PostMapping("/verify/{email}/{token}")
-	public String acountVerify(@PathVariable String email,@PathVariable String token) {
+	public ResponseEntity<?> acountVerify(@PathVariable String email,@PathVariable String token) {
 		{
 			SuperAdmin acountVerify = superAdminRepo.acountVerify(email, token);
 			if(acountVerify !=null)
 			{
-				return "thanks";
+				return CustomResponseHandler.response("Congrachulation !! Your Account is Varify ",HttpStatus.ACCEPTED,email);
 			}
-			return "nikl laude";
+			else 
+			{
+			
+				return CustomResponseHandler.response("Invalid Url ",HttpStatus.INTERNAL_SERVER_ERROR,null );
+			}
 		}
 		
 	}

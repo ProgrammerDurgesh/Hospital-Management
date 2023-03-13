@@ -17,7 +17,7 @@ public interface SuperAdminRepo extends JpaRepository<SuperAdmin, Long> {
     @Query(value = " select * from tbl_super_user where flag=true", nativeQuery = true)
     List<SuperAdmin> findAll();
 
-    @Query(value = "select * from tbl_super_user where email=:email and is_active=true", nativeQuery = true)
+    @Query(value = "select * from tbl_super_user where email=:email ", nativeQuery = true)
     SuperAdmin findByEmail(String email);
 
 

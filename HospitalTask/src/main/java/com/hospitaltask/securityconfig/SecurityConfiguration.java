@@ -24,14 +24,16 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration {
-    private static final String[] authorizedURL = {"/dur/Home", "/dur/login", "/swagger-ui**","/email","/forget/match"};
+    private static final String[] authorizedURL = {"/dur/Home", "/dur/login", "/swagger-ui**","/email","/forget/match","/patient/save"};
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
-    @Autowired
+    @SuppressWarnings("unused")
+	@Autowired
     private RoleRepo roleRepo;
     @Autowired
     private InvalidLoginException invalidLoginException;
-    @Autowired
+    @SuppressWarnings("unused")
+	@Autowired
     private MyUserDetails myUserDetails;
 
     @Bean
@@ -62,7 +64,7 @@ public class SecurityConfiguration {
                 authorizeRequests().
                 antMatchers("/admin/**").hasAnyAuthority("ROLE_ADMIN").
                 antMatchers("/doctor/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_DOCTOR", "ROLE_PATIENT").
-                antMatchers("/patient/**").hasAnyAuthority("ROLE_DOCTOR","ROLE_PATIENT").
+                //antMatchers("/patient/**").hasAnyAuthority("ROLE_DOCTOR","ROLE_PATIENT").
                 antMatchers(authorizedURL).
                 permitAll().
                 and().formLogin().

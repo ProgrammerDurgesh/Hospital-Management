@@ -34,7 +34,7 @@ public class PatientController {
     private DoctorRepo doctorRepo;
 
     //Add & Update Patient operation
-    @PreAuthorize("hasAuthority('ROLE_DOCTOR')")
+  
     @PostMapping("/save")
     public ResponseEntity<?> save(@RequestBody @NotNull Patient patient) {
         Doctor doctor1 = patient.getDoctor();
@@ -57,6 +57,25 @@ public class PatientController {
             return CustomResponseHandler.response("Data Saved ", HttpStatus.CREATED, save);
         }
     }
+    
+    
+    @PostMapping("/verify/{email}/{token}")
+	public ResponseEntity<?> acountVerify(@PathVariable String email,@PathVariable String token) {
+		{
+			Patient acountVerify = patientService.acountVerify(email, token);
+			if(acountVerify !=null)
+			{
+				return CustomResponseHandler.response("Congrachulation !! Your Account is Varify ",HttpStatus.ACCEPTED,email);
+			}
+			else 
+			{
+			
+				return CustomResponseHandler.response("Invalid Url ",HttpStatus.INTERNAL_SERVER_ERROR,null );
+			}
+			
+		}
+		
+	}
 
     @PostMapping("/forgot-password/{email}")
     public String forgotPassword(@PathVariable String email){
@@ -79,7 +98,7 @@ public class PatientController {
 
 
     // TODO Under process.....
-    @PreAuthorize("hasAuthority('ROLE_DOCTOR')")
+    
     @PutMapping("/patient/{id}")
     public ResponseEntity<?> updatePatientById(@RequestBody Patient patient, @PathVariable Long id) {
         Patient patientUpdate = patientService.updatePatientById(patient, id);

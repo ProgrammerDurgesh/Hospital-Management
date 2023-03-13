@@ -4,21 +4,21 @@ package com.hospitaltask.service;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.hospitaltask.entity.SuperAdmin;
-import com.hospitaltask.repository.SuperAdminRepo;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
 import com.hospitaltask.entity.Doctor;
 import com.hospitaltask.entity.Patient;
+import com.hospitaltask.entity.SuperAdmin;
 import com.hospitaltask.exception.UserNotFoundException;
 import com.hospitaltask.repository.DoctorRepo;
 import com.hospitaltask.repository.PatientEntityRepo;
+import com.hospitaltask.repository.SuperAdminRepo;
 
 @Service
 public class MyUserDetails implements UserDetailsService {

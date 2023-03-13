@@ -19,11 +19,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.hospitaltask.entity.Doctor;
 import com.hospitaltask.exception.UserNotFoundException;
-import com.hospitaltask.jwt.JwtUtil;
 import com.hospitaltask.repository.DoctorRepo;
 import com.hospitaltask.response.CustomResponseHandler;
 import com.hospitaltask.service.DoctorService;
-import com.hospitaltask.serviceImpl.SendEmailTemplate;
 
 @RestController
 @RequestMapping("/doctor")
@@ -68,14 +66,18 @@ public class DoctorController {
 	}
 	
 	@PostMapping("/verify/{email}/{token}")
-	public String acountVerify(@PathVariable String email,@PathVariable String token) {
+	public ResponseEntity<?> acountVerify(@PathVariable String email,@PathVariable String token) {
 		{
 			Doctor acountVerify = doctorService.acountVerify(email, token);
 			if(acountVerify !=null)
 			{
-				return "thanks";
+				return CustomResponseHandler.response("Congrachulation !! Your Account is Varify ",HttpStatus.ACCEPTED,email);
 			}
-			return "nikl laude";
+			else 
+			{
+			
+				return CustomResponseHandler.response("Invalid Url ",HttpStatus.INTERNAL_SERVER_ERROR,null );
+			}
 		}
 		
 	}

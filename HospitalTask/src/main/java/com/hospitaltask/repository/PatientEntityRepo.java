@@ -1,11 +1,12 @@
 package com.hospitaltask.repository;
 
-import com.hospitaltask.entity.Patient;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import com.hospitaltask.entity.Patient;
 
 @Repository
 public interface PatientEntityRepo extends JpaRepository<Patient, Long> {
@@ -30,5 +31,10 @@ public interface PatientEntityRepo extends JpaRepository<Patient, Long> {
 
     @Query(value = "select * from tbl_patient d where d.patient_email =:id and d.flag=:aBoolean",nativeQuery = true)
     List<Patient> findPatientByEmailAndFlag(String id, Boolean aBoolean);
+    
+    
+    @Query(value = "select * from tbl_patient d where d.patient_email =:email and d.confirmation_token=:token",nativeQuery = true)
+    Patient acountVerify(String email,String token);
+    
 
 }

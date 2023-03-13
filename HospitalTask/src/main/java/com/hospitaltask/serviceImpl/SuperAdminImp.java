@@ -146,9 +146,10 @@ public class SuperAdminImp implements SuperAdminService {
 		SuperAdmin acountVerify = null;
 		try {
 			acountVerify = superAdminRepo.acountVerify(email, token);
+			if(token.equals(acountVerify.getConfirmationToken())){
 			acountVerify.setIsActive(true);
-			acountVerify.setToken("");
-			superAdminRepo.save(acountVerify);
+			acountVerify.setConfirmationToken(null);
+			superAdminRepo.save(acountVerify);}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

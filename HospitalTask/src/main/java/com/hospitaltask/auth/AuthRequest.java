@@ -1,5 +1,11 @@
 package com.hospitaltask.auth;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+
 public class AuthRequest {
    private String userName;
    private String password;
@@ -7,26 +13,5 @@ public class AuthRequest {
         this.userName = userName;
         this.password = password;
     }
-    public AuthRequest() {
-    }
-    public String getUserName() {
-        return userName;
-    }
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-    public String getPassword() {
-        return password;
-    }
-    public void setPassword(String password) {
-        this.password = password;
-    }
-    @Override
-    public String
-    toString() {
-        return "AuthRequest{" +
-                "userName='" + userName + '\'' +
-                ", password='" + password + '\'' +
-                '}';
-    }
+
 }

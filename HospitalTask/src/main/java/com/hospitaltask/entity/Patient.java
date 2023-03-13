@@ -48,5 +48,6 @@ public class Patient {
 
     private String token;
     private Boolean isActive;
+    private String ConfirmationToken;
 
 }

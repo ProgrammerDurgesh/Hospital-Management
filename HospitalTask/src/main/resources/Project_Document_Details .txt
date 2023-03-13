@@ -135,3 +135,11 @@ Enable & disable
 --------------------------Patient-----------------------------------------------------------
 1- Enable  Query: update tbl_doctor set flag = true where id =4;
 2- disable  Query:update tbl_doctor set flag = false where id =4;
+
+
+
+
+//project daily work end
+
+09-03-2023 - getAll doctor on html page using thymleaf
+pass token in header of url   :- Pending

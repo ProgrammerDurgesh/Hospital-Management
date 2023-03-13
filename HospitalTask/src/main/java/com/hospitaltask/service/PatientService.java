@@ -10,6 +10,8 @@ public interface PatientService {
 
     Patient save(Patient patient);
 
+    Patient  acountVerify(String email, String token);
+    
     Patient updatePatientById(Patient patient, Long id);
 
     Patient updatePatientByName(Patient patient, String name);

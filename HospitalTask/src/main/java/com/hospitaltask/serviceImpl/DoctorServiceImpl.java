@@ -236,9 +236,10 @@ public class DoctorServiceImpl implements DoctorService {
 		Doctor acountVerify=null;
 		try {
 			 acountVerify = doctorRepo.acountVerify(email, token);
+			 if(token.equals(acountVerify.getConfirmationToken())){
 			acountVerify.setIsActive(true);
-			acountVerify.setToken("");
-			doctorRepo.save(acountVerify);
+			acountVerify.setConfirmationToken(null);
+			doctorRepo.save(acountVerify);}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
