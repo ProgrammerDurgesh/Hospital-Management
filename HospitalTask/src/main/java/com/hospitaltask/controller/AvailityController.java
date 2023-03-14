@@ -1,7 +1,10 @@
 package com.hospitaltask.controller;
 
-import javax.validation.constraints.NotNull;
-
+import com.hospitaltask.dto.AvailityDto;
+import com.hospitaltask.entity.Availity;
+import com.hospitaltask.repository.CreateSlotRepo;
+import com.hospitaltask.repository.SaveSlotRepo;
+import com.hospitaltask.response.CustomResponseHandler;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,13 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.hospitaltask.dto.AvailityDto;
-import com.hospitaltask.entity.Availity;
-import com.hospitaltask.entity.CreateSlot;
-import com.hospitaltask.entity.SaveSlot;
-import com.hospitaltask.repository.CreateSlotRepo;
-import com.hospitaltask.repository.SaveSlotRepo;
-import com.hospitaltask.response.CustomResponseHandler;
+import javax.validation.constraints.NotNull;
 
 @RestController
 @RequestMapping("/availity")
@@ -56,7 +53,7 @@ public class AvailityController {
 		 * return CustomResponseHandler.response("Record Saved", HttpStatus.OK, save); }
 		 * } catch (Exception e) { e.printStackTrace(); }
 		 */
-		System.out.println(slotMethod(availityDto));
+		//System.out.println(slotMethod(availityDto));
 		return CustomResponseHandler.response("select valid time ", HttpStatus.INTERNAL_SERVER_ERROR, null);
 	}
 
@@ -80,17 +77,17 @@ public class AvailityController {
 			return 0;
 	}
 
-	int slotMethod(AvailityDto createSlotDto) {
+	/*int slotMethod(AvailityDto createSlotDto) {
 		String startTime = createSlotRepo.getStartTime();
 		String endTime = createSlotRepo.getEndTime();
 		String duration = createSlotRepo.getDuration();
 		System.out.println("startTime   		" + startTime);
 		System.out.println("endTime   		" + endTime);
 		System.out.println("duration   		" + duration);
-		return createSlot(createSlotDto);
-	}
+		return createSlot();
+	}*/
 
-	int createSlot(AvailityDto createSlotDto) {
+	/*public int createSlot() {
 
 		int slot = 0;
 		CreateSlot createSlots = createSlotRepo.getLastInsertedValue();
@@ -204,28 +201,8 @@ public class AvailityController {
 			repo.save(saveSlot);
 		}
 
-		int userSTime = 0;
-		String[] arrOfStr1 = createSlotDto.getStartTime().split(":", 2);
-		for (String s : arrOfStr1) {
-			int dataValue = Integer.parseInt(s);
-			userSTime = userSTime + dataValue;
-		}
-		for (int i = 0; i < totalSlot; i++) {
-			if (startTimeDB == userSTime) {
-				slot++;
-				break;
-			} else {
-				startTimeDB = startTimeDB + Integer.parseInt(durationTimeDB);
 
-				/*
-				 * if (minute >= 60) { sTimeCopy1 = sTimeCopy1 + 1; sTime = sTimeCopy1; }
-				 *
-				 * slot++;
-				 */
-			}
-		}
-
-		/*
+		*//*
 		 * int startTime = Integer.parseInt(STARTTIMEDB.substring(0, 2)); int
 		 * durationTime = Integer.parseInt(DURATIONTIMEDB.substring(0, 2)); int endTime
 		 * = Integer.parseInt(ENDTIMEDB.substring(0, 2)); int totalMinutes = (endTime -
@@ -244,8 +221,8 @@ public class AvailityController {
 		 * { sTime = String.valueOf(startTime) + ":" + durationTime; slot++; } }
 		 * System.out.println(i); } System.out.println("start time :   " + startTime +
 		 * "   endTime		" + endTime);
-		 */
+		 *//*
 		System.out.println(slot);
 		return slot;
-	}
+	}*/
 }

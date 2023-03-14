@@ -54,7 +54,7 @@ public class SuperAdminController {
 	@PostMapping("/verify/{email}/{token}")
 	public ResponseEntity<?> acountVerify(@PathVariable String email,@PathVariable String token) {
 		{
-			SuperAdmin acountVerify = superAdminRepo.acountVerify(email, token);
+			SuperAdmin acountVerify = superAdminService.acountVerify(email, token);
 			if(acountVerify !=null)
 			{
 				return CustomResponseHandler.response("Congrachulation !! Your Account is Varify ",HttpStatus.ACCEPTED,email);

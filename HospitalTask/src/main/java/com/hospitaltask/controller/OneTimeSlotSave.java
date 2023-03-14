@@ -1,7 +1,7 @@
 package com.hospitaltask.controller;
 
 import com.hospitaltask.dto.CreateSlotDto;
-import com.hospitaltask.entity.CreateSlot;
+import com.hospitaltask.entity.SuperSlot;
 import com.hospitaltask.response.CustomResponseHandler;
 import com.hospitaltask.service.CreateSlotService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/slot")
-public class SlotController {
+public class OneTimeSlotSave {
 
     @Autowired
     private CreateSlotService createSlotService;
@@ -23,6 +23,7 @@ public class SlotController {
     public ResponseEntity<?> save(@RequestBody @NotNull CreateSlotDto createSlotDto) {
         try {
             createSlotService.save(createSlotDto);
+            createSlotService.createSlot();
             return CustomResponseHandler.response("Record Save", HttpStatus.CREATED, createSlotDto);
         } catch (Exception e) {
             e.printStackTrace();
@@ -32,7 +33,7 @@ public class SlotController {
 
     @GetMapping("/all")
     public ResponseEntity<?> getAll() {
-        List<CreateSlot> all = null;
+        List<SuperSlot> all = null;
         try {
             all = createSlotService.getAll();
             return CustomResponseHandler.response("Total Record      " + all.size(), HttpStatus.OK, all);
@@ -41,5 +42,4 @@ public class SlotController {
         }
         return CustomResponseHandler.response("Record Not found   :    " + 0, HttpStatus.NOT_FOUND, null);
     }
-
 }

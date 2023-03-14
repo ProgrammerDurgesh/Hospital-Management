@@ -1,24 +1,27 @@
 package com.hospitaltask.service;
 
 import com.hospitaltask.dto.CreateSlotDto;
-import com.hospitaltask.entity.CreateSlot;
+import com.hospitaltask.entity.SuperSlot;
 
 import java.util.List;
 
 public interface CreateSlotService {
 
-    CreateSlot save(CreateSlotDto createSlotDto);
+    SuperSlot save(CreateSlotDto createSlotDto);
 
-    CreateSlot update(Long id, String duration);
+    SuperSlot update(Long id, String duration);
 
-    CreateSlot updateByStartTime(Long id, String startTime);
+    SuperSlot updateByStartTime(Long id, String startTime);
 
-    CreateSlot updateByEndTime(Long id, String endTime);
+    SuperSlot updateByEndTime(Long id, String endTime);
 
-    CreateSlot updateAll(Long id, String startTime, String endTime, String duration);
+    SuperSlot updateAll(Long id, String startTime, String endTime, String duration);
 
-    CreateSlot delete(Long id);
+    SuperSlot delete(Long id);
 
-    List<CreateSlot> getAll();
+    List<SuperSlot> getAll();
+
+
+    public int createSlot();
 
 }

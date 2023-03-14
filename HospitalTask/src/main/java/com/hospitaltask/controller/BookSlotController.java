@@ -39,12 +39,13 @@ public class BookSlotController {
 	@Autowired
 	private BookSlotRepo bookSlotRepo;
 
+
 	@PostMapping("/book")
 	public String save(@RequestBody BookSlotDTO bookSlotDTO) {
-
 		try {
 
 			bookSlotService.save(bookSlotDTO);
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
