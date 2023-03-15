@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.hospitaltask.dto.BookSlotDTO;
 import com.hospitaltask.entity.BookSlot;
 import com.hospitaltask.entity.Doctor;
-import com.hospitaltask.entity.SaveSlot;
+import com.hospitaltask.entity.Slots;
 import com.hospitaltask.repository.BookSlotRepo;
 import com.hospitaltask.repository.DoctorRepo;
 import com.hospitaltask.repository.SaveSlotRepo;
@@ -64,7 +64,7 @@ public class BookSlotController {
 	public List<?> getAllSlot(@NotNull BookSlotDTO bookSlotDTO) {
 		List<Long> integers = bookSlotRepo.getBookedSlot(LocalDate.parse("2023-02-28"));
 		System.out.println(integers);
-		List<SaveSlot> getSlot = saveSlotRepo.findAll();
+		List<Slots> getSlot = saveSlotRepo.findAll();
 		System.out.println("Before Remove" + getSlot.size());
 		for (int i = 0; i < getSlot.size(); i++) {
 			int indexCompare = 0;

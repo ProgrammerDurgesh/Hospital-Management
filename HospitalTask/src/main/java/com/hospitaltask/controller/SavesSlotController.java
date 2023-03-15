@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.hospitaltask.entity.SaveSlot;
+import com.hospitaltask.entity.Slots;
 import com.hospitaltask.response.CustomResponseHandler;
 import com.hospitaltask.service.SaveSlotService;
 
@@ -26,7 +26,7 @@ public class SavesSlotController {
 	@GetMapping("/all")
 	public  ResponseEntity<?>  getAll()
 	{
-		List<SaveSlot> all = saveSlotService.getAll();
+		List<Slots> all = saveSlotService.getAll();
 		if(all.size()!=0)
 		{
 			return CustomResponseHandler.response("Record", HttpStatus.OK, all);

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.hospitaltask.dto.BookSlotDTO;
 import com.hospitaltask.entity.BookSlot;
-import com.hospitaltask.entity.SaveSlot;
+import com.hospitaltask.entity.Slots;
 import com.hospitaltask.repository.BookSlotRepo;
 import com.hospitaltask.repository.SaveSlotRepo;
 import com.hospitaltask.response.CustomResponseHandler;
@@ -50,9 +50,9 @@ public class BookSlotImpl extends CustomResponseHandler implements BookSlotServi
 	@Override
 	public List<?> availableSlot(LocalDate date) {
 		int bookslotindex=0;
-		List<SaveSlot> list= saveSlotRepo.findAll();
+		List<Slots> list= saveSlotRepo.findAll();
 		System.out.println("Starting List Size    :          "+list.size());
-		List<SaveSlot> finalShowList=new ArrayList<>();
+		List<Slots> finalShowList=new ArrayList<>();
 		List<BookSlot> bookSlots = bookSlotRepo.getBookedSlotByDate(date);
 		for (int i = 0; i < list.size(); i++) {
 			System.out.println("save slot size :  "+list.size());

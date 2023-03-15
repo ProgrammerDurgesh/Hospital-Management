@@ -1,9 +1,6 @@
 package com.hospitaltask.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -12,11 +9,13 @@ import lombok.Setter;
 @Getter
 @Setter
 
-public class SaveSlot {
+public class Slots {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
 	private String startTime;
 	private String endTime;
+
+	private String durationTime;
 }

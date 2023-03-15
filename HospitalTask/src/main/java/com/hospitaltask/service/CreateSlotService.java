@@ -1,13 +1,13 @@
 package com.hospitaltask.service;
 
-import com.hospitaltask.dto.CreateSlotDto;
+import com.hospitaltask.dto.SlotDto;
 import com.hospitaltask.entity.SuperSlot;
 
 import java.util.List;
 
 public interface CreateSlotService {
 
-    SuperSlot save(CreateSlotDto createSlotDto);
+    SuperSlot save(SlotDto slotDto);
 
     SuperSlot update(Long id, String duration);
 
