@@ -2,12 +2,14 @@ package com.hospitaltask.controller;
 
 import com.hospitaltask.entity.Doctor;
 import com.hospitaltask.entity.Patient;
+import com.hospitaltask.entity.UserInfo;
 import com.hospitaltask.repository.DoctorRepo;
 import com.hospitaltask.repository.PatientEntityRepo;
 import com.hospitaltask.response.CustomResponseHandler;
 import com.hospitaltask.service.PatientService;
+import com.hospitaltask.serviceImpl.EmailService;
 import com.hospitaltask.serviceImpl.SendEmailTemplate;
-
+import freemarker.template.TemplateException;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,6 +17,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,17 +28,24 @@ public class PatientController {
 
     @Autowired
     PatientService patientService;
-    
-    @Autowired
-	private SendEmailTemplate emailTemplate;
 
+    @Autowired
+    private SendEmailTemplate emailTemplate;
+
+    @Autowired
+    private EmailService emailService;
     @Autowired
     private PatientEntityRepo entityRepo;
     @Autowired
     private DoctorRepo doctorRepo;
 
     //Add & Update Patient operation
-  
+    @PostMapping("/send")
+    public String send(@RequestBody UserInfo userInfo) throws MessagingException, TemplateException, IOException {
+        emailService.sendEmail(userInfo);
+        return "Email Sent..!";
+    }
+
     @PostMapping("/save")
     public ResponseEntity<?> save(@RequestBody @NotNull Patient patient) {
         Doctor doctor1 = patient.getDoctor();
@@ -46,43 +57,34 @@ public class PatientController {
         if (patient1 != null) {
             return CustomResponseHandler.response("Email Already Exists ", HttpStatus.OK, patient.getEmail());
         } else {
-        	String message = "Your Are Registered with Appollo Hospital ";
+            patientService.save(patient);
 
-			String obj = "Registration Details " + "\n" + "\n" + "Email : " + patient.getEmail() + "\n" + "Password : "
-					+ patient.getPassword();
-			Patient save = patientService.save(patient);
-
-			emailTemplate.sendAttached(obj, message, patient.getEmail());
-            
-            return CustomResponseHandler.response("Data Saved ", HttpStatus.CREATED, save);
+            return CustomResponseHandler.response("Data Saved ", HttpStatus.CREATED, patient);
         }
     }
-    
-    
+
+
     @PostMapping("/verify/{email}/{token}")
-	public ResponseEntity<?> acountVerify(@PathVariable String email,@PathVariable String token) {
-		{
-			Patient acountVerify = patientService.acountVerify(email, token);
-			if(acountVerify !=null)
-			{
-				return CustomResponseHandler.response("Congrachulation !! Your Account is Varify ",HttpStatus.ACCEPTED,email);
-			}
-			else 
-			{
-			
-				return CustomResponseHandler.response("Invalid Url ",HttpStatus.INTERNAL_SERVER_ERROR,null );
-			}
-			
-		}
-		
-	}
+    public ResponseEntity<?> acountVerify(@PathVariable String email, @PathVariable String token) {
+        {
+            Patient acountVerify = patientService.acountVerify(email, token);
+            if (acountVerify != null) {
+                return CustomResponseHandler.response("Congrachulation !! Your Account is Varify ", HttpStatus.ACCEPTED, email);
+            } else {
+
+                return CustomResponseHandler.response("Invalid Url ", HttpStatus.INTERNAL_SERVER_ERROR, null);
+            }
+
+        }
+
+    }
 
     @PostMapping("/forgot-password/{email}")
-    public String forgotPassword(@PathVariable String email){
+    public String forgotPassword(@PathVariable String email) {
 
-        String response =  patientService.forgotPassword(email);
+        String response = patientService.forgotPassword(email);
 
-        if(!response.startsWith("Invalid")){
+        if (!response.startsWith("Invalid")) {
             response = "http://localhost:8000/reset-password?token=" + response;
         }
 
@@ -91,14 +93,14 @@ public class PatientController {
 
 
     @PostMapping("/reset-password")
-    public ResponseEntity<?> resetPassword(@RequestParam String token,@RequestParam String password){
+    public ResponseEntity<?> resetPassword(@RequestParam String token, @RequestParam String password) {
         String s = patientService.resetPassword(token, password);
-        return CustomResponseHandler.response(s,HttpStatus.OK,null);
+        return CustomResponseHandler.response(s, HttpStatus.OK, null);
     }
 
 
     // TODO Under process.....
-    
+
     @PutMapping("/patient/{id}")
     public ResponseEntity<?> updatePatientById(@RequestBody Patient patient, @PathVariable Long id) {
         Patient patientUpdate = patientService.updatePatientById(patient, id);
@@ -127,11 +129,10 @@ public class PatientController {
     }
 
 
-
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping("/findByEmail/{id}/{aBoolean}")
     public ResponseEntity<?> findPatientByFlag(@PathVariable String id, @PathVariable Boolean aBoolean) {
-        List<Patient> patient = patientService.findPatientByEmailAndFlag(id,aBoolean);
+        List<Patient> patient = patientService.findPatientByEmailAndFlag(id, aBoolean);
         if (patient.size() == 0) {
             return CustomResponseHandler.response("Record Not Found", HttpStatus.NOT_FOUND, id + " " + aBoolean);
         } else return CustomResponseHandler.response("Record Found", HttpStatus.OK, patient);

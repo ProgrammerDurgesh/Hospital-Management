@@ -1,8 +1,8 @@
 package com.hospitaltask.serviceImpl;
 
 import com.hospitaltask.dto.SlotDto;
-import com.hospitaltask.entity.SuperSlot;
 import com.hospitaltask.entity.Slots;
+import com.hospitaltask.entity.SuperSlot;
 import com.hospitaltask.repository.CreateSlotRepo;
 import com.hospitaltask.repository.SaveSlotRepo;
 import com.hospitaltask.service.CreateSlotService;
@@ -25,9 +25,8 @@ public class CreateSlotImp implements CreateSlotService {
     @Autowired
     private SaveSlotRepo repo;
 
-    SuperSlot dtoToSlot(SlotDto slotDto)
-    {
-        return  modelMapper.map(slotDto, SuperSlot.class);
+    SuperSlot dtoToSlot(SlotDto slotDto) {
+        return modelMapper.map(slotDto, SuperSlot.class);
     }
 
 
@@ -73,14 +72,13 @@ public class CreateSlotImp implements CreateSlotService {
     }
 
 
-
     @Override
     public int createSlot() {
 
         int slot = 0;
         SuperSlot superSlots = createSlotRepo.getLastInsertedValue();
         System.out.println(superSlots);
-        String durationMinitus=superSlots.getDurationMinutes();
+        String durationMinitus = superSlots.getDurationMinutes();
         String STARTTIMEDB = superSlots.getStartTime();
         String ENDTIMEDB = superSlots.getEndTime();
         String durationTimeDB = superSlots.getDurationMinutes();
@@ -123,14 +121,14 @@ public class CreateSlotImp implements CreateSlotService {
                             hourIncrement++;
                             hours = hours + hourIncrement;
                             endMinutes = 0;
-                            slots.setStartTime(String.valueOf(oldHours) + ":" + startMinutes);
-                            slots.setEndTime(String.valueOf(hours) + ":" + "0" + endMinutes);
+                            slots.setStartTime(oldHours + ":" + startMinutes);
+                            slots.setEndTime(hours + ":" + "0" + endMinutes);
                             k = 1;
                             l = 1;
                             hourIncrement--;
                         } else {
-                            slots.setStartTime(String.valueOf(hours) + ":" + 00);
-                            slots.setEndTime(String.valueOf(hours) + ":" + String.valueOf(endMinutes));
+                            slots.setStartTime(hours + ":" + 00);
+                            slots.setEndTime(hours + ":" + endMinutes);
                         }
                     } else {
 
@@ -140,7 +138,7 @@ public class CreateSlotImp implements CreateSlotService {
                         k = 1;
                         l = 1;
                         if (endMinutes == 0) {
-                            slots.setStartTime(String.valueOf(hours) + ":" + "00");
+                            slots.setStartTime(hours + ":" + "00");
                             oldHours++;
                             endMinutes = endMinutes + durationTime;
                             slots.setEndTime(hours + ":" + endMinutes);
@@ -148,13 +146,13 @@ public class CreateSlotImp implements CreateSlotService {
                             l = 1;
                         } else {
                             if (endMinutes < 10) {
-                                slots.setStartTime(String.valueOf(oldHours) + ":" + startMinutes);
+                                slots.setStartTime(oldHours + ":" + startMinutes);
                                 oldHours++;
-                                slots.setEndTime(hours + ":" + "0" + String.valueOf(endMinutes));
+                                slots.setEndTime(hours + ":" + "0" + endMinutes);
                             } else {
-                                slots.setStartTime(String.valueOf(oldHours) + ":" + startMinutes);
+                                slots.setStartTime(oldHours + ":" + startMinutes);
                                 oldHours++;
-                                slots.setEndTime(String.valueOf(hours) + ":" + String.valueOf(endMinutes));
+                                slots.setEndTime(hours + ":" + endMinutes);
                                 k = 1;
                                 l = 1;
                             }
@@ -163,33 +161,32 @@ public class CreateSlotImp implements CreateSlotService {
                 } else {
                     if (endMinutes < 10) {
                         if (startMinutes < 10)
-                            slots.setStartTime(String.valueOf(hours) + ":" + "0" + String.valueOf(startMinutes));
+                            slots.setStartTime(hours + ":" + "0" + startMinutes);
                         else
-                            slots.setStartTime(String.valueOf(hours) + ":" + String.valueOf(startMinutes));
-                        slots.setEndTime(String.valueOf(hours) + ":" + String.valueOf(endMinutes));
+                            slots.setStartTime(hours + ":" + startMinutes);
+                        slots.setEndTime(hours + ":" + endMinutes);
                         k++;
                         l++;
                     } else {
                         if (startMinutes < 10)
-                            slots.setStartTime(String.valueOf(hours) + ":" + "0" + startMinutes);
+                            slots.setStartTime(hours + ":" + "0" + startMinutes);
                         else
-                            slots.setStartTime(String.valueOf(hours) + ":" + startMinutes);
-                        slots.setEndTime(String.valueOf(hours) + ":" + String.valueOf(endMinutes));
+                            slots.setStartTime(hours + ":" + startMinutes);
+                        slots.setEndTime(hours + ":" + endMinutes);
                         k++;
                         l++;
                     }
                 }
             } else {
-                slots.setStartTime(String.valueOf(hours) + ":" + "00");
-                if(endMinutes==60) {
-                    hours++;endMinutes=0;
-                    slots.setEndTime(String.valueOf(hours) + ":" + String.valueOf(endMinutes+"0"));
+                slots.setStartTime(hours + ":" + "00");
+                if (endMinutes == 60) {
+                    hours++;
+                    endMinutes = 0;
+                    slots.setEndTime(hours + ":" + endMinutes + "0");
                     k++;
                     l++;
-                }
-                else
-                {
-                    slots.setEndTime(String.valueOf(hours) + ":" + String.valueOf(endMinutes));
+                } else {
+                    slots.setEndTime(hours + ":" + endMinutes);
                     k++;
                     l++;
                 }
@@ -197,7 +194,7 @@ public class CreateSlotImp implements CreateSlotService {
             System.out.println(slots.getStartTime());
             System.out.println(slots.getEndTime());
             slots.setDurationTime(durationMinitus);
-            repo.save(slots);
+            //repo.save(slots);
         }
 
 

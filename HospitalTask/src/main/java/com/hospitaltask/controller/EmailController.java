@@ -4,10 +4,14 @@ import com.hospitaltask.entity.Email;
 import com.hospitaltask.entity.Otp;
 import com.hospitaltask.response.CustomResponseHandler;
 import com.hospitaltask.service.OtpService;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
@@ -23,7 +27,7 @@ public class EmailController {
 
     //this is responsible to send email
     @SuppressWarnings("unused")
-	private static void sendEmail(String message, String subject, String to, String from) {
+    private static void sendEmail(String message, String subject, String to, String from) {
 
         //variable for gmail host
         String host = "smtp.gmail.com";
@@ -69,7 +73,7 @@ public class EmailController {
     }
 
     @PostMapping("/send")
-    public ResponseEntity<?> email(@RequestBody Email email) {
+    public ResponseEntity<?> email(@RequestBody @NotNull Email email) {
         String subject = email.getSubject();
         final String to = email.getTo();
         final String from = "testdemo000011@gmail.com";

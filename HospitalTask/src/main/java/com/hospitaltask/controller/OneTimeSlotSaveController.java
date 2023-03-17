@@ -25,8 +25,9 @@ public class OneTimeSlotSaveController {
     @PostMapping("/save")
     public ResponseEntity<?> save(@RequestBody @NotNull SlotDto slotDto) {
         try {
-            List<SuperSlot> superSlots=createSlotRepo.findAll();
-            System.out.println(superSlots.size());
+            List<SuperSlot> superSlots = createSlotRepo.findAll();
+            createSlotService.createSlot();
+           /* System.out.println(superSlots.size());
             if(!superSlots.isEmpty()) {
                 for (int i = 0; i < superSlots.size(); i++) {
                     if (slotDto.getDurationMinutes().equals(superSlots.get(i).getDurationMinutes())) {
@@ -43,7 +44,7 @@ public class OneTimeSlotSaveController {
                 createSlotService.createSlot();
                 return CustomResponseHandler.response("Record Save", HttpStatus.CREATED, slotDto);
 
-            }
+            }*/
 
             return CustomResponseHandler.response("Record Save", HttpStatus.CREATED, slotDto);
         } catch (Exception e) {
