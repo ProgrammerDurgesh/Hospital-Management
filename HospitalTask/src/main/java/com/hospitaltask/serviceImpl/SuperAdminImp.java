@@ -3,11 +3,15 @@ package com.hospitaltask.serviceImpl;
 import com.hospitaltask.entity.SuperAdmin;
 import com.hospitaltask.repository.SuperAdminRepo;
 import com.hospitaltask.service.SuperAdminService;
+import freemarker.template.TemplateException;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
+import java.io.IOException;
+import java.util.Calendar;
 import java.util.List;
 import java.util.UUID;
 
@@ -20,7 +24,8 @@ public class SuperAdminImp implements SuperAdminService {
     @Autowired
     private SuperAdminRepo superAdminRepo;
     @Autowired
-    private SendEmailTemplate emailTemplate;
+    private EmailService emailService;
+
 
     public SuperAdmin enable(long idL, String id) {
         if (idL >= 0 && id.isBlank())
@@ -60,21 +65,20 @@ public class SuperAdminImp implements SuperAdminService {
          */
         String conformationToken = UUID.randomUUID().toString();
         save.setConfirmationToken(conformationToken);
-        String url = "127.0.0.1:8000/super/verify/" + save.getEmail() + "/" + conformationToken;
         save.setIsActive(false);
         // save.setCreatedBy(userDetails.getUsername());
-        String myString = "Here's a button: <button type='Submit'>Click me!</button>";
-        String message = "Notification Account Activation";
-        String obj = "Please verify your email address to get access to your account   " + "\n" + url + "\n"
-                + "Thank You ";
-        emailTemplate.sendAttached(obj, myString, save.getEmail());
+    
+        //emailTemplate.sendAttached(obj, myString, save.getEmail());
 
         SuperAdmin superAdmin = superAdminRepo.save(save);
+        String url="http://localhost:8000/super/verify/"+superAdmin.getEmail()+"/"+conformationToken;
+        String text="Activate Your Account "+"\n"+url;
+        emailService.sendWithOutHtmlPage(superAdmin.getEmail(),"Account Activation !!",text);
         return superAdmin;
     }
 
     @Override
-    public SuperAdmin update(SuperAdmin data, Long id) {
+    public SuperAdmin update(@NotNull SuperAdmin data, Long id) {
         SuperAdmin findUser = superAdminRepo.findById(id).orElse(null);
         findUser.setUserName(data.getUserName());
         findUser.setEmail(data.getEmail());
@@ -140,21 +144,22 @@ public class SuperAdminImp implements SuperAdminService {
     }
 
     @Override
-    public SuperAdmin acountVerify(String email, String token) {
+    public SuperAdmin accountVerify(String email, String token) {
 
-        SuperAdmin acountVerify = null;
+        SuperAdmin accountVerify = null;
         try {
-            acountVerify = superAdminRepo.acountVerify(email, token);
-            if (token.equals(acountVerify.getConfirmationToken())) {
-                acountVerify.setIsActive(true);
-                acountVerify.setConfirmationToken(null);
-                superAdminRepo.save(acountVerify);
+            accountVerify = superAdminRepo.accountVerify(email, token);
+            if (token.equals(accountVerify.getConfirmationToken())) {
+                accountVerify.setIsActive(true);
+                accountVerify.setConfirmationToken(null);
+                accountVerify.setLastModifiedDate(Calendar.getInstance().getTime());
+                superAdminRepo.save(accountVerify);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return acountVerify;
+        return accountVerify;
     }
 
 }

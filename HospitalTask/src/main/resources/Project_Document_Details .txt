@@ -143,3 +143,4 @@ Enable & disable
 
 09-03-2023 - getAll doctor on html page using thymleaf
 pass token in header of url   :- Pending
+Email Validate by google : pending

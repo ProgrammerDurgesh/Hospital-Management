@@ -3,6 +3,7 @@ package com.hospitaltask.exception;
 import java.sql.SQLIntegrityConstraintViolationException;
 
 import javax.mail.AuthenticationFailedException;
+import javax.mail.SendFailedException;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -93,5 +94,10 @@ public class CustomExceptionHandler {
     @ExceptionHandler(value = AuthenticationFailedException.class)
     public ResponseEntity<?> javaxMailAuthenticationFailedException() {
         return CustomResponseHandler.response("Email Password incorrect", HttpStatus.INTERNAL_SERVER_ERROR, "501");
+    }
+    @ExceptionHandler(value = SendFailedException.class)
+    public ResponseEntity<?> SendFailedException()
+    {
+        return CustomResponseHandler.response("Invalid Email Aaadress",HttpStatus.NOT_FOUND,"");
     }
 }

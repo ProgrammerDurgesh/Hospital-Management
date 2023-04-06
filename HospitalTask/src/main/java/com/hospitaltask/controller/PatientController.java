@@ -2,13 +2,11 @@ package com.hospitaltask.controller;
 
 import com.hospitaltask.entity.Doctor;
 import com.hospitaltask.entity.Patient;
-import com.hospitaltask.entity.UserInfo;
 import com.hospitaltask.repository.DoctorRepo;
 import com.hospitaltask.repository.PatientEntityRepo;
 import com.hospitaltask.response.CustomResponseHandler;
 import com.hospitaltask.service.PatientService;
 import com.hospitaltask.serviceImpl.EmailService;
-import com.hospitaltask.serviceImpl.SendEmailTemplate;
 import freemarker.template.TemplateException;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,10 +26,6 @@ public class PatientController {
 
     @Autowired
     PatientService patientService;
-
-    @Autowired
-    private SendEmailTemplate emailTemplate;
-
     @Autowired
     private EmailService emailService;
     @Autowired
@@ -40,14 +34,10 @@ public class PatientController {
     private DoctorRepo doctorRepo;
 
     //Add & Update Patient operation
-    @PostMapping("/send")
-    public String send(@RequestBody UserInfo userInfo) throws MessagingException, TemplateException, IOException {
-        emailService.sendEmail(userInfo);
-        return "Email Sent..!";
-    }
+
 
     @PostMapping("/save")
-    public ResponseEntity<?> save(@RequestBody @NotNull Patient patient) {
+    public ResponseEntity<?> save(@RequestBody @NotNull Patient patient) throws MessagingException, TemplateException, IOException {
         Doctor doctor1 = patient.getDoctor();
         Optional<Doctor> doctor = doctorRepo.findById(doctor1.getDoctorId());
         if (doctor.isEmpty()) {
@@ -57,6 +47,7 @@ public class PatientController {
         if (patient1 != null) {
             return CustomResponseHandler.response("Email Already Exists ", HttpStatus.OK, patient.getEmail());
         } else {
+
             patientService.save(patient);
 
             return CustomResponseHandler.response("Data Saved ", HttpStatus.CREATED, patient);
@@ -65,11 +56,11 @@ public class PatientController {
 
 
     @PostMapping("/verify/{email}/{token}")
-    public ResponseEntity<?> acountVerify(@PathVariable String email, @PathVariable String token) {
+    public ResponseEntity<?> accountVerify(@PathVariable String email, @PathVariable String token) {
         {
-            Patient acountVerify = patientService.acountVerify(email, token);
-            if (acountVerify != null) {
-                return CustomResponseHandler.response("Congrachulation !! Your Account is Varify ", HttpStatus.ACCEPTED, email);
+            Patient accountVerify = patientService.accountVerify(email, token);
+            if (accountVerify != null) {
+                return CustomResponseHandler.response("congratulations !! Your Account is Verify ", HttpStatus.ACCEPTED, email);
             } else {
 
                 return CustomResponseHandler.response("Invalid Url ", HttpStatus.INTERNAL_SERVER_ERROR, null);

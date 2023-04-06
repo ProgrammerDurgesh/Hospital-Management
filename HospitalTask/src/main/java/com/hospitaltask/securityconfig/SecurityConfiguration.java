@@ -42,7 +42,7 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
+     BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
@@ -56,12 +56,12 @@ public class SecurityConfiguration {
 
 
     @Bean
-    public SecurityFilterChain filterChain(@NotNull HttpSecurity http) throws Exception {
+     SecurityFilterChain filterChain(@NotNull HttpSecurity http) throws Exception {
         http.cors().
                 and().
                 csrf().
                 disable().
-                authorizeRequests().
+                authorizeHttpRequests().
                 antMatchers("/admin/**").hasAnyAuthority("ROLE_ADMIN").
                 antMatchers("/doctor/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_DOCTOR", "ROLE_PATIENT").
                 //antMatchers("/patient/**").hasAnyAuthority("ROLE_DOCTOR","ROLE_PATIENT").

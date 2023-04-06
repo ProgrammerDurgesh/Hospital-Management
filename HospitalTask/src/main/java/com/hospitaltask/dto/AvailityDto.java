@@ -11,9 +11,10 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-
+@SuppressWarnings("unused")
 public class AvailityDto {
 
+	
 	private LocalDate date;
 	private String startTime;
 	private String  endTime;

@@ -1,17 +1,22 @@
 package com.hospitaltask.controller;
 
-import com.hospitaltask.dto.SlotDto;
-import com.hospitaltask.entity.SuperSlot;
-import com.hospitaltask.repository.CreateSlotRepo;
-import com.hospitaltask.response.CustomResponseHandler;
-import com.hospitaltask.service.CreateSlotService;
+import java.util.List;
+
+import javax.validation.constraints.NotNull;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.constraints.NotNull;
-import java.util.List;
+import com.hospitaltask.dto.SlotDto;
+import com.hospitaltask.entity.SuperSlot;
+import com.hospitaltask.response.CustomResponseHandler;
+import com.hospitaltask.service.CreateSlotService;
 
 @RestController
 @RequestMapping("/slot")
@@ -19,13 +24,10 @@ public class OneTimeSlotSaveController {
 
     @Autowired
     private CreateSlotService createSlotService;
-    @Autowired
-    private CreateSlotRepo createSlotRepo;
-
+    
     @PostMapping("/save")
     public ResponseEntity<?> save(@RequestBody @NotNull SlotDto slotDto) {
         try {
-            List<SuperSlot> superSlots = createSlotRepo.findAll();
             createSlotService.createSlot();
            /* System.out.println(superSlots.size());
             if(!superSlots.isEmpty()) {

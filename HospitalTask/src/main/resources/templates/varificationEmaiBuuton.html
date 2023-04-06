@@ -337,9 +337,8 @@ table, td { color: #000000; } a { color: #0000ee; text-decoration: underline; } 
                                                     <a class="v-size-width"
                                                        style="box-sizing: border-box;display: inline-block;font-family:arial,helvetica,sans-serif;text-decoration: none;-webkit-text-size-adjust: none;text-align: center;color: #FFFFFF; background-color: #e03e2d; border-radius: 4px;-webkit-border-radius: 4px; -moz-border-radius: 4px; width:50%; max-width:100%; overflow-wrap: break-word; word-break: break-word; word-wrap:break-word; mso-border-alt: none;"
                                                        target="_blank"
-                                                       th:text="127.0.0.1:8000">
-                                                        <span style="display:block;padding:18px 40px;line-height:120%;"><strong><Button
-                                                                style="font-size: 18px; line-height: 21.6px; font-family: Raleway, sans-serif;">Verify Identity</Button></strong></span>
+                                                       th:text="${url}">
+                                                        <span style="display:block;padding:18px 40px;line-height:120%;"><strong><a href="http://www.localhost:${url}" rel="link" >Verify Identity</a></strong></span>
                                                     </a>
                                                     <!--[if mso]></center></v:roundrect></td></tr></table><![endif]-->
                                                 </div>

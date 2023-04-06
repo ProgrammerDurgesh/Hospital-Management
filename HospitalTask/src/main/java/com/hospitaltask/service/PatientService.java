@@ -1,16 +1,19 @@
 package com.hospitaltask.service;
 
 import com.hospitaltask.entity.*;
+import freemarker.template.TemplateException;
 
+import javax.mail.MessagingException;
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
 public interface PatientService {
     //Add & Update Operation
 
-    Patient save(Patient patient);
+    Patient save(Patient patient) throws MessagingException, TemplateException, IOException;
 
-    Patient  acountVerify(String email, String token);
+    Patient  accountVerify(String email, String token);
     
     Patient updatePatientById(Patient patient, Long id);
 

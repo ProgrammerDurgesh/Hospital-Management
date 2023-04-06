@@ -2,13 +2,17 @@ package com.hospitaltask.service;
 
 import com.hospitaltask.entity.OtpVerify;
 import com.hospitaltask.entity.Otp;
+import freemarker.template.TemplateException;
+
+import javax.mail.MessagingException;
+import java.io.IOException;
+
 public interface OtpService {
     void save(OtpVerify otpVerify);
 
-    Boolean Otp(String subject, String to, String from);
 
-    public String generateEmailOTP(String email);
+    public String generateEmailOTP(String email,int userType);
 
-    Boolean match(Otp otp);
+    int match(String otp);
     String passwordUpdate(String password,String email);
 }

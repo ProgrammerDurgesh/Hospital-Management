@@ -38,7 +38,7 @@ public class DoctorController {
 	@PostMapping("/save")
 	public ResponseEntity<?> save(@RequestBody @NotNull Doctor doctor) {
 
-		String email = doctorRepo.getEmailByEmai(doctor.getEmail());
+		String email = doctorRepo.getEmailByEmail(doctor.getEmail());
 
 		if (email != null) {
 
@@ -66,16 +66,15 @@ public class DoctorController {
 	}
 	
 	@PostMapping("/verify/{email}/{token}")
-	public ResponseEntity<?> acountVerify(@PathVariable String email,@PathVariable String token) {
+	public ResponseEntity<?> accountVerify(@PathVariable String email,@PathVariable String token) {
 		{
-			Doctor acountVerify = doctorService.acountVerify(email, token);
-			if(acountVerify !=null)
+			Doctor accountVerify = doctorService.acountVerify(email, token);
+			if(accountVerify !=null)
 			{
-				return CustomResponseHandler.response("Congrachulation !! Your Account is Varify ",HttpStatus.ACCEPTED,email);
+				return CustomResponseHandler.response("congratulations !! Your Account is Verify ",HttpStatus.ACCEPTED,email);
 			}
 			else 
 			{
-			
 				return CustomResponseHandler.response("Invalid Url ",HttpStatus.INTERNAL_SERVER_ERROR,null );
 			}
 		}

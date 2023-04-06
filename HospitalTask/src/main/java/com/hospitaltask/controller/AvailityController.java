@@ -1,10 +1,7 @@
 package com.hospitaltask.controller;
 
-import com.hospitaltask.dto.AvailityDto;
-import com.hospitaltask.entity.Availity;
-import com.hospitaltask.repository.CreateSlotRepo;
-import com.hospitaltask.repository.SaveSlotRepo;
-import com.hospitaltask.response.CustomResponseHandler;
+import javax.validation.constraints.NotNull;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,7 +11,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.constraints.NotNull;
+import com.hospitaltask.dto.AvailityDto;
+import com.hospitaltask.entity.Availity;
+import com.hospitaltask.response.CustomResponseHandler;
 
 @RestController
 @RequestMapping("/availity")
@@ -23,12 +22,6 @@ public class AvailityController {
 
 	@Autowired
 	private ModelMapper modelMapper;
-	@Autowired
-	private SaveSlotRepo repo;
-
-	@Autowired
-	private CreateSlotRepo createSlotRepo;
-
 	Availity dtoToAvality(AvailityDto availityDto) {
 		return this.modelMapper.map(availityDto, Availity.class);
 	}

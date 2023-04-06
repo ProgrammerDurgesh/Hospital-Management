@@ -18,6 +18,8 @@ import com.hospitaltask.repository.DoctorRepo;
 import com.hospitaltask.service.DoctorService;
 
 @Service
+@SuppressWarnings("unused")
+
 public class DoctorServiceImpl implements DoctorService {
 
 	Doctor doctor = null;
@@ -27,8 +29,7 @@ public class DoctorServiceImpl implements DoctorService {
 	private BCryptPasswordEncoder passwordEncoder;
 	private ModelMapper modelMapper;
 	@Autowired
-	private SendEmailTemplate emailTemplate;
-
+	private EmailService emailService;
 	Doctor dtoToDoctor(DoctorDto doctorDto) {
 		return this.modelMapper.map(doctorDto, Doctor.class);
 	}
@@ -45,17 +46,14 @@ public class DoctorServiceImpl implements DoctorService {
 
 		String conformationToken = UUID.randomUUID().toString();
 		dto.setConfirmationToken(conformationToken);
-		String url = "127.0.0.1:8000/doctor/verify/"+dto.getEmail()+"/" + conformationToken;
+		String url="http://localhost:8000/doctor/verify/"+dto.getEmail()+"/"+conformationToken;
+		String text="Activate Your Account "+"\n"+url;
 		dto.setPassword(passwordEncoder.encode(dto.getPassword()));
 		dto.setIsActive(false);
 		dto.setCreatedBy(userDetails.getUsername());
-
-		String message = "Notification Account Activation";
-		String obj = "Please verify your email address to get access to your account   " + "\n" + url + "\n"
-				+ "Thank You ";
-		emailTemplate.sendAttached(obj, message, dto.getEmail());
-
-		return this.doctorRepo.save(dto);
+		Doctor save = doctorRepo.save(dto);
+		emailService.sendWithOutHtmlPage(dto.getEmail(),"Account Activation !!",text);
+		return save;
 	}
 
 	@Override

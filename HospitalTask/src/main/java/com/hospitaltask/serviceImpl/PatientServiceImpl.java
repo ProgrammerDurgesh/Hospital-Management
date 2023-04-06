@@ -3,18 +3,23 @@ package com.hospitaltask.serviceImpl;
 import com.hospitaltask.entity.Patient;
 import com.hospitaltask.repository.PatientEntityRepo;
 import com.hospitaltask.service.PatientService;
+import freemarker.template.TemplateException;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
+import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@SuppressWarnings("unused")
 public class PatientServiceImpl implements PatientService {
     private static final long EXPIRE_TOKEN_AFTER_MINUTES = 30;
     @Autowired
@@ -24,11 +29,13 @@ public class PatientServiceImpl implements PatientService {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    private SendEmailTemplate emailTemplate;
+    private EmailService emailTemplate;
 
+    @Autowired
+    private EmailService emailService;
     // Add & Update Operation
     @Override
-    public Patient save(@NotNull Patient patient) {
+    public Patient save(@NotNull Patient patient) throws MessagingException, TemplateException, IOException {
 
         Patient save = null;
         Patient email = patientRepo.findByEmail(patient.getEmail());
@@ -39,22 +46,16 @@ public class PatientServiceImpl implements PatientService {
 
             String conformationToken = UUID.randomUUID().toString();
             patient.setConfirmationToken(conformationToken);
-            String url = "127.0.0.1:8000/patient/verify/" + patient.getEmail() + "/" + conformationToken;
 
+            String url="http://localhost:8000/patient/verify/"+patient.getEmail()+"/"+conformationToken;
+            String text="Activate Your Account "+"\n"+url;
             patient.setIsActive(false);
-            String message = "Notification Account Activation";
-            String htmlContent = "<h1>Welcome to our website!</h1><p>Please click the button below to activate your account:</p><br><a href='" + url + "'><button style='background-color: #008CBA; border: none; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px;'>Activate account</button></a>";
-
-
-            String obj = "Please verify your email address to get access to your account   " + "\n" + url + "\n"
-                    + "Thank You ";
-            emailTemplate.sendAttached(htmlContent, message, patient.getEmail());
-
             save = patientRepo.save(patient);
+            emailService.sendWithOutHtmlPage(patient.getEmail(),"Account Activation !!",text);
             return save;
         }
 
-        return save;
+        return null;
     }
 
     @Override
@@ -240,7 +241,7 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    public Patient acountVerify(String email, String token) {
+    public Patient accountVerify(String email, String token) {
 
         Patient acountVerify = null;
         try {
@@ -248,6 +249,7 @@ public class PatientServiceImpl implements PatientService {
             if (token.equals(acountVerify.getConfirmationToken())) {
                 acountVerify.setIsActive(true);
                 acountVerify.setConfirmationToken(null);
+                acountVerify.setLastModifiedDate(Calendar.getInstance().getTime());
                 patientRepo.save(acountVerify);
             }
         } catch (Exception e) {

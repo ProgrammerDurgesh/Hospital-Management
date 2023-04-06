@@ -1,9 +1,6 @@
 package com.hospitaltask.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+
 
 import java.time.LocalDate;
 
@@ -11,10 +8,6 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
 
 public class BookSlot {
 	@Id
@@ -32,4 +25,49 @@ public class BookSlot {
 
 	private  boolean ACCEPT = false;
 	private String status;
+	public long getId() {
+		return id;
+	}
+	public void setId(long id) {
+		this.id = id;
+	}
+	public LocalDate getDate() {
+		return date;
+	}
+	public void setDate(LocalDate date) {
+		this.date = date;
+	}
+	public boolean isISTRUE() {
+		return ISTRUE;
+	}
+	public void setISTRUE(boolean iSTRUE) {
+		ISTRUE = iSTRUE;
+	}
+	public Long getDoctorId() {
+		return doctorId;
+	}
+	public void setDoctorId(Long doctorId) {
+		this.doctorId = doctorId;
+	}
+	public Long getSlotId() {
+		return slotId;
+	}
+	public void setSlotId(Long slotId) {
+		this.slotId = slotId;
+	}
+	public boolean isACCEPT() {
+		return ACCEPT;
+	}
+	public void setACCEPT(boolean aCCEPT) {
+		ACCEPT = aCCEPT;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	
+	
+	
 }

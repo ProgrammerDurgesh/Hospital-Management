@@ -5,6 +5,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
+@SuppressWarnings("unused")
 public class SlotDto {
     private String startTime;
     private String endTime;

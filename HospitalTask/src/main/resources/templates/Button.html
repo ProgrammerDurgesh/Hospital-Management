@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <style>
+		.one {
+			background-color: white;
+			border: 2px solid black;
+			color: green;
+			padding: 5px 10px;
+			text-align: center;
+			display: inline-block;
+			font-size: 20px;
+			margin: 10px 30px;
+			cursor: pointer;
+		}
+	</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title>Spring Boot Email using FreeMarker</title>
+
+</head>
+<body>
+<div style="margin-top: 10px">Greetings, ${url}></div>
+<a href="http://www.localhost:${url}" rel="link" /><button class="one">
+    Verify Account !!
+</button>
+</body>
+</html>

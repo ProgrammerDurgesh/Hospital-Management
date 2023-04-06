@@ -5,10 +5,9 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
 import com.hospitaltask.entity.Doctor;
 
-@Repository
+
 public interface DoctorRepo extends JpaRepository<Doctor, Long> {
 
 //    @Query(value = "select * from tbl_doctor d where d.email=:email", nativeQuery = true)
@@ -23,7 +22,7 @@ public interface DoctorRepo extends JpaRepository<Doctor, Long> {
     String getUsername(@Param("email") String email);
 
     @Query(value = " select email from tbl_doctor d where d.email=:email", nativeQuery = true)
-    String getEmailByEmai(String email);
+    String getEmailByEmail(String email);
 
     @Query(value = "  select * from tbl_doctor d where d.email=:email and d.is_active=true", nativeQuery = true)
     Doctor getDoctorByEmail(String email);

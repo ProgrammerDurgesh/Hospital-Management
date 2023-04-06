@@ -11,6 +11,7 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@SuppressWarnings("unused")
 public class BookSlotDTO {
 	private Long id;
     private LocalDate date;

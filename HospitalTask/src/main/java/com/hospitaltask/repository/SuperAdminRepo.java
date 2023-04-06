@@ -4,11 +4,9 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.stereotype.Repository;
 
 import com.hospitaltask.entity.SuperAdmin;
 
-@Repository
 public interface SuperAdminRepo extends JpaRepository<SuperAdmin, Long> {
     String deleteByEmail(String id);
 
@@ -33,7 +31,7 @@ public interface SuperAdminRepo extends JpaRepository<SuperAdmin, Long> {
     
     
     @Query(value = "select * from tbl_super_user d where d.email =:email and d.confirmation_token=:token",nativeQuery = true)
-    SuperAdmin acountVerify(String email,String token);
+    SuperAdmin accountVerify(String email,String token);
 
 
    /* @Query(value = "update tbl_super_user set flag=false where id=1",nativeQuery=true)

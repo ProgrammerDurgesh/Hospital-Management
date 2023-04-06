@@ -5,6 +5,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
+@SuppressWarnings("unused")
 public class UserInfo {
     private String username;
     private String name;

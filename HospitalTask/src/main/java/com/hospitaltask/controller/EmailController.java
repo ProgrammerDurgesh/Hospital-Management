@@ -1,9 +1,9 @@
 package com.hospitaltask.controller;
 
-import com.hospitaltask.entity.Email;
-import com.hospitaltask.entity.Otp;
-import com.hospitaltask.response.CustomResponseHandler;
-import com.hospitaltask.service.OtpService;
+import java.io.IOException;
+
+import javax.mail.MessagingException;
+
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,10 +13,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.mail.*;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
-import java.util.Properties;
+import com.hospitaltask.entity.Email;
+import com.hospitaltask.entity.Otp;
+import com.hospitaltask.response.CustomResponseHandler;
+import com.hospitaltask.service.OtpService;
+
+import freemarker.template.TemplateException;
 
 @RestController
 @RequestMapping("/email")
@@ -26,8 +28,7 @@ public class EmailController {
     private OtpService otpService;
 
     //this is responsible to send email
-    @SuppressWarnings("unused")
-    private static void sendEmail(String message, String subject, String to, String from) {
+    /*  private static void sendEmail(String message, String subject, String to, String from) {
 
         //variable for gmail host
         String host = "smtp.gmail.com";
@@ -71,22 +72,23 @@ public class EmailController {
             e.printStackTrace();
         }
     }
-
+*/
     @PostMapping("/send")
-    public ResponseEntity<?> email(@RequestBody @NotNull Email email) {
-        String subject = email.getSubject();
-        final String to = email.getTo();
-        final String from = "testdemo000011@gmail.com";
-        Boolean otp = otpService.Otp(subject, to, from);
+    public ResponseEntity<?> email(@RequestBody @NotNull Email email) throws MessagingException, TemplateException, IOException {
+
+       /* System.out.println(email.getTo());
+        System.out.println(email.getSubject());
+        //Boolean otp = otpService.Otp(email.getSubject(),email.getTo());
+
         if (otp) return CustomResponseHandler.response("Email Send ", HttpStatus.OK, "Okay");
-        else return CustomResponseHandler.response("OTP Not Match", HttpStatus.BAD_REQUEST, "Bad Credentials ");
+        else */return CustomResponseHandler.response("Email not found", HttpStatus.BAD_REQUEST, "Bad Credentials ");
     }
 
     @PostMapping("/match")
     public ResponseEntity<?> match(@RequestBody Otp otp) {
-        Boolean match = otpService.match(otp);
+       /* Boolean match = otpService.match(otp);
         if (match) return CustomResponseHandler.response("Otp Match ", HttpStatus.OK, "Okay");
-        else return CustomResponseHandler.response("Incorrect Otp", HttpStatus.BAD_REQUEST, "Bad Credentials ");
+        else*/ return CustomResponseHandler.response("Incorrect Otp", HttpStatus.BAD_REQUEST, "Bad Credentials ");
 
     }
 

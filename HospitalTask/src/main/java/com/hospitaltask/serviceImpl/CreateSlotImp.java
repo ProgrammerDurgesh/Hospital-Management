@@ -1,16 +1,16 @@
 package com.hospitaltask.serviceImpl;
 
-import com.hospitaltask.dto.SlotDto;
-import com.hospitaltask.entity.Slots;
-import com.hospitaltask.entity.SuperSlot;
-import com.hospitaltask.repository.CreateSlotRepo;
-import com.hospitaltask.repository.SaveSlotRepo;
-import com.hospitaltask.service.CreateSlotService;
+import java.util.List;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import com.hospitaltask.dto.SlotDto;
+import com.hospitaltask.entity.Slots;
+import com.hospitaltask.entity.SuperSlot;
+import com.hospitaltask.repository.CreateSlotRepo;
+import com.hospitaltask.service.CreateSlotService;
 
 @Service
 public class CreateSlotImp implements CreateSlotService {
@@ -21,9 +21,6 @@ public class CreateSlotImp implements CreateSlotService {
 
     @Autowired
     private CreateSlotRepo createSlotRepo;
-
-    @Autowired
-    private SaveSlotRepo repo;
 
     SuperSlot dtoToSlot(SlotDto slotDto) {
         return modelMapper.map(slotDto, SuperSlot.class);

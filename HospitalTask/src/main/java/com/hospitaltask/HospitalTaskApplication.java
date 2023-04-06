@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Bean;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
 */
+
 @SpringBootApplication
 //@SecurityScheme(name = "Durgesh", scheme = "basic", type = SecuritySchemeType.HTTP, in = SecuritySchemeIn.HEADER)
 public class HospitalTaskApplication {
@@ -16,15 +17,15 @@ public class HospitalTaskApplication {
         SpringApplication.run(HospitalTaskApplication.class, args);
         System.out.println("This is Hospital Management");
     }
-    /*@Autowired
+
+    /*
+    @Autowired
     private SuperAdminService superAdminService;
 
     @Autowired
     private  RoleService roleService;
     @Autowired
     private RoleRepo roleRepo;
-
-
 
     private void superuserSave()
     {
@@ -48,13 +49,11 @@ public class HospitalTaskApplication {
             //superAdminService.save(superAdmin1)
         }
     }*/
+
+
     @Bean
-    public ModelMapper mapper() {
+    ModelMapper mapper() {
         return new ModelMapper();
     }
-    
-    
-    
-    
-  
+
 }

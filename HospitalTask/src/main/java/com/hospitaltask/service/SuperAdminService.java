@@ -1,12 +1,16 @@
 package com.hospitaltask.service;
 
+import java.io.IOException;
 import java.util.List;
 
 import com.hospitaltask.entity.SuperAdmin;
+import freemarker.template.TemplateException;
+
+import javax.mail.MessagingException;
 
 public interface SuperAdminService {
-    SuperAdmin save(SuperAdmin superAdmin);
-    SuperAdmin acountVerify(String email, String token);
+    SuperAdmin save(SuperAdmin superAdmin) throws MessagingException, TemplateException, IOException;
+    SuperAdmin accountVerify(String email, String token);
 
     SuperAdmin update(SuperAdmin superAdmin, Long id);
 

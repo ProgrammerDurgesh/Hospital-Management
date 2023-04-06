@@ -9,15 +9,9 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 @Entity
 @Table(name = "tbl_clinic")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+
 public class Clinic
 {
     @Id
@@ -34,6 +28,46 @@ public class Clinic
 
     @Column(name="clinic_created")
     private final  Date createdDate = Calendar.getInstance().getTime();
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getClinicName() {
+		return clinicName;
+	}
+
+	public void setClinicName(String clinicName) {
+		this.clinicName = clinicName;
+	}
+
+	public String getClinicAddress() {
+		return clinicAddress;
+	}
+
+	public void setClinicAddress(String clinicAddress) {
+		this.clinicAddress = clinicAddress;
+	}
+
+	public String getClinicState() {
+		return clinicState;
+	}
+
+	public void setClinicState(String clinicState) {
+		this.clinicState = clinicState;
+	}
+
+	public boolean isFlag() {
+		return flag;
+	}
+
+	public Date getCreatedDate() {
+		return createdDate;
+	}
 
 
 }

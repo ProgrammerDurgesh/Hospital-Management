@@ -1,20 +1,29 @@
 package com.hospitaltask.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
 import java.util.Calendar;
 import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 @Entity
 @Table(name = "tbl_roles")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Roles {
-    private final boolean flag = true;
+    @SuppressWarnings("unused")
+	private final boolean flag = true;
     @Column(name = "role_created")
     private final Date createdDate = Calendar.getInstance().getTime();
     @Id
@@ -25,4 +34,31 @@ public class Roles {
     private String roleName;
     @Column(nullable = true, length = 200, unique = false, updatable = true)
     private String roleDescription;
+	public long getId() {
+		return id;
+	}
+	public void setId(long id) {
+		this.id = id;
+	}
+	public String getRoleName() {
+		return roleName;
+	}
+	public void setRoleName(String roleName) {
+		this.roleName = roleName;
+	}
+	public String getRoleDescription() {
+		return roleDescription;
+	}
+	public void setRoleDescription(String roleDescription) {
+		this.roleDescription = roleDescription;
+	}
+	public boolean isFlag() {
+		return flag;
+	}
+	public Date getCreatedDate() {
+		return createdDate;
+	}
+    
+    
+    
 }
